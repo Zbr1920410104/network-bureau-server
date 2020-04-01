@@ -1,5 +1,3 @@
-import managerUserDao from '../../dao/manager/manager-user-dao';
-
 // 工具类
 import CustomError from '../../util/custom-error';
 import webToken from '../../util/token';
@@ -9,35 +7,6 @@ import client from '../../util/oss';
 import { db } from '../../db/db-connect';
 
 export default {
-  /**
-   * 根据managerUuid查询用户
-   */
-  selectManagerByManagerUuid: async managerUuid => {
-    try {
-      // 数据库中查询出头像的路径之后去oss获取当前url
-      let managerUser = {},
-        headPreviewUrl = null;
-
-      managerUser = await managerUserDao.selectManagerByManagerUuid(
-        managerUuid
-      );
-
-      if (!managerUser) {
-        throw new CustomError('未查询到此管理员');
-      }
-      headPreviewUrl = await client.signatureUrl(
-        managerUser.headPortraitUrl || ''
-      );
-
-      // 将头像具体的url属性放入返回对象中
-      managerUser.headPreviewUrl = headPreviewUrl;
-
-      return managerUser;
-    } catch (error) {
-      throw error;
-    }
-  },
-
   /**
    * 管理账号登录
    */
@@ -171,10 +140,5 @@ export default {
     } catch (error) {
       throw error;
     }
-  },
-
-  /**
-   * 查询财务管理员账号
-   */
-  queryFinanceManager: page => managerUserDao.queryFinanceManagerUser(page)
+  }
 };

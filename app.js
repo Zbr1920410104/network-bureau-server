@@ -9,14 +9,6 @@ import cors from 'koa2-cors';
 
 // 路由
 import enterpriseUsers from './src/routes/enterprise/enterprise-user';
-import managerUsers from './src/routes/manager/manager-user';
-import superManager from './src/routes/manager/super-manager';
-import projectManager from './src/routes/manager/project-manager';
-import accountantManager from './src/routes/manager/accountant-manager';
-import techLeaderManager from './src/routes/manager/tech-leader-manager';
-import techManager from './src/routes/manager/tech-manager';
-import certifier from './src/routes/manager/certifier-manager';
-import enterpriseRegistration from './src/routes/enterprise/enterprise-registration';
 
 import file from './src/routes/user/file';
 
@@ -60,18 +52,6 @@ app.use(async (ctx, next) => {
 
 // routes
 app.use(enterpriseUsers.routes(), enterpriseUsers.allowedMethods());
-app.use(managerUsers.routes(), managerUsers.allowedMethods());
-// 超级管理员权限
-app.use(superManager.routes(), superManager.allowedMethods());
-app.use(projectManager.routes(), projectManager.allowedMethods());
-app.use(accountantManager.routes(), accountantManager.allowedMethods());
-app.use(techLeaderManager.routes(), techLeaderManager.allowedMethods());
-app.use(techManager.routes(), techManager.allowedMethods());
-app.use(certifier.routes(), certifier.allowedMethods());
-app.use(
-  enterpriseRegistration.routes(),
-  enterpriseRegistration.allowedMethods()
-);
 app.use(file.routes(), file.allowedMethods());
 
 // error-handling
