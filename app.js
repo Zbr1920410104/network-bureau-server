@@ -8,9 +8,12 @@ import logger from 'koa-logger';
 import cors from 'koa2-cors';
 
 // 路由
-import enterpriseUsers from './src/routes/enterprise/enterprise-user';
+import users from './src/routes/user/user';
+// import businessManager from './src/routes/businessManager/businessManager';
+// import review-manager from './src/routes/review-manager/review-manager';
+// import staff from './src/routes/staff/staff';
 
-import file from './src/routes/user/file';
+import file from './src/routes/file/file';
 
 // 中间件
 import verifyToken from './src/middle/verify-token';
@@ -51,7 +54,7 @@ app.use(async (ctx, next) => {
 });
 
 // routes
-app.use(enterpriseUsers.routes(), enterpriseUsers.allowedMethods());
+app.use(users.routes(), users.allowedMethods());
 app.use(file.routes(), file.allowedMethods());
 
 // error-handling

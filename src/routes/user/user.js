@@ -8,7 +8,7 @@ import { RESPONSE_CODE } from '../../constants/domain-constants';
 import service from '../../service';
 
 const router = new Router({
-  prefix: '/managerUser'
+  prefix: '/user',
 });
 
 /**
@@ -18,7 +18,7 @@ router.get('/getMyInfo', async (ctx, next) => {
   try {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
-      data: ctx.state.user
+      data: ctx.state.user,
     });
   } catch (error) {
     ctx.throw(RESPONSE_CODE.unauthorized);
@@ -28,15 +28,15 @@ router.get('/getMyInfo', async (ctx, next) => {
 /**
  * 管理端登录
  */
-router.get('/getManagerToken', async (ctx, next) => {
+router.get('/getUserToken', async (ctx, next) => {
   try {
-    let { username, password } = ctx.state.param;
+    let { userName, password } = ctx.state.param;
 
-    const token = await service.getManagerToken(username, password);
+    const token = await service.getUserToken(userName, password);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
-      data: token
+      data: token,
     });
   } catch (error) {
     throw error;

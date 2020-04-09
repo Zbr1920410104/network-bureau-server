@@ -27,7 +27,7 @@ export default async (ctx, next) => {
 
     if (ctx.state.user.role === findRole(roleRouter)) {
       await next();
-    } else if (roleRouter === 'file' || roleRouter === 'managerUser') {
+    } else if (roleRouter === 'file' || roleRouter === 'user') {
       // file不控制权限获取
       await next();
     } else {

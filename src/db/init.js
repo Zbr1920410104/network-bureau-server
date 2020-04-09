@@ -33,6 +33,17 @@ Promise.all([
     // 开始创建数据
     Promise.all([
       user.create({
+        uuid: 'admin',
+        userName: 'admin',
+        role: 1,
+        isCancel: '未注销',
+        phone: '18351923820',
+        name: '超级管理员',
+        password: 'e10adc3949ba59abbe56e057f20f883e',
+        department: '管理科',
+        departmentUuid: 'guanlike'
+      }),
+      user.create({
         uuid: 'woshiyigeyuangong',
         userName: 'yuangong',
         role: 15,
