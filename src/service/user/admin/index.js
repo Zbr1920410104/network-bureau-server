@@ -2,6 +2,10 @@ import department from '../../../db/models/t-department';
 import timeSet from '../../../db/models/sys-time-set';
 import user from '../../../db/models/t-user';
 
+import Sequelize from 'sequelize';
+const Op = Sequelize.Op,
+  { or } = Sequelize.Op;
+
 // uuid
 import uuid from 'uuid';
 
@@ -176,6 +180,55 @@ export default {
       raw: true,
     }),
   /**
+   * 查询账户信息通过权限
+   */
+  quaryAccountByRole: (role) =>
+    user.findAll({
+      attributes: [
+        'uuid',
+        'role',
+        'isCancel',
+        'phone',
+        'password',
+        'name',
+        'userName',
+        'department',
+      ],
+      where: { role },
+      raw: true,
+    }),
+  /**
+   * 查询账户信息通过用户名
+   */
+  queryAccountByName: (name) =>
+    user.findAll({
+      attributes: [
+        'uuid',
+        'role',
+        'isCancel',
+        'phone',
+        'password',
+        'name',
+        'userName',
+        'department',
+      ],
+      where: {
+        [or]: [
+          {
+            name: {
+              [Op.like]: `%${name}%`,
+            },
+          },
+          {
+            userName: {
+              [Op.like]: `%${name}%`,
+            },
+          },
+        ],
+      },
+      raw: true,
+    }),
+  /**
    * 添加用户
    */
   insertAccount: ({
@@ -245,4 +298,33 @@ export default {
       },
       { where: { uuid }, raw: true }
     ),
+  /**
+   * 修改用户
+   */
+  updateAccount: ({
+    phone,
+    name,
+    role,
+    department,
+    userName,
+    departmentUuid,
+  }) =>
+    user.update(
+      {
+        phone,
+        name,
+        department,
+        departmentUuid,
+      },
+      { where: { userName: userName, role: role }, raw: true }
+    ),
+  /**
+   * 查询用户信息通过uuid
+   */
+  selectAccountByUuid: (uuid) =>
+    user.findOne({
+      attributes: ['role', 'phone', 'name', 'userName', 'department'],
+      where: { uuid },
+      raw: true,
+    }),
 };

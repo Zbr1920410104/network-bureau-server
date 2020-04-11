@@ -222,8 +222,24 @@ router.get('/selectStaffTime', async (ctx, next) => {
  */
 router.get('/quaryAccount', async (ctx, next) => {
   try {
-    const data = await service.quaryAccount();
+    const { role, name } = ctx.state.param;
 
+    let data;
+
+    if (name?.length > 0) {
+
+      data = await service.queryAccountByName(name);
+
+      if (!data.length) {
+        throw new CustomError('未找到该用户');
+      }
+    } else {
+      if (role < 1) {
+        data = await service.quaryAccount();
+      } else {
+        data = await service.quaryAccountByRole(role);
+      }
+    }
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
@@ -317,6 +333,54 @@ router.post('/accountCancel', async (ctx, next) => {
       status: RESPONSE_CODE.success,
       data,
       msg: '账号已注销',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 修改用户
+ */
+router.post('/modifyAccount', async (ctx, next) => {
+  try {
+    const { phone, name, role, department, userName } = ctx.state.param;
+
+    const { uuid } = await service.selectDepartmentUuidByName({
+      name: department,
+    });
+
+    const data = await service.updateAccount({
+      phone,
+      name,
+      role,
+      department,
+      userName,
+      departmentUuid: uuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '用户信息修改成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询用户信息通过uuid
+ */
+router.get('/selectAccount', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.selectAccountByUuid(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
     });
   } catch (error) {
     throw error;
