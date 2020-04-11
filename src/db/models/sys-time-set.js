@@ -8,7 +8,7 @@ export default db.define('sys_time_set', {
     allowNull: false,
     unique: true
   },
-  startTime: Sequelize.DATE,
-  endTime: Sequelize.DATE,
+  startTime: Sequelize.STRING(32),
+  endTime: Sequelize.STRING(32),
   userRole: Sequelize.TEXT // 用户权限
 });

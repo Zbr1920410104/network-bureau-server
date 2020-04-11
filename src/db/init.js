@@ -4,12 +4,12 @@ require('@babel/register')({
       '@babel/preset-env',
       {
         targets: {
-          node: '12.13.1'
-        }
-      }
-    ]
+          node: '12.13.1',
+        },
+      },
+    ],
   ],
-  plugins: ['@babel/plugin-proposal-optional-chaining']
+  plugins: ['@babel/plugin-proposal-optional-chaining'],
 });
 
 const user = require('./models/t-user').default;
@@ -26,8 +26,8 @@ const sequelize = require('./db-connect');
 Promise.all([
   // 先创建所有数据表
   sequelize.db.sync({
-    force: true
-  })
+    force: true,
+  }),
 ])
   .then(() =>
     // 开始创建数据
@@ -41,7 +41,7 @@ Promise.all([
         name: '超级管理员',
         password: 'e10adc3949ba59abbe56e057f20f883e',
         department: '管理科',
-        departmentUuid: 'guanlike'
+        departmentUuid: 'guanlike',
       }),
       user.create({
         uuid: 'woshiyigeyuangong',
@@ -52,7 +52,7 @@ Promise.all([
         name: '员工1',
         password: 'e10adc3949ba59abbe56e057f20f883e',
         department: '战略研究科',
-        departmentUuid: 'zhanlueyanjiuke'
+        departmentUuid: 'zhanlueyanjiuke',
       }),
       user.create({
         uuid: 'woshiyigetongji',
@@ -63,7 +63,7 @@ Promise.all([
         name: '统计1',
         password: 'e10adc3949ba59abbe56e057f20f883e',
         department: '统计科',
-        departmentUuid: 'tongjike'
+        departmentUuid: 'tongjike',
       }),
       user.create({
         uuid: 'woshiyigepingshen',
@@ -74,25 +74,25 @@ Promise.all([
         name: '评审1',
         password: 'e10adc3949ba59abbe56e057f20f883e',
         department: '评审科',
-        departmentUuid: 'pingshenke'
+        departmentUuid: 'pingshenke',
       }),
       department.create({
         uuid: 'zhanlueyanjiuke',
-        name: '战略研究科'
+        name: '战略研究科',
       }),
       department.create({
         uuid: 'tongjike',
-        name: '统计科'
+        name: '统计科',
       }),
       department.create({
         uuid: 'pingshenke',
-        name: '评审科'
-      })
+        name: '评审科',
+      }),
     ])
   )
   .then(() => {
     console.log('===数据库初始化成功===');
   })
-  .catch(err => {
+  .catch((err) => {
     console.error('数据库初始化出错啦', err);
   });

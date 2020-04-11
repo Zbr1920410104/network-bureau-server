@@ -9,9 +9,10 @@ import cors from 'koa2-cors';
 
 // 路由
 import users from './src/routes/user/user';
-// import businessManager from './src/routes/businessManager/businessManager';
-// import review-manager from './src/routes/review-manager/review-manager';
-// import staff from './src/routes/staff/staff';
+import admin from './src/routes/user/admin/admin';
+import businessManager from './src/routes/user/business-manager/business-manager';
+import reviewManager from './src/routes/user/review-manager/review-manager';
+import staff from './src/routes/user/staff/staff';
 
 import file from './src/routes/file/file';
 
@@ -55,6 +56,10 @@ app.use(async (ctx, next) => {
 
 // routes
 app.use(users.routes(), users.allowedMethods());
+app.use(admin.routes(), admin.allowedMethods());
+app.use(businessManager.routes(), businessManager.allowedMethods());
+app.use(reviewManager.routes(), reviewManager.allowedMethods());
+app.use(staff.routes(), staff.allowedMethods());
 app.use(file.routes(), file.allowedMethods());
 
 // error-handling

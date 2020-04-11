@@ -14,12 +14,12 @@ export default {
   /**
    * 根据uuid查询用户
    */
-  selectUserByUuid: async uuid => {
+  selectUserByUuid: async (uuid) => {
     try {
       // 数据库中查询出头像的路径之后去oss获取当前url
       let userInfo = {};
 
-       userInfo = await user.findOne({
+      userInfo = await user.findOne({
         where: { uuid },
         attributes: [
           'uuid',
