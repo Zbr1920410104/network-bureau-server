@@ -227,7 +227,6 @@ router.get('/quaryAccount', async (ctx, next) => {
     let data;
 
     if (name?.length > 0) {
-
       data = await service.queryAccountByName(name);
 
       if (!data.length) {

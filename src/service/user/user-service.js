@@ -80,4 +80,14 @@ export default {
       throw error;
     }
   },
+  /**
+   * 修改密码
+   */
+  updateUserPassword: ({ uuid, oldPassword, password }) =>
+    user.update(
+      {
+        password,
+      },
+      { where: { uuid, password: oldPassword }, raw: true }
+    ),
 };

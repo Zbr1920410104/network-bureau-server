@@ -5,7 +5,8 @@ export const UNLESS_PATH_ARR = [
   /**
    * 管理端
    */
-  '/user/getUserToken'
+  '/user/getUserToken',
+  '/user/updatePassword',
 ];
 
 export const MANAGER_PAGE_SIZE = 10;
