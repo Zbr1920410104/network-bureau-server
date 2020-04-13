@@ -56,8 +56,6 @@ router.post('/savePassword', async (ctx, next) => {
 
     const uuid = ctx.state.user.uuid;
 
-    console.log('输出=', uuid, oldPassword, md5(newPassword));
-
     const data = await service.updateUserPassword({
       uuid,
       oldPassword: md5(oldPassword),
