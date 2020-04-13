@@ -137,11 +137,13 @@ router.post('/modifyStaffBasic', async (ctx, next) => {
 
     const userUuid = ctx.state.user.uuid;
 
-    const { lastWriteTime } = await service.selectLastWriteTimeByUuid(userUuid);
+    const { currentWriteTime } = await service.selectLastWriteTimeByUuid(
+      userUuid
+    );
 
     const data = await service.updateStaffBasic({
       userUuid,
-      lastWriteTime,
+      lastWriteTime: currentWriteTime,
       currentWriteTime: new Date(),
       name,
       idNumber,
@@ -168,6 +170,24 @@ router.post('/modifyStaffBasic', async (ctx, next) => {
       status: RESPONSE_CODE.success,
       data,
       msg: '基本信息修改成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写信息
+ */
+router.get('/getStaffWriteInfo', async (ctx, next) => {
+  try {
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.getStaffWriteInfo( userUuid );
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
     });
   } catch (error) {
     throw error;

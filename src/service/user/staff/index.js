@@ -1,4 +1,5 @@
 import staffBasic from '../../../db/models/staff-basic';
+import user from '../../../db/models/t-user';
 
 import uuid from 'uuid';
 
@@ -155,4 +156,45 @@ export default {
       },
       { where: { userUuid }, raw: true }
     ),
+  /**
+   * 查询员工填写信息
+   */
+  getStaffWriteInfo: async (userUuid) => {
+    let lastWriteList = await user.findOne({
+      attributes: ['name', 'department', 'lastWriteTime'],
+      where: { uuid: userUuid },
+      raw: true,
+    });
+
+    if ('lastWriteTime' in lastWriteList) {
+      lastWriteList.id = 2;
+      lastWriteList.writeTime = lastWriteList.lastWriteTime;
+    }
+
+    let currentWriteList = await user.findOne({
+      attributes: [
+        'name',
+        'department',
+        'currentWriteTime',
+        'verifyStatus',
+        'verifyTime',
+      ],
+      where: { uuid: userUuid },
+      raw: true,
+    });
+
+    if ('currentWriteTime' in currentWriteList) {
+      currentWriteList.id = 1;
+      currentWriteList.writeTime = currentWriteList.currentWriteTime;
+      if (!currentWriteList.verifyStatus) {
+        currentWriteList.verifyStatus = '未填写完毕';
+      }
+    }
+
+    if ('lastWriteTime' in lastWriteList) {
+      return [currentWriteList, lastWriteList];
+    } else if ('currentWriteTime' in currentWriteList) {
+      return [currentWriteList];
+    } else return [];
+  },
 };
