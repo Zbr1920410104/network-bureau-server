@@ -62,7 +62,7 @@ router.post('/savePassword', async (ctx, next) => {
       password: md5(newPassword),
     });
 
-    if (data) {
+    if (data[0]) {
       ctx.body = new Res({
         status: RESPONSE_CODE.success,
         data,

@@ -1,5 +1,6 @@
-import staffBasic from '../../../db/models/staff-basic';
 import user from '../../../db/models/t-user';
+import staffBasic from '../../../db/models/staff-basic';
+import staffProject from '../../../db/models/staff-project';
 
 import uuid from 'uuid';
 
@@ -75,7 +76,7 @@ export default {
       { raw: true }
     ),
   /**
-   * 查询评审管理员系统时间
+   * 查询基本信息
    */
   selectStaffBasic: ({ userUuid }) =>
     staffBasic.findOne({
@@ -197,4 +198,67 @@ export default {
       return [currentWriteList];
     } else return [];
   },
+
+  /**
+   * 新建一条项目信息
+   */
+  insertStaffProject: ({
+    userUuid,
+    currentWriteTime,
+    isVerify,
+    type,
+    name,
+    startTime,
+    endTime,
+    code,
+    resource,
+    funds,
+    controller,
+    participant,
+    content,
+  }) =>
+    staffProject.create(
+      {
+        uuid: uuid.v1(),
+        userUuid,
+        userUuid,
+        currentWriteTime,
+        isVerify,
+        type,
+        name,
+        startTime,
+        endTime,
+        code,
+        resource,
+        funds,
+        controller,
+        participant,
+        content,
+      },
+      { raw: true }
+    ),
+
+  /**
+   * 查询基本信息
+   */
+  queryWriteProjectList: (userUuid) =>
+    staffProject.findAll({
+      attributes: [
+        'uuid',
+        'name',
+        'type',
+        'startTime',
+        'endTime',
+        'code',
+        'resource',
+        'funds',
+        'controller',
+        'participant',
+        'content',
+        'isVerify',
+        'currentWriteTime',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
 };

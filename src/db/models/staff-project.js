@@ -6,7 +6,7 @@ export default db.define('staff_project', {
     type: Sequelize.STRING(36),
     primaryKey: true,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   userUuid: Sequelize.STRING(36), // 员工uuid
   verifyRemarks: Sequelize.TEXT, // 统计员回退备注
@@ -19,12 +19,15 @@ export default db.define('staff_project', {
   reviewTime: Sequelize.DATE, // 评审时间
   lastWriteTime: Sequelize.DATE, // 上次填写时间
   currentWriteTime: Sequelize.DATE, // 最新填写时间
+  // 填写内容
   type: Sequelize.BIGINT(11), // 项目类型(1:主持,2:参与)
   name: Sequelize.STRING(32), // 项目名称
-  time: Sequelize.DATE, // 项目起止时间
+  startTime: Sequelize.DATE, // 项目开始时间
+  endTime: Sequelize.DATE, // 项目结束时间
   code: Sequelize.STRING(32), // 项目编号
   resource: Sequelize.STRING(32), // 项目来源
   funds: Sequelize.STRING(32), // 项目经费(万元)
-  participant: Sequelize.STRING(32), // 参与者名单
+  controller: Sequelize.STRING(32), // 负责人
+  participant: Sequelize.TEXT, // 参与者名单
   content: Sequelize.TEXT, // 主要研究内容
 });

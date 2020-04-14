@@ -183,7 +183,71 @@ router.get('/getStaffWriteInfo', async (ctx, next) => {
   try {
     const userUuid = ctx.state.user.uuid;
 
-    const data = await service.getStaffWriteInfo( userUuid );
+    const data = await service.getStaffWriteInfo(userUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 新建一条项目信息
+ */
+router.post('/createStaffProject', async (ctx, next) => {
+  try {
+    const {
+      type,
+      name,
+      startTime,
+      endTime,
+      code,
+      resource,
+      funds,
+      controller,
+      participant,
+      content,
+    } = ctx.state.param;
+
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.insertStaffProject({
+      userUuid,
+      currentWriteTime: new Date(),
+      isVerify: '未核实',
+      type,
+      name,
+      startTime,
+      endTime,
+      code,
+      resource,
+      funds,
+      controller,
+      participant,
+      content,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '项目信息新增成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写项目
+ */
+router.get('/getWriteProjectList', async (ctx, next) => {
+  try {
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.queryWriteProjectList(userUuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
