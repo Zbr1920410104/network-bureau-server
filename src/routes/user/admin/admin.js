@@ -265,12 +265,19 @@ router.post('/addAccount', async (ctx, next) => {
       throw new CustomError('账号已存在');
     }
 
+    let verifyStatus;
+
+    if (role === 15) {
+      verifyStatus = '未填写完毕';
+    }
+
     const data = await service.insertAccount({
       phone,
       name,
       role,
       department,
       userName,
+      verifyStatus,
       departmentUuid: uuid,
     });
 

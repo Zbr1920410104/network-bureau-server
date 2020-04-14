@@ -53,6 +53,7 @@ Promise.all([
         password: 'e10adc3949ba59abbe56e057f20f883e',
         department: '战略研究科',
         departmentUuid: 'zhanlueyanjiuke',
+        verifyStatus: '未填写完毕',
       }),
       user.create({
         uuid: 'woshiyigetongji',

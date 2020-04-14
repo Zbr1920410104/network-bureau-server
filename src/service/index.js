@@ -3,6 +3,7 @@ import userService from './user/user-service';
 import adminService from './user/admin/index';
 import staffService from './user/staff/index';
 import businessManagerService from './user/business-manager/index';
+import reviewManagerService from './user/review-manager/index';
 
 export default {
   ...fileService,
@@ -10,4 +11,5 @@ export default {
   ...adminService,
   ...staffService,
   ...businessManagerService,
+  ...reviewManagerService,
 };
