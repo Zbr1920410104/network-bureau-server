@@ -258,4 +258,91 @@ router.get('/getWriteProjectList', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询员工填写项目通过uuid
+ */
+router.get('/getStaffProjectByUuid', async (ctx, next) => {
+  try {
+    const { staffProjectUuid } = ctx.state.param;
+
+    const data = await service.selectStaffProjectByUuid({
+      uuid: staffProjectUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 修改一条项目信息
+ */
+router.post('/modifyStaffProject', async (ctx, next) => {
+  try {
+    const {
+      uuid,
+      type,
+      name,
+      startTime,
+      endTime,
+      code,
+      resource,
+      funds,
+      controller,
+      participant,
+      content,
+    } = ctx.state.param;
+
+    const { currentWriteTime } = await service.selectProjectLastWriteTimeByUuid(
+      uuid
+    );
+
+    const data = await service.updateStaffProject({
+      uuid,
+      lastWriteTime: currentWriteTime,
+      currentWriteTime: new Date(),
+      type,
+      name,
+      startTime,
+      endTime,
+      code,
+      resource,
+      funds,
+      controller,
+      participant,
+      content,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '项目信息修改成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 删除管理账号
+ */
+router.del('/deleteProject', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    await service.deleteProject(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.noContent,
+      msg: '删除项目成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

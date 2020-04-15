@@ -239,7 +239,7 @@ export default {
     ),
 
   /**
-   * 查询基本信息
+   * 查询员工填写项目
    */
   queryWriteProjectList: (userUuid) =>
     staffProject.findAll({
@@ -259,6 +259,82 @@ export default {
         'currentWriteTime',
       ],
       where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写项目通过uuid
+   */
+  selectStaffProjectByUuid: ({ uuid }) =>
+    staffProject.findOne({
+      attributes: [
+        'name',
+        'type',
+        'startTime',
+        'endTime',
+        'code',
+        'resource',
+        'funds',
+        'controller',
+        'participant',
+        'content',
+      ],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询项目上次修改时间
+   */
+  selectProjectLastWriteTimeByUuid: (uuid) =>
+    staffProject.findOne({
+      attributes: ['currentWriteTime'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 修改项目信息
+   */
+  updateStaffProject: ({
+    uuid,
+    lastWriteTime,
+    currentWriteTime,
+    type,
+    name,
+    startTime,
+    endTime,
+    code,
+    resource,
+    funds,
+    controller,
+    participant,
+    content,
+  }) =>
+    staffProject.update(
+      {
+        lastWriteTime,
+        currentWriteTime,
+        type,
+        name,
+        startTime,
+        endTime,
+        code,
+        resource,
+        funds,
+        controller,
+        participant,
+        content,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 删除项目
+   */
+  deleteProject: (uuid) =>
+    staffProject.destroy({
+      where: { uuid },
       raw: true,
     }),
 };
