@@ -19,7 +19,6 @@ export default db.define('staff_patent', {
   reviewTime: Sequelize.DATE, // 评审时间
   lastWriteTime: Sequelize.DATE, // 上次填写时间
   currentWriteTime: Sequelize.DATE, // 最新填写时间
-  name: Sequelize.STRING(32), // 专利名称
   patentType: Sequelize.STRING(32), // 专利类型
   patentName: Sequelize.STRING(32), // 专利名称
   patentCode: Sequelize.STRING(32), // 授权号

@@ -328,7 +328,7 @@ router.post('/modifyStaffProject', async (ctx, next) => {
 });
 
 /**
- * 删除管理账号
+ * 删除项目
  */
 router.del('/deleteProject', async (ctx, next) => {
   try {
@@ -339,6 +339,133 @@ router.del('/deleteProject', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.noContent,
       msg: '删除项目成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 新建一条专利信息
+ */
+router.post('/createStaffPatent', async (ctx, next) => {
+  try {
+    const {
+      patentType,
+      patentName,
+      patentCode,
+      patentNation,
+    } = ctx.state.param;
+
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.insertStaffPatent({
+      userUuid,
+      currentWriteTime: new Date(),
+      isVerify: '未核实',
+      patentType,
+      patentName,
+      patentCode,
+      patentNation,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '专利信息新增成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写专利信息
+ */
+router.get('/getWritePatentList', async (ctx, next) => {
+  try {
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.queryWritePatentList(userUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写专利信息通过uuid
+ */
+router.get('/getStaffPatentByUuid', async (ctx, next) => {
+  try {
+    const { staffPatentUuid } = ctx.state.param;
+
+    const data = await service.selectStaffPatentByUuid({
+      uuid: staffPatentUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 修改一条专利信息
+ */
+router.post('/modifyStaffPatent', async (ctx, next) => {
+  try {
+    const {
+      uuid,
+      patentType,
+      patentName,
+      patentCode,
+      patentNation,
+    } = ctx.state.param;
+
+    const { currentWriteTime } = await service.selectPatentLastWriteTimeByUuid(
+      uuid
+    );
+
+    const data = await service.updateStaffPatent({
+      uuid,
+      lastWriteTime: currentWriteTime,
+      currentWriteTime: new Date(),
+      patentType,
+      patentName,
+      patentCode,
+      patentNation,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '专利信息修改成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 删除专利
+ */
+router.del('/deletePatent', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    await service.deletePatent(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.noContent,
+      msg: '删除专利成功',
     });
   } catch (error) {
     throw error;

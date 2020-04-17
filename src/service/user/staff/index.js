@@ -1,6 +1,7 @@
 import user from '../../../db/models/t-user';
 import staffBasic from '../../../db/models/staff-basic';
 import staffProject from '../../../db/models/staff-project';
+import staffPatent from '../../../db/models/staff-patent';
 
 import uuid from 'uuid';
 
@@ -221,7 +222,6 @@ export default {
       {
         uuid: uuid.v1(),
         userUuid,
-        userUuid,
         currentWriteTime,
         isVerify,
         type,
@@ -334,6 +334,103 @@ export default {
    */
   deleteProject: (uuid) =>
     staffProject.destroy({
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 新建一条专利信息
+   */
+  insertStaffPatent: ({
+    userUuid,
+    currentWriteTime,
+    isVerify,
+    patentType,
+    patentName,
+    patentCode,
+    patentNation,
+  }) =>
+    staffPatent.create(
+      {
+        uuid: uuid.v1(),
+        userUuid,
+        currentWriteTime,
+        isVerify,
+        patentType,
+        patentName,
+        patentCode,
+        patentNation,
+      },
+      { raw: true }
+    ),
+
+  /**
+   * 查询员工填写专利信息
+   */
+  queryWritePatentList: (userUuid) =>
+    staffPatent.findAll({
+      attributes: [
+        'uuid',
+        'patentType',
+        'patentName',
+        'patentCode',
+        'patentNation',
+        'isVerify',
+        'currentWriteTime',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写专利通过uuid
+   */
+  selectStaffPatentByUuid: ({ uuid }) =>
+    staffPatent.findOne({
+      attributes: ['patentType', 'patentName', 'patentCode', 'patentNation'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询专利上次修改时间
+   */
+  selectPatentLastWriteTimeByUuid: (uuid) =>
+    staffPatent.findOne({
+      attributes: ['currentWriteTime'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 修改专利信息
+   */
+  updateStaffPatent: ({
+    uuid,
+    lastWriteTime,
+    currentWriteTime,
+    patentType,
+    patentName,
+    patentCode,
+    patentNation,
+  }) =>
+    staffPatent.update(
+      {
+        lastWriteTime,
+        currentWriteTime,
+        patentType,
+        patentName,
+        patentCode,
+        patentNation,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 删除专利
+   */
+  deletePatent: (uuid) =>
+    staffPatent.destroy({
       where: { uuid },
       raw: true,
     }),
