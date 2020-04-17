@@ -2,6 +2,7 @@ import user from '../../../db/models/t-user';
 import staffBasic from '../../../db/models/staff-basic';
 import staffProject from '../../../db/models/staff-project';
 import staffPatent from '../../../db/models/staff-patent';
+import staffCopyright from '../../../db/models/staff-copyright';
 
 import uuid from 'uuid';
 
@@ -431,6 +432,108 @@ export default {
    */
   deletePatent: (uuid) =>
     staffPatent.destroy({
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 新建一条软件著作权信息
+   */
+  insertStaffCopyright: ({
+    userUuid,
+    currentWriteTime,
+    isVerify,
+    copyrightType,
+    copyrightName,
+    copyrightCode,
+    copyrightArrange,
+  }) =>
+    staffCopyright.create(
+      {
+        uuid: uuid.v1(),
+        userUuid,
+        currentWriteTime,
+        isVerify,
+        copyrightType,
+        copyrightName,
+        copyrightCode,
+        copyrightArrange,
+      },
+      { raw: true }
+    ),
+
+  /**
+   * 查询员工填写软件著作权信息
+   */
+  queryWriteCopyrightList: (userUuid) =>
+    staffCopyright.findAll({
+      attributes: [
+        'uuid',
+        'copyrightType',
+        'copyrightName',
+        'copyrightCode',
+        'copyrightArrange',
+        'isVerify',
+        'currentWriteTime',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写软件著作权通过uuid
+   */
+  selectStaffCopyrightByUuid: ({ uuid }) =>
+    staffCopyright.findOne({
+      attributes: [
+        'copyrightType',
+        'copyrightName',
+        'copyrightCode',
+        'copyrightArrange',
+      ],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询软件著作权上次修改时间
+   */
+  selectCopyrightLastWriteTimeByUuid: (uuid) =>
+    staffCopyright.findOne({
+      attributes: ['currentWriteTime'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 修改软件著作权信息
+   */
+  updateStaffCopyright: ({
+    uuid,
+    lastWriteTime,
+    currentWriteTime,
+    copyrightType,
+    copyrightName,
+    copyrightCode,
+    copyrightArrange,
+  }) =>
+    staffCopyright.update(
+      {
+        lastWriteTime,
+        currentWriteTime,
+        copyrightType,
+        copyrightName,
+        copyrightCode,
+        copyrightArrange,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 删除软件著作权
+   */
+  deleteCopyright: (uuid) =>
+    staffCopyright.destroy({
       where: { uuid },
       raw: true,
     }),

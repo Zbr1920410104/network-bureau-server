@@ -472,4 +472,131 @@ router.del('/deletePatent', async (ctx, next) => {
   }
 });
 
+/**
+ * 新建一条软件著作权信息
+ */
+router.post('/createStaffCopyright', async (ctx, next) => {
+  try {
+    const {
+      copyrightType,
+      copyrightName,
+      copyrightCode,
+      copyrightArrange,
+    } = ctx.state.param;
+
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.insertStaffCopyright({
+      userUuid,
+      currentWriteTime: new Date(),
+      isVerify: '未核实',
+      copyrightType,
+      copyrightName,
+      copyrightCode,
+      copyrightArrange,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '软件著作权信息新增成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写软件著作权信息
+ */
+router.get('/getWriteCopyrightList', async (ctx, next) => {
+  try {
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.queryWriteCopyrightList(userUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写软件著作权信息通过uuid
+ */
+router.get('/getStaffCopyrightByUuid', async (ctx, next) => {
+  try {
+    const { staffCopyrightUuid } = ctx.state.param;
+
+    const data = await service.selectStaffCopyrightByUuid({
+      uuid: staffCopyrightUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 修改一条软件著作权信息
+ */
+router.post('/modifyStaffCopyright', async (ctx, next) => {
+  try {
+    const {
+      uuid,
+      copyrightType,
+      copyrightName,
+      copyrightCode,
+      copyrightArrange,
+    } = ctx.state.param;
+
+    const {
+      currentWriteTime,
+    } = await service.selectCopyrightLastWriteTimeByUuid(uuid);
+
+    const data = await service.updateStaffCopyright({
+      uuid,
+      lastWriteTime: currentWriteTime,
+      currentWriteTime: new Date(),
+      copyrightType,
+      copyrightName,
+      copyrightCode,
+      copyrightArrange,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '软件著作权信息修改成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 删除软件著作权
+ */
+router.del('/deleteCopyright', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    await service.deleteCopyright(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.noContent,
+      msg: '删除软件著作权成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
