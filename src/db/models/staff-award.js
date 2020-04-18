@@ -24,5 +24,6 @@ export default db.define('staff_award', {
   awardTime: Sequelize.DATE, // 获奖时间
   awardGrade: Sequelize.STRING(32), // 奖项级别
   awardDepartment: Sequelize.STRING(32), // 颁奖部门
+  awardNameList: Sequelize.STRING(32), // 获奖名单
   url: Sequelize.STRING(36) // 奖项文件url
 });

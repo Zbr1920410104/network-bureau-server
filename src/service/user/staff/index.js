@@ -3,6 +3,7 @@ import staffBasic from '../../../db/models/staff-basic';
 import staffProject from '../../../db/models/staff-project';
 import staffPatent from '../../../db/models/staff-patent';
 import staffCopyright from '../../../db/models/staff-copyright';
+import staffAward from '../../../db/models/staff-award';
 
 import uuid from 'uuid';
 
@@ -534,6 +535,120 @@ export default {
    */
   deleteCopyright: (uuid) =>
     staffCopyright.destroy({
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 新建一条奖项信息
+   */
+  insertStaffAward: ({
+    userUuid,
+    currentWriteTime,
+    isVerify,
+    awardType,
+    awardName,
+    awardTime,
+    awardGrade,
+    awardDepartment,
+    awardNameList,
+  }) =>
+    staffAward.create(
+      {
+        uuid: uuid.v1(),
+        userUuid,
+        currentWriteTime,
+        isVerify,
+        awardType,
+        awardName,
+        awardTime,
+        awardGrade,
+        awardDepartment,
+        awardNameList,
+      },
+      { raw: true }
+    ),
+
+  /**
+   * 查询员工填写奖项信息
+   */
+  queryWriteAwardList: (userUuid) =>
+    staffAward.findAll({
+      attributes: [
+        'uuid',
+        'awardType',
+        'awardName',
+        'awardTime',
+        'awardGrade',
+        'awardDepartment',
+        'isVerify',
+        'currentWriteTime',
+        'awardNameList',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写奖项通过uuid
+   */
+  selectStaffAwardByUuid: ({ uuid }) =>
+    staffAward.findOne({
+      attributes: [
+        'awardType',
+        'awardName',
+        'awardTime',
+        'awardGrade',
+        'awardDepartment',
+        'awardNameList',
+      ],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询奖项上次修改时间
+   */
+  selectAwardLastWriteTimeByUuid: (uuid) =>
+    staffAward.findOne({
+      attributes: ['currentWriteTime'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 修改奖项信息
+   */
+  updateStaffAward: ({
+    uuid,
+    lastWriteTime,
+    currentWriteTime,
+    awardType,
+    awardName,
+    awardTime,
+    awardGrade,
+    awardDepartment,
+    awardNameList,
+  }) =>
+    staffAward.update(
+      {
+        lastWriteTime,
+        currentWriteTime,
+        awardType,
+        awardName,
+        awardTime,
+        awardGrade,
+        awardDepartment,
+        awardNameList,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 删除奖项
+   */
+  deleteAward: (uuid) =>
+    staffAward.destroy({
       where: { uuid },
       raw: true,
     }),

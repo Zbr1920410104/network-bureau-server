@@ -599,4 +599,139 @@ router.del('/deleteCopyright', async (ctx, next) => {
   }
 });
 
+/**
+ * 新建一条奖项信息
+ */
+router.post('/createStaffAward', async (ctx, next) => {
+  try {
+    const {
+      awardType,
+      awardName,
+      awardTime,
+      awardGrade,
+      awardDepartment,
+      awardNameList,
+    } = ctx.state.param;
+
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.insertStaffAward({
+      userUuid,
+      currentWriteTime: new Date(),
+      isVerify: '未核实',
+      awardType,
+      awardName,
+      awardTime,
+      awardGrade,
+      awardDepartment,
+      awardNameList,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '奖项信息新增成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写奖项信息
+ */
+router.get('/getWriteAwardList', async (ctx, next) => {
+  try {
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.queryWriteAwardList(userUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写奖项信息通过uuid
+ */
+router.get('/getStaffAwardByUuid', async (ctx, next) => {
+  try {
+    const { staffAwardUuid } = ctx.state.param;
+
+    const data = await service.selectStaffAwardByUuid({
+      uuid: staffAwardUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 修改一条奖项信息
+ */
+router.post('/modifyStaffAward', async (ctx, next) => {
+  try {
+    const {
+      uuid,
+      awardType,
+      awardName,
+      awardTime,
+      awardGrade,
+      awardDepartment,
+      awardNameList,
+    } = ctx.state.param;
+
+    const { currentWriteTime } = await service.selectAwardLastWriteTimeByUuid(
+      uuid
+    );
+
+    const data = await service.updateStaffAward({
+      uuid,
+      lastWriteTime: currentWriteTime,
+      currentWriteTime: new Date(),
+      awardType,
+      awardName,
+      awardTime,
+      awardGrade,
+      awardDepartment,
+      awardNameList,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '奖项信息修改成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 删除奖项
+ */
+router.del('/deleteAward', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    await service.deleteAward(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.noContent,
+      msg: '删除奖项成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
