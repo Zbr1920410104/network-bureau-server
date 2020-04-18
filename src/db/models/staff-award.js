@@ -6,7 +6,7 @@ export default db.define('staff_award', {
     type: Sequelize.STRING(36),
     primaryKey: true,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   userUuid: Sequelize.STRING(36), // 员工uuid
   verifyRemarks: Sequelize.TEXT, // 统计员回退备注
@@ -25,5 +25,5 @@ export default db.define('staff_award', {
   awardGrade: Sequelize.STRING(32), // 奖项级别
   awardDepartment: Sequelize.STRING(32), // 颁奖部门
   awardNameList: Sequelize.STRING(32), // 获奖名单
-  url: Sequelize.STRING(36) // 奖项文件url
+  url: Sequelize.TEXT, // 奖项文件url
 });

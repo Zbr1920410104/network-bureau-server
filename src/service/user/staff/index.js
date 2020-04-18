@@ -4,6 +4,7 @@ import staffProject from '../../../db/models/staff-project';
 import staffPatent from '../../../db/models/staff-patent';
 import staffCopyright from '../../../db/models/staff-copyright';
 import staffAward from '../../../db/models/staff-award';
+import staffThesis from '../../../db/models/staff-thesis';
 
 import uuid from 'uuid';
 
@@ -164,42 +165,46 @@ export default {
    * 查询员工填写信息
    */
   getStaffWriteInfo: async (userUuid) => {
-    let lastWriteList = await user.findOne({
-      attributes: ['name', 'department', 'lastWriteTime'],
-      where: { uuid: userUuid },
-      raw: true,
-    });
+    try {
+      let lastWriteList = await user.findOne({
+        attributes: ['name', 'department', 'lastWriteTime'],
+        where: { uuid: userUuid },
+        raw: true,
+      });
 
-    if ('lastWriteTime' in lastWriteList) {
-      lastWriteList.id = 2;
-      lastWriteList.writeTime = lastWriteList.lastWriteTime;
-    }
-
-    let currentWriteList = await user.findOne({
-      attributes: [
-        'name',
-        'department',
-        'currentWriteTime',
-        'verifyStatus',
-        'verifyTime',
-      ],
-      where: { uuid: userUuid },
-      raw: true,
-    });
-
-    if ('currentWriteTime' in currentWriteList) {
-      currentWriteList.id = 1;
-      currentWriteList.writeTime = currentWriteList.currentWriteTime;
-      if (!currentWriteList.verifyStatus) {
-        currentWriteList.verifyStatus = '未填写完毕';
+      if ('lastWriteTime' in lastWriteList) {
+        lastWriteList.id = 2;
+        lastWriteList.writeTime = lastWriteList.lastWriteTime;
       }
-    }
 
-    if ('lastWriteTime' in lastWriteList) {
-      return [currentWriteList, lastWriteList];
-    } else if ('currentWriteTime' in currentWriteList) {
-      return [currentWriteList];
-    } else return [];
+      let currentWriteList = await user.findOne({
+        attributes: [
+          'name',
+          'department',
+          'currentWriteTime',
+          'verifyStatus',
+          'verifyTime',
+        ],
+        where: { uuid: userUuid },
+        raw: true,
+      });
+
+      if ('currentWriteTime' in currentWriteList) {
+        currentWriteList.id = 1;
+        currentWriteList.writeTime = currentWriteList.currentWriteTime;
+        if (!currentWriteList.verifyStatus) {
+          currentWriteList.verifyStatus = '未填写完毕';
+        }
+      }
+
+      if ('lastWriteTime' in lastWriteList) {
+        return [currentWriteList, lastWriteList];
+      } else if ('currentWriteTime' in currentWriteList) {
+        return [currentWriteList];
+      } else return [];
+    } catch (error) {
+      throw error;
+    }
   },
 
   /**
@@ -652,4 +657,248 @@ export default {
       where: { uuid },
       raw: true,
     }),
+
+  /**
+   * 新建一条论文/专著信息
+   */
+  insertStaffThesis: ({
+    userUuid,
+    currentWriteTime,
+    isVerify,
+    thesisTitle,
+    thesisType,
+    thesisJournal,
+    thesisTime,
+    thesisGrade,
+    thesisCode,
+    thesisFirstAuthor,
+    thesisAuthorSequence,
+  }) =>
+    staffThesis.create(
+      {
+        uuid: uuid.v1(),
+        userUuid,
+        currentWriteTime,
+        isVerify,
+        thesisTitle,
+        thesisType,
+        thesisJournal,
+        thesisTime,
+        thesisGrade,
+        thesisCode,
+        thesisFirstAuthor,
+        thesisAuthorSequence,
+      },
+      { raw: true }
+    ),
+
+  /**
+   * 查询员工填写论文/专著信息
+   */
+  queryWriteThesisList: (userUuid) =>
+    staffThesis.findAll({
+      attributes: [
+        'uuid',
+        'thesisTitle',
+        'thesisType',
+        'thesisJournal',
+        'thesisTime',
+        'thesisGrade',
+        'thesisCode',
+        'thesisFirstAuthor',
+        'thesisAuthorSequence',
+        'isVerify',
+        'currentWriteTime',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写论文/专著通过uuid
+   */
+  selectStaffThesisByUuid: ({ uuid }) =>
+    staffThesis.findOne({
+      attributes: [
+        'thesisTitle',
+        'thesisType',
+        'thesisJournal',
+        'thesisTime',
+        'thesisGrade',
+        'thesisCode',
+        'thesisFirstAuthor',
+        'thesisAuthorSequence',
+      ],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询论文/专著上次修改时间
+   */
+  selectThesisLastWriteTimeByUuid: (uuid) =>
+    staffThesis.findOne({
+      attributes: ['currentWriteTime'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 修改论文/专著信息
+   */
+  updateStaffThesis: ({
+    uuid,
+    lastWriteTime,
+    currentWriteTime,
+    thesisTitle,
+    thesisType,
+    thesisJournal,
+    thesisTime,
+    thesisGrade,
+    thesisCode,
+    thesisFirstAuthor,
+    thesisAuthorSequence,
+  }) =>
+    staffThesis.update(
+      {
+        lastWriteTime,
+        currentWriteTime,
+        thesisTitle,
+        thesisType,
+        thesisJournal,
+        thesisTime,
+        thesisGrade,
+        thesisCode,
+        thesisFirstAuthor,
+        thesisAuthorSequence,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 删除论文/专著
+   */
+  deleteThesis: (uuid) =>
+    staffThesis.destroy({
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 获取奖项的信息
+   */
+  selectUploadAward: (uuid) =>
+    staffAward.findOne({
+      attributes: ['url'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 保存奖项的信息
+   */
+  updateUploadAward: async ({ uuid, awardUrl }) => {
+    try {
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = awardUrl.split('/');
+
+      if (filePosition === 'temp') {
+        const tempUrl = awardUrl;
+        productionUrl = awardUrl.replace('temp', 'production');
+
+        const award = await staffAward.findOne({
+          attributes: ['url'],
+          where: { uuid },
+          raw: true,
+        });
+
+        if (award?.url) {
+          await client.delete(award.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = awardUrl;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      const { currentWriteTime } = await staffAward.findOne({
+        attributes: ['currentWriteTime'],
+        where: { uuid },
+        raw: true,
+      });
+
+      return await staffAward.update(
+        {
+          lastWriteTime: currentWriteTime,
+          currentWriteTime: new Date(),
+          url: productionUrl,
+        },
+        { where: { uuid }, raw: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
+   * 获取论文/专著的信息
+   */
+  selectUploadThesis: (uuid) =>
+    staffThesis.findOne({
+      attributes: ['url'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 保存论文/专著的信息
+   */
+  updateUploadThesis: async ({ uuid, thesisUrl }) => {
+    try {
+      let productionUrl = '';
+      // 将temp的文件copy到production中
+      const [filePosition] = thesisUrl.split('/');
+
+      if (filePosition === 'temp') {
+        const tempUrl = thesisUrl;
+        productionUrl = thesisUrl.replace('temp', 'production');
+
+        const thesis = await staffThesis.findOne({
+          attributes: ['url'],
+          where: { uuid },
+          raw: true,
+        });
+
+        if (thesis?.url) {
+          await client.delete(thesis.url);
+        }
+
+        await client.copy(productionUrl, tempUrl);
+      } else if (filePosition === 'production') {
+        productionUrl = thesisUrl;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      const { currentWriteTime } = await staffThesis.findOne({
+        attributes: ['currentWriteTime'],
+        where: { uuid },
+        raw: true,
+      });
+
+      return await staffThesis.update(
+        {
+          lastWriteTime: currentWriteTime,
+          currentWriteTime: new Date(),
+          url: productionUrl,
+        },
+        { where: { uuid }, raw: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  },
 };

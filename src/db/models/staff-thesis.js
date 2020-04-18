@@ -6,7 +6,7 @@ export default db.define('staff_thesis', {
     type: Sequelize.STRING(36),
     primaryKey: true,
     allowNull: false,
-    unique: true
+    unique: true,
   },
   userUuid: Sequelize.STRING(36), // 员工uuid
   verifyRemarks: Sequelize.TEXT, // 统计员回退备注
@@ -27,5 +27,5 @@ export default db.define('staff_thesis', {
   thesisCode: Sequelize.STRING(32), // 论文索引号
   thesisFirstAuthor: Sequelize.STRING(32), // 第一作者
   thesisAuthorSequence: Sequelize.STRING(32), // 提交人作者次序
-  url: Sequelize.STRING(36) // 论文文件url
+  url: Sequelize.TEXT, // 论文文件url
 });

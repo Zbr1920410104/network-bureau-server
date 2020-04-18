@@ -734,4 +734,227 @@ router.del('/deleteAward', async (ctx, next) => {
   }
 });
 
+/**
+ * 新建一条论文/专著信息
+ */
+router.post('/createStaffThesis', async (ctx, next) => {
+  try {
+    const {
+      thesisTitle,
+      thesisType,
+      thesisJournal,
+      thesisTime,
+      thesisGrade,
+      thesisCode,
+      thesisFirstAuthor,
+      thesisAuthorSequence,
+    } = ctx.state.param;
+
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.insertStaffThesis({
+      userUuid,
+      currentWriteTime: new Date(),
+      isVerify: '未核实',
+      thesisTitle,
+      thesisType,
+      thesisJournal,
+      thesisTime,
+      thesisGrade,
+      thesisCode,
+      thesisFirstAuthor,
+      thesisAuthorSequence,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '论文/专著信息新增成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写论文/专著信息
+ */
+router.get('/getWriteThesisList', async (ctx, next) => {
+  try {
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.queryWriteThesisList(userUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写论文/专著信息通过uuid
+ */
+router.get('/getStaffThesisByUuid', async (ctx, next) => {
+  try {
+    const { staffThesisUuid } = ctx.state.param;
+
+    const data = await service.selectStaffThesisByUuid({
+      uuid: staffThesisUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 修改一条论文/专著信息
+ */
+router.post('/modifyStaffThesis', async (ctx, next) => {
+  try {
+    const {
+      uuid,
+      thesisTitle,
+      thesisType,
+      thesisJournal,
+      thesisTime,
+      thesisGrade,
+      thesisCode,
+      thesisFirstAuthor,
+      thesisAuthorSequence,
+    } = ctx.state.param;
+
+    const { currentWriteTime } = await service.selectThesisLastWriteTimeByUuid(
+      uuid
+    );
+
+    const data = await service.updateStaffThesis({
+      uuid,
+      lastWriteTime: currentWriteTime,
+      currentWriteTime: new Date(),
+      thesisTitle,
+      thesisType,
+      thesisJournal,
+      thesisTime,
+      thesisGrade,
+      thesisCode,
+      thesisFirstAuthor,
+      thesisAuthorSequence,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '论文/专著信息修改成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 删除论文/专著
+ */
+router.del('/deleteThesis', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    await service.deleteThesis(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.noContent,
+      msg: '删除论文/专著成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 获取奖项的附件信息
+ */
+router.get('/selectUploadAward', async (ctx) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.selectUploadAward(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存奖项的附件信息
+ */
+router.post('/saveUploadAward', async (ctx) => {
+  try {
+    const { uuid, awardUrl } = ctx.state.param;
+
+    const data = await service.updateUploadAward({
+      uuid,
+      awardUrl,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '保存奖项附件成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 获取论文/专著的附件信息
+ */
+router.get('/selectUploadThesis', async (ctx) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.selectUploadThesis(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存论文/专著的附件信息
+ */
+router.post('/saveUploadThesis', async (ctx) => {
+  try {
+    const { uuid, thesisUrl } = ctx.state.param;
+
+    const data = await service.updateUploadThesis({
+      uuid,
+      thesisUrl,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '保存论文/专著附件成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

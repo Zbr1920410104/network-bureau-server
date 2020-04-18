@@ -13,46 +13,12 @@ const router = new Router({
   prefix: '/file'
 });
 
-router.post('/uploadFile', upload.single('file'), async (ctx, next) => {
+router.post('/uploadJpgFile', upload.single('file'), async (ctx, next) => {
   try {
     const param = ctx.request.file,
       folderName = ctx.request.body.folderName;
 
-    const data = await service.uploadFile(param, folderName);
-
-    ctx.body = new Res({
-      data,
-      status: RESPONSE_CODE.success,
-      msg: '文件上传成功'
-    });
-  } catch (error) {
-    throw error;
-  }
-});
-
-router.post('/uploadWordFile', upload.single('file'), async (ctx, next) => {
-  try {
-    const param = ctx.request.file,
-      folderName = ctx.request.body.folderName;
-
-    const data = await service.uploadWordFile(param, folderName);
-
-    ctx.body = new Res({
-      data,
-      status: RESPONSE_CODE.success,
-      msg: '文件上传成功'
-    });
-  } catch (error) {
-    throw error;
-  }
-});
-
-router.post('/uploadPdfFile', upload.single('file'), async (ctx, next) => {
-  try {
-    const param = ctx.request.file,
-      folderName = ctx.request.body.folderName;
-
-    const data = await service.uploadPdfFile(param, folderName);
+    const data = await service.uploadJpgFile(param, folderName);
 
     ctx.body = new Res({
       data,
