@@ -56,6 +56,10 @@ router.post('/savePassword', async (ctx, next) => {
 
     const uuid = ctx.state.user.uuid;
 
+    if (newPassword === '123456') {
+      throw error;
+    }
+
     const data = await service.updateUserPassword({
       uuid,
       oldPassword: md5(oldPassword),
@@ -72,7 +76,7 @@ router.post('/savePassword', async (ctx, next) => {
       throw new CustomError('原始密码输入错误');
     }
   } catch (error) {
-    throw new CustomError('密码修改失败');
+    throw new CustomError('新密码不可与初始密码相同');
   }
 });
 
