@@ -901,4 +901,32 @@ export default {
       throw error;
     }
   },
+
+  /**
+   * 查询普通员工完成填写上次修改时间
+   */
+  selectStaffLastWriteTimeByUuid: (uuid) =>
+    user.findOne({
+      attributes: ['currentWriteTime'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 修改论文/专著信息
+   */
+  updateStaffWriteStatus: ({
+    uuid,
+    verifyStatus,
+    lastWriteTime,
+    currentWriteTime,
+  }) =>
+    user.update(
+      {
+        verifyStatus,
+        lastWriteTime,
+        currentWriteTime,
+      },
+      { where: { uuid }, raw: true }
+    ),
 };

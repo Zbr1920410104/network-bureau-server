@@ -67,6 +67,8 @@ export default {
 
       if (!userInfo || userInfo.password !== password) {
         throw new CustomError('账号或密码错误');
+      } else if (userInfo.isCancel === '已注销') {
+        throw new CustomError('账号已注销');
       }
 
       return {

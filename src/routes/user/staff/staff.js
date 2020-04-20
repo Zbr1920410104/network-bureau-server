@@ -957,4 +957,32 @@ router.post('/saveUploadThesis', async (ctx) => {
   }
 });
 
+/**
+ * 普通员工完成填写
+ */
+router.post('/finishStaffWrite', async (ctx) => {
+  try {
+    const uuid = ctx.state.user.uuid;
+
+    const { currentWriteTime } = await service.selectStaffLastWriteTimeByUuid(
+      uuid
+    );
+
+    const data = await service.updateStaffWriteStatus({
+      uuid,
+      verifyStatus:'待核实',
+      lastWriteTime: currentWriteTime,
+      currentWriteTime: new Date(),
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '修改填写状态成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
