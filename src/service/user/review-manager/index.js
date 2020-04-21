@@ -30,6 +30,7 @@ export default {
         'currentWriteTime',
         'department',
         'totalScore',
+        'verifyStatus',
       ],
       where: { role: 15, isCancel: '未注销' },
       raw: true,
@@ -77,6 +78,7 @@ export default {
         'reviewTime',
         'currentWriteTime',
         'department',
+        'verifyStatus',
       ],
       where: {
         name: {
@@ -101,6 +103,7 @@ export default {
           'totalScore',
           'currentWriteTime',
           'department',
+          'verifyStatus',
         ],
         where: { totalScore: { [Op.ne]: null }, role: 15, isCancel: '未注销' },
         raw: true,
@@ -114,6 +117,7 @@ export default {
           'totalScore',
           'currentWriteTime',
           'department',
+          'verifyStatus',
         ],
         where: { totalScore: null, role: 15, isCancel: '未注销' },
         raw: true,

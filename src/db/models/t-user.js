@@ -17,7 +17,7 @@ export default db.define('t_user', {
   department: Sequelize.STRING(32), // 科室
   departmentUuid: Sequelize.STRING(36), // 科室uuid
   // 以下字段仅供普通员工使用
-  verifyStatus: Sequelize.STRING(32), // 核实状态(未填写完毕/未核实/核实不通过/核实通过)
+  verifyStatus: Sequelize.STRING(32), // 核实状态(未填写完毕/待核实/核实不通过/核实通过)
   verifyTime: Sequelize.DATE, // 最新核实时间
   reviewTime: Sequelize.DATE, // 评审时间
   totalScore: Sequelize.FLOAT(5, 2), // 总得分
