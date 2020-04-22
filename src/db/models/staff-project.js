@@ -9,14 +9,17 @@ export default db.define('staff_project', {
     unique: true,
   },
   userUuid: Sequelize.STRING(36), // 员工uuid
+  // 统计员核实
   verifyRemarks: Sequelize.TEXT, // 统计员回退备注
   isVerify: Sequelize.STRING(32), // 是否通过核实
   verifyUserUuid: Sequelize.STRING(36), // 对其进行核实的统计员的uuid
   verifyTime: Sequelize.DATE, // 核实时间
+  // 评审员打分
   reviewRemarks: Sequelize.TEXT, // 评审员回退备注
   score: Sequelize.STRING(32), // 得分
   reviewUserUuid: Sequelize.STRING(36), // 对其进行评分的评审员的uuid
   reviewTime: Sequelize.DATE, // 评审时间
+  // 填写时间
   lastWriteTime: Sequelize.DATE, // 上次填写时间
   currentWriteTime: Sequelize.DATE, // 最新填写时间
   // 填写内容

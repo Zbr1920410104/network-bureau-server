@@ -1,5 +1,10 @@
 import user from '../../../db/models/t-user';
 import staffBasic from '../../../db/models/staff-basic';
+import staffProject from '../../../db/models/staff-project';
+import staffPatent from '../../../db/models/staff-patent';
+import staffCopyright from '../../../db/models/staff-copyright';
+import staffAward from '../../../db/models/staff-award';
+import staffThesis from '../../../db/models/staff-thesis';
 
 import Sequelize from 'sequelize';
 const Op = Sequelize.Op;
@@ -124,4 +129,116 @@ export default {
       });
     }
   },
+
+  /**
+   * 查询员工填写项目信息
+   */
+  queryReviewProjectList: ({ userUuid }) =>
+    staffProject.findAll({
+      attributes: [
+        'uuid',
+        'name',
+        'type',
+        'startTime',
+        'endTime',
+        'code',
+        'resource',
+        'funds',
+        'controller',
+        'participant',
+        'content',
+        'isVerify',
+        'verifyTime',
+        'score',
+        'reviewTime',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写专利信息
+   */
+  queryReviewPatentList: ({ userUuid }) =>
+    staffPatent.findAll({
+      attributes: [
+        'uuid',
+        'patentType',
+        'patentName',
+        'patentCode',
+        'patentNation',
+        'isVerify',
+        'verifyTime',
+        'score',
+        'reviewTime',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写软件著作权信息
+   */
+  queryReviewCopyrightList: ({ userUuid }) =>
+    staffCopyright.findAll({
+      attributes: [
+        'uuid',
+        'copyrightType',
+        'copyrightName',
+        'copyrightCode',
+        'copyrightArrange',
+        'isVerify',
+        'verifyTime',
+        'score',
+        'reviewTime',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写奖项信息
+   */
+  queryReviewAwardList: ({ userUuid }) =>
+    staffAward.findAll({
+      attributes: [
+        'uuid',
+        'awardType',
+        'awardName',
+        'awardTime',
+        'awardGrade',
+        'awardDepartment',
+        'isVerify',
+        'verifyTime',
+        'awardNameList',
+        'score',
+        'reviewTime',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写论文/专著信息
+   */
+  queryReviewThesisList: ({ userUuid }) =>
+    staffThesis.findAll({
+      attributes: [
+        'uuid',
+        'thesisTitle',
+        'thesisType',
+        'thesisJournal',
+        'thesisTime',
+        'thesisGrade',
+        'thesisCode',
+        'thesisFirstAuthor',
+        'thesisAuthorSequence',
+        'isVerify',
+        'verifyTime',
+        'score',
+        'reviewTime',
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
 };

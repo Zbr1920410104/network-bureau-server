@@ -62,4 +62,100 @@ router.get('/getReviewManagerBasic', async (ctx, next) => {
   }
 });
 
+/**
+ * 评审员查询员工填写项目信息
+ */
+router.get('/getReviewProjectList', async (ctx, next) => {
+  try {
+    const { staffUuid } = ctx.state.param;
+
+    const data = await service.queryReviewProjectList({ userUuid: staffUuid });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 评审员查询员工填写专利信息
+ */
+router.get('/getReviewPatentList', async (ctx, next) => {
+  try {
+    const { staffUuid } = ctx.state.param;
+
+    const data = await service.queryReviewPatentList({ userUuid: staffUuid });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 评审员查询员工填写软件著作权信息
+ */
+router.get('/getReviewCopyrightList', async (ctx, next) => {
+  try {
+    const { staffUuid } = ctx.state.param;
+
+    const data = await service.queryReviewCopyrightList({
+      userUuid: staffUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 评审员查询员工填写奖项信息
+ */
+router.get('/getReviewAwardList', async (ctx, next) => {
+  try {
+    const { staffUuid } = ctx.state.param;
+
+    const data = await service.queryReviewAwardList({
+      userUuid: staffUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 评审员查询员工填写论文/专著信息
+ */
+router.get('/getReviewThesisList', async (ctx, next) => {
+  try {
+    const { staffUuid } = ctx.state.param;
+
+    const data = await service.queryReviewThesisList({
+      userUuid: staffUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
