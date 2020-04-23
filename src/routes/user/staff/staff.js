@@ -59,6 +59,7 @@ router.post('/saveStaffBasic', async (ctx, next) => {
     const data = await service.insertStaffBasic({
       userUuid,
       currentWriteTime: new Date(),
+      isVerify: '未核实',
       name,
       idNumber,
       sex,

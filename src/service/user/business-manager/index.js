@@ -47,6 +47,8 @@ export default {
         'researchDirection',
         'studyExperience',
         'workExperience',
+        'isVerify',
+        'verifyRemarks',
       ],
       where: { userUuid },
       raw: true,
@@ -128,7 +130,7 @@ export default {
         'content',
         'isVerify',
         'currentWriteTime',
-        'reviewRemarks',
+        'verifyRemarks',
         'verifyTime',
       ],
       where: { userUuid },
@@ -148,7 +150,7 @@ export default {
         'patentNation',
         'isVerify',
         'currentWriteTime',
-        'reviewRemarks',
+        'verifyRemarks',
         'verifyTime',
       ],
       where: { userUuid },
@@ -168,7 +170,7 @@ export default {
         'copyrightArrange',
         'isVerify',
         'currentWriteTime',
-        'reviewRemarks',
+        'verifyRemarks',
         'verifyTime',
       ],
       where: { userUuid },
@@ -190,7 +192,7 @@ export default {
         'isVerify',
         'currentWriteTime',
         'awardNameList',
-        'reviewRemarks',
+        'verifyRemarks',
         'verifyTime',
         'url',
       ],
@@ -215,11 +217,83 @@ export default {
         'thesisAuthorSequence',
         'isVerify',
         'currentWriteTime',
-        'reviewRemarks',
+        'verifyRemarks',
         'verifyTime',
         'url',
       ],
       where: { userUuid },
       raw: true,
     }),
+
+  /**
+   * 统计员设置员工基本信息通过状态
+   */
+  updateVerifyBasicStatus: ({ userUuid, verifyRemarks, isVerify }) =>
+    staffBasic.update(
+      {
+        verifyRemarks,
+        isVerify,
+      },
+      { where: { userUuid }, raw: true }
+    ),
+
+  /**
+   * 统计员设置员工项目信息通过状态
+   */
+  updateVerifyProjectStatus: ({ uuid, verifyRemarks, isVerify }) =>
+    staffProject.update(
+      {
+        verifyRemarks,
+        isVerify,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 统计员设置员工专利信息通过状态
+   */
+  updateVerifyPatentStatus: ({ uuid, verifyRemarks, isVerify }) =>
+    staffPatent.update(
+      {
+        verifyRemarks,
+        isVerify,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 统计员设置员工软件著作权信息通过状态
+   */
+  updateVerifyCopyrightStatus: ({ uuid, verifyRemarks, isVerify }) =>
+    staffCopyright.update(
+      {
+        verifyRemarks,
+        isVerify,
+      },
+      { where: { uuid }, raw: true }
+    ),
+  /**
+   * 统计员设置员工获奖信息通过状态
+   */
+  updateVerifyAwardStatus: ({ uuid, verifyRemarks, isVerify }) =>
+    staffAward.update(
+      {
+        verifyRemarks,
+        isVerify,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 统计员设置员工论文/专著信息通过状态
+   */
+  updateVerifyThesisStatus: ({ uuid, verifyRemarks, isVerify }) =>
+    staffThesis.update(
+      {
+        verifyRemarks,
+        isVerify,
+      },
+      { where: { uuid }, raw: true }
+    ),
+  
 };

@@ -158,4 +158,268 @@ router.get('/getVerifyThesisList', async (ctx, next) => {
   }
 });
 
+/**
+ * 统计员设置员工基本信息通过状态
+ */
+router.post('/setVerifyBasicSuccessStatus', async (ctx, next) => {
+  try {
+    const { userUuid } = ctx.state.param;
+
+    const data = await service.updateVerifyBasicStatus({
+      userUuid,
+      verifyRemarks: '',
+      isVerify: '核实通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工基本信息不通过状态
+ */
+router.post('/setVerifyBasicFailStatus', async (ctx, next) => {
+  try {
+    const { userUuid, verifyRemarks } = ctx.state.param;
+
+    const data = await service.updateVerifyBasicStatus({
+      userUuid,
+      verifyRemarks,
+      isVerify: '核实不通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工项目信息通过状态
+ */
+router.post('/setVerifyProjectSuccessStatus', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.updateVerifyProjectStatus({
+      uuid,
+      verifyRemarks: '',
+      isVerify: '核实通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工项目信息不通过状态
+ */
+router.post('/setVerifyProjectFailStatus', async (ctx, next) => {
+  try {
+    const { uuid, verifyRemarks } = ctx.state.param;
+
+    const data = await service.updateVerifyProjectStatus({
+      uuid,
+      verifyRemarks,
+      isVerify: '核实不通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工专利信息通过状态
+ */
+router.post('/setVerifyPatentSuccessStatus', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.updateVerifyPatentStatus({
+      uuid,
+      verifyRemarks: '',
+      isVerify: '核实通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工专利信息不通过状态
+ */
+router.post('/setVerifyPatentFailStatus', async (ctx, next) => {
+  try {
+    const { uuid, verifyRemarks } = ctx.state.param;
+
+    const data = await service.updateVerifyPatentStatus({
+      uuid,
+      verifyRemarks,
+      isVerify: '核实不通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工软件著作权信息通过状态
+ */
+router.post('/setVerifyCopyrightSuccessStatus', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.updateVerifyCopyrightStatus({
+      uuid,
+      verifyRemarks: '',
+      isVerify: '核实通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工软件著作权信息不通过状态
+ */
+router.post('/setVerifyCopyrightFailStatus', async (ctx, next) => {
+  try {
+    const { uuid, verifyRemarks } = ctx.state.param;
+
+    const data = await service.updateVerifyCopyrightStatus({
+      uuid,
+      verifyRemarks,
+      isVerify: '核实不通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工获奖信息通过状态
+ */
+router.post('/setVerifyAwardSuccessStatus', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.updateVerifyAwardStatus({
+      uuid,
+      verifyRemarks: '',
+      isVerify: '核实通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工获奖信息不通过状态
+ */
+router.post('/setVerifyAwardFailStatus', async (ctx, next) => {
+  try {
+    const { uuid, verifyRemarks } = ctx.state.param;
+
+    const data = await service.updateVerifyAwardStatus({
+      uuid,
+      verifyRemarks,
+      isVerify: '核实不通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工论文/专著信息通过状态
+ */
+router.post('/setVerifyThesisSuccessStatus', async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.updateVerifyThesisStatus({
+      uuid,
+      verifyRemarks: '',
+      isVerify: '核实通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工论文/专著信息不通过状态
+ */
+router.post('/setVerifyThesisFailStatus', async (ctx, next) => {
+  try {
+    const { uuid, verifyRemarks } = ctx.state.param;
+
+    const data = await service.updateVerifyThesisStatus({
+      uuid,
+      verifyRemarks,
+      isVerify: '核实不通过',
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
