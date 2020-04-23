@@ -913,11 +913,12 @@ export default {
     }),
 
   /**
-   * 修改论文/专著信息
+   * 完成填写
    */
   updateStaffWriteStatus: ({
     uuid,
     verifyStatus,
+    verifyTime,
     lastWriteTime,
     currentWriteTime,
   }) =>
@@ -926,6 +927,7 @@ export default {
         verifyStatus,
         lastWriteTime,
         currentWriteTime,
+        verifyTime,
       },
       { where: { uuid }, raw: true }
     ),

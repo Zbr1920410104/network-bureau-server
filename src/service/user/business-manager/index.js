@@ -6,6 +6,8 @@ import staffAward from '../../../db/models/staff-award';
 import staffThesis from '../../../db/models/staff-thesis';
 import user from '../../../db/models/t-user';
 
+import { db } from '../../../db/db-connect';
+
 // uuid
 import uuid from 'uuid';
 
@@ -295,5 +297,137 @@ export default {
       },
       { where: { uuid }, raw: true }
     ),
-  
+
+  /**
+   * 查询各项审核状态通过uuid
+   */
+  queryVerifyStatusListByStaffUuid: async ({ userUuid }) => {
+    try {
+      const [
+        basicVerifyStatus,
+        projectVerifyStatus,
+        patentVerifyStatus,
+        copyrightVerifyStatus,
+        awardVerifyStatus,
+        thesisVerifyStatus,
+      ] = await Promise.all([
+        staffBasic.findOne({
+          attributes: ['isVerify'],
+          where: { userUuid },
+          raw: true,
+        }),
+        staffProject.findAll({
+          attributes: ['isVerify'],
+          where: { userUuid },
+          raw: true,
+        }),
+        staffPatent.findAll({
+          attributes: ['isVerify'],
+          where: { userUuid },
+          raw: true,
+        }),
+        staffCopyright.findAll({
+          attributes: ['isVerify'],
+          where: { userUuid },
+          raw: true,
+        }),
+        staffAward.findAll({
+          attributes: ['isVerify'],
+          where: { userUuid },
+          raw: true,
+        }),
+        staffThesis.findAll({
+          attributes: ['isVerify'],
+          where: { userUuid },
+          raw: true,
+        }),
+      ]);
+
+      const projectVerifyStatusList = projectVerifyStatus?.map(
+        (item) => item.isVerify
+      );
+      const patentVerifyStatusList = patentVerifyStatus?.map(
+        (item) => item.isVerify
+      );
+      const copyrightVerifyStatusList = copyrightVerifyStatus?.map(
+        (item) => item.isVerify
+      );
+      const awardVerifyStatusList = awardVerifyStatus?.map(
+        (item) => item.isVerify
+      );
+      const thesisVerifyStatusList = thesisVerifyStatus?.map(
+        (item) => item.isVerify
+      );
+      const basicVerifyStatusList = basicVerifyStatus?.isVerify;
+
+      let projectVerifyStatusFinished = true,
+        patentVerifyStatusFinished = true,
+        copyrightVerifyStatusFinished = true,
+        awardVerifyStatusFinished = true,
+        thesisVerifyStatusFinished = true,
+        basicVerifyStatusFinished = true;
+
+      for (let projectVerifyItem of projectVerifyStatusList) {
+        if (projectVerifyItem !== '核实通过') {
+          projectVerifyStatusFinished = false;
+          break;
+        }
+      }
+
+      for (let patentVerifyItem of patentVerifyStatusList) {
+        if (patentVerifyItem !== '核实通过') {
+          patentVerifyStatusFinished = false;
+          break;
+        }
+      }
+
+      for (let copyrightVerifyItem of copyrightVerifyStatusList) {
+        if (copyrightVerifyItem !== '核实通过') {
+          copyrightVerifyStatusFinished = false;
+          break;
+        }
+      }
+
+      for (let awardVerifyItem of awardVerifyStatusList) {
+        if (awardVerifyItem !== '核实通过') {
+          awardVerifyStatusFinished = false;
+          break;
+        }
+      }
+
+      for (let thesisVerifyItem of thesisVerifyStatusList) {
+        if (thesisVerifyItem !== '核实通过') {
+          thesisVerifyStatusFinished = false;
+          break;
+        }
+      }
+
+      if (basicVerifyStatusList !== '核实通过') {
+        basicVerifyStatusFinished = false;
+      }
+
+      if (
+        !(
+          projectVerifyStatusFinished &&
+          patentVerifyStatusFinished &&
+          copyrightVerifyStatusFinished &&
+          awardVerifyStatusFinished &&
+          thesisVerifyStatusFinished &&
+          basicVerifyStatusFinished
+        )
+      ) {
+        throw new CustomError('请确认全部审核通过后再点击按钮');
+      }
+
+      return await user.update(
+        {
+          verifyStatus: '核实通过',
+          verifyTime: new Date(),
+        },
+        { where: { uuid: userUuid }, raw: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  },
 };

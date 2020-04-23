@@ -4,6 +4,9 @@ import Router from 'koa-router';
 import Res from '../../../util/response';
 import { RESPONSE_CODE } from '../../../constants/domain-constants';
 
+// 工具
+import CustomError from '../../../util/custom-error';
+
 // service
 import service from '../../../service';
 
@@ -419,6 +422,26 @@ router.post('/setVerifyThesisFailStatus', async (ctx, next) => {
     });
   } catch (error) {
     throw error;
+  }
+});
+
+/**
+ * 完成审核
+ */
+router.post('/finishBusinessManagerVerify', async (ctx) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    await service.queryVerifyStatusListByStaffUuid({
+      userUuid: uuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      msg: '审核通过状态设置成功',
+    });
+  } catch (error) {
+    throw new CustomError('审核通过状态设置失败');
   }
 });
 
