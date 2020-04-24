@@ -16,7 +16,7 @@ export default db.define('staff_project', {
   verifyTime: Sequelize.DATE, // 核实时间
   // 评审员打分
   reviewRemarks: Sequelize.TEXT, // 评审员回退备注
-  score: Sequelize.STRING(32), // 得分
+  score: Sequelize.FLOAT(5, 2), // 得分
   reviewUserUuid: Sequelize.STRING(36), // 对其进行评分的评审员的uuid
   reviewTime: Sequelize.DATE, // 评审时间
   // 填写时间

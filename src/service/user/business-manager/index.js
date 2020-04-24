@@ -230,11 +230,19 @@ export default {
   /**
    * 统计员设置员工基本信息通过状态
    */
-  updateVerifyBasicStatus: ({ userUuid, verifyRemarks, isVerify }) =>
+  updateVerifyBasicStatus: ({
+    userUuid,
+    verifyRemarks,
+    isVerify,
+    verifyUserUuid,
+    verifyTime,
+  }) =>
     staffBasic.update(
       {
         verifyRemarks,
         isVerify,
+        verifyUserUuid,
+        verifyTime,
       },
       { where: { userUuid }, raw: true }
     ),
@@ -242,11 +250,19 @@ export default {
   /**
    * 统计员设置员工项目信息通过状态
    */
-  updateVerifyProjectStatus: ({ uuid, verifyRemarks, isVerify }) =>
+  updateVerifyProjectStatus: ({
+    uuid,
+    verifyRemarks,
+    isVerify,
+    verifyUserUuid,
+    verifyTime,
+  }) =>
     staffProject.update(
       {
         verifyRemarks,
         isVerify,
+        verifyUserUuid,
+        verifyTime,
       },
       { where: { uuid }, raw: true }
     ),
@@ -254,11 +270,19 @@ export default {
   /**
    * 统计员设置员工专利信息通过状态
    */
-  updateVerifyPatentStatus: ({ uuid, verifyRemarks, isVerify }) =>
+  updateVerifyPatentStatus: ({
+    uuid,
+    verifyRemarks,
+    isVerify,
+    verifyUserUuid,
+    verifyTime,
+  }) =>
     staffPatent.update(
       {
         verifyRemarks,
         isVerify,
+        verifyUserUuid,
+        verifyTime,
       },
       { where: { uuid }, raw: true }
     ),
@@ -266,22 +290,38 @@ export default {
   /**
    * 统计员设置员工软件著作权信息通过状态
    */
-  updateVerifyCopyrightStatus: ({ uuid, verifyRemarks, isVerify }) =>
+  updateVerifyCopyrightStatus: ({
+    uuid,
+    verifyRemarks,
+    isVerify,
+    verifyUserUuid,
+    verifyTime,
+  }) =>
     staffCopyright.update(
       {
         verifyRemarks,
         isVerify,
+        verifyUserUuid,
+        verifyTime,
       },
       { where: { uuid }, raw: true }
     ),
   /**
    * 统计员设置员工获奖信息通过状态
    */
-  updateVerifyAwardStatus: ({ uuid, verifyRemarks, isVerify }) =>
+  updateVerifyAwardStatus: ({
+    uuid,
+    verifyRemarks,
+    isVerify,
+    verifyUserUuid,
+    verifyTime,
+  }) =>
     staffAward.update(
       {
         verifyRemarks,
         isVerify,
+        verifyUserUuid,
+        verifyTime,
       },
       { where: { uuid }, raw: true }
     ),
@@ -289,19 +329,27 @@ export default {
   /**
    * 统计员设置员工论文/专著信息通过状态
    */
-  updateVerifyThesisStatus: ({ uuid, verifyRemarks, isVerify }) =>
+  updateVerifyThesisStatus: ({
+    uuid,
+    verifyRemarks,
+    isVerify,
+    verifyUserUuid,
+    verifyTime,
+  }) =>
     staffThesis.update(
       {
         verifyRemarks,
         isVerify,
+        verifyUserUuid,
+        verifyTime,
       },
       { where: { uuid }, raw: true }
     ),
 
   /**
-   * 查询各项审核状态通过uuid
+   * 完成审核
    */
-  queryVerifyStatusListByStaffUuid: async ({ userUuid }) => {
+  finishBusinessManagerVerify: async ({ userUuid }) => {
     try {
       const [
         basicVerifyStatus,
@@ -416,7 +464,7 @@ export default {
           basicVerifyStatusFinished
         )
       ) {
-        throw new CustomError('请确认全部审核通过后再点击按钮');
+        throw error;
       }
 
       return await user.update(

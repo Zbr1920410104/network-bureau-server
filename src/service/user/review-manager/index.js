@@ -243,4 +243,154 @@ export default {
       where: { userUuid },
       raw: true,
     }),
+
+  /**
+   * 统计管理员查询项目打分
+   */
+  selectProjectScoreByUuid: ({ uuid }) =>
+    staffProject.findOne({
+      attributes: ['score', 'reviewRemarks'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 统计管理员查询专利打分
+   */
+  selectPatentScoreByUuid: ({ uuid }) =>
+    staffPatent.findOne({
+      attributes: ['score', 'reviewRemarks'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 统计管理员查询软件著作权打分
+   */
+  selectCopyrightScoreByUuid: ({ uuid }) =>
+    staffCopyright.findOne({
+      attributes: ['score', 'reviewRemarks'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 统计管理员查询奖项打分
+   */
+  selectAwardScoreByUuid: ({ uuid }) =>
+    staffAward.findOne({
+      attributes: ['score', 'reviewRemarks'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 统计管理员查询论文/专著打分
+   */
+  selectThesisScoreByUuid: ({ uuid }) =>
+    staffThesis.findOne({
+      attributes: ['score', 'reviewRemarks'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 统计员项目信息评分
+   */
+  updateProjectScore: ({
+    uuid,
+    score,
+    reviewUserUuid,
+    reviewRemarks,
+    reviewTime,
+  }) =>
+    staffProject.update(
+      {
+        score,
+        reviewUserUuid,
+        reviewRemarks,
+        reviewTime,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 统计员项目信息评分
+   */
+  updatePatentScore: ({
+    uuid,
+    score,
+    reviewUserUuid,
+    reviewRemarks,
+    reviewTime,
+  }) =>
+    staffPatent.update(
+      {
+        score,
+        reviewUserUuid,
+        reviewRemarks,
+        reviewTime,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 统计员软件著作权信息评分
+   */
+  updateCopyrightScore: ({
+    uuid,
+    score,
+    reviewUserUuid,
+    reviewRemarks,
+    reviewTime,
+  }) =>
+    staffCopyright.update(
+      {
+        score,
+        reviewUserUuid,
+        reviewRemarks,
+        reviewTime,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 统计员奖项信息评分
+   */
+  updateAwardScore: ({
+    uuid,
+    score,
+    reviewUserUuid,
+    reviewRemarks,
+    reviewTime,
+  }) =>
+    staffAward.update(
+      {
+        score,
+        reviewUserUuid,
+        reviewRemarks,
+        reviewTime,
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 统计员论文/专著信息评分
+   */
+  updateThesisScore: ({
+    uuid,
+    score,
+    reviewUserUuid,
+    reviewRemarks,
+    reviewTime,
+  }) =>
+    staffThesis.update(
+      {
+        score,
+        reviewUserUuid,
+        reviewRemarks,
+        reviewTime,
+      },
+      { where: { uuid }, raw: true }
+    ),
 };

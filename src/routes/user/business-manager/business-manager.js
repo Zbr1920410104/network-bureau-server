@@ -168,10 +168,14 @@ router.post('/setVerifyBasicSuccessStatus', async (ctx, next) => {
   try {
     const { userUuid } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyBasicStatus({
       userUuid,
       verifyRemarks: '',
       isVerify: '核实通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -190,10 +194,14 @@ router.post('/setVerifyBasicFailStatus', async (ctx, next) => {
   try {
     const { userUuid, verifyRemarks } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyBasicStatus({
       userUuid,
       verifyRemarks,
       isVerify: '核实不通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -212,10 +220,14 @@ router.post('/setVerifyProjectSuccessStatus', async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyProjectStatus({
       uuid,
       verifyRemarks: '',
       isVerify: '核实通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -234,10 +246,14 @@ router.post('/setVerifyProjectFailStatus', async (ctx, next) => {
   try {
     const { uuid, verifyRemarks } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyProjectStatus({
       uuid,
       verifyRemarks,
       isVerify: '核实不通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -256,10 +272,14 @@ router.post('/setVerifyPatentSuccessStatus', async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyPatentStatus({
       uuid,
       verifyRemarks: '',
       isVerify: '核实通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -278,10 +298,14 @@ router.post('/setVerifyPatentFailStatus', async (ctx, next) => {
   try {
     const { uuid, verifyRemarks } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyPatentStatus({
       uuid,
       verifyRemarks,
       isVerify: '核实不通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -300,10 +324,14 @@ router.post('/setVerifyCopyrightSuccessStatus', async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyCopyrightStatus({
       uuid,
       verifyRemarks: '',
       isVerify: '核实通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -322,10 +350,14 @@ router.post('/setVerifyCopyrightFailStatus', async (ctx, next) => {
   try {
     const { uuid, verifyRemarks } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyCopyrightStatus({
       uuid,
       verifyRemarks,
       isVerify: '核实不通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -344,10 +376,14 @@ router.post('/setVerifyAwardSuccessStatus', async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyAwardStatus({
       uuid,
       verifyRemarks: '',
       isVerify: '核实通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -366,10 +402,14 @@ router.post('/setVerifyAwardFailStatus', async (ctx, next) => {
   try {
     const { uuid, verifyRemarks } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyAwardStatus({
       uuid,
       verifyRemarks,
       isVerify: '核实不通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -388,10 +428,14 @@ router.post('/setVerifyThesisSuccessStatus', async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyThesisStatus({
       uuid,
       verifyRemarks: '',
       isVerify: '核实通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -410,10 +454,14 @@ router.post('/setVerifyThesisFailStatus', async (ctx, next) => {
   try {
     const { uuid, verifyRemarks } = ctx.state.param;
 
+    const verifyUserUuid = ctx.state.user.uuid;
+
     const data = await service.updateVerifyThesisStatus({
       uuid,
       verifyRemarks,
       isVerify: '核实不通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
     });
 
     ctx.body = new Res({
@@ -432,7 +480,7 @@ router.post('/finishBusinessManagerVerify', async (ctx) => {
   try {
     const { uuid } = ctx.state.param;
 
-    await service.queryVerifyStatusListByStaffUuid({
+    await service.finishBusinessManagerVerify({
       userUuid: uuid,
     });
 
@@ -441,7 +489,7 @@ router.post('/finishBusinessManagerVerify', async (ctx) => {
       msg: '审核通过状态设置成功',
     });
   } catch (error) {
-    throw new CustomError('审核通过状态设置失败');
+    throw new CustomError('请确认全部审核通过后再点击按钮');
   }
 });
 

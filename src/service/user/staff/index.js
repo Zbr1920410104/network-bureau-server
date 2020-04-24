@@ -32,6 +32,7 @@ export default {
   insertStaffBasic: ({
     userUuid,
     currentWriteTime,
+    isVerify,
     name,
     idNumber,
     sex,
@@ -57,6 +58,7 @@ export default {
         uuid: uuid.v1(),
         userUuid,
         currentWriteTime,
+        isVerify,
         name,
         idNumber,
         sex,
@@ -85,6 +87,7 @@ export default {
   selectStaffBasic: ({ userUuid }) =>
     staffBasic.findOne({
       attributes: [
+        'isVerify',
         'name',
         'idNumber',
         'sex',
@@ -252,6 +255,7 @@ export default {
     staffProject.findAll({
       attributes: [
         'uuid',
+        'isVerify',
         'name',
         'type',
         'startTime',
@@ -378,6 +382,7 @@ export default {
     staffPatent.findAll({
       attributes: [
         'uuid',
+        'isVerify',
         'patentType',
         'patentName',
         'patentCode',
@@ -475,6 +480,7 @@ export default {
     staffCopyright.findAll({
       attributes: [
         'uuid',
+        'isVerify',
         'copyrightType',
         'copyrightName',
         'copyrightCode',
@@ -581,6 +587,7 @@ export default {
     staffAward.findAll({
       attributes: [
         'uuid',
+        'isVerify',
         'awardType',
         'awardName',
         'awardTime',
@@ -699,6 +706,7 @@ export default {
     staffThesis.findAll({
       attributes: [
         'uuid',
+        'isVerify',
         'thesisTitle',
         'thesisType',
         'thesisJournal',
