@@ -7,6 +7,9 @@ import { RESPONSE_CODE } from '../../../constants/domain-constants';
 // service
 import service from '../../../service';
 
+// 工具
+import CustomError from '../../../util/custom-error';
+
 const router = new Router({
   prefix: '/reviewManager',
 });
@@ -390,6 +393,26 @@ router.post('/setThesisScore', async (ctx, next) => {
     });
   } catch (error) {
     throw new CustomError('论文/专著信息评分失败');
+  }
+});
+
+/**
+ * 完成评分
+ */
+router.post('/finishReviewManagerReview', async (ctx) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    await service.finishReviewManagerReview({
+      userUuid: uuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      msg: '评分完成状态设置成功',
+    });
+  } catch (error) {
+    throw new CustomError('请确认已全部评分后再点击按钮');
   }
 });
 

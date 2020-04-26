@@ -393,4 +393,120 @@ export default {
       },
       { where: { uuid }, raw: true }
     ),
+
+  /**
+   * 完成审核
+   */
+  finishReviewManagerReview: async ({ userUuid }) => {
+    try {
+      const [
+        projectScore,
+        patentScore,
+        copyrightScore,
+        awardScore,
+        thesisScore,
+      ] = await Promise.all([
+        staffProject.findAll({
+          attributes: ['score'],
+          where: { userUuid },
+          raw: true,
+        }),
+        staffPatent.findAll({
+          attributes: ['score'],
+          where: { userUuid },
+          raw: true,
+        }),
+        staffCopyright.findAll({
+          attributes: ['score'],
+          where: { userUuid },
+          raw: true,
+        }),
+        staffAward.findAll({
+          attributes: ['score'],
+          where: { userUuid },
+          raw: true,
+        }),
+        staffThesis.findAll({
+          attributes: ['score'],
+          where: { userUuid },
+          raw: true,
+        }),
+      ]);
+
+      const projectScoreList = projectScore?.map((item) => item.score);
+      const patentScoreList = patentScore?.map((item) => item.score);
+      const copyrightScoreList = copyrightScore?.map((item) => item.score);
+      const awardScoreList = awardScore?.map((item) => item.score);
+      const thesisScoreList = thesisScore?.map((item) => item.score);
+
+      let projectScoreFinished = true,
+        patentScoreFinished = true,
+        copyrightScoreFinished = true,
+        awardScoreFinished = true,
+        thesisScoreFinished = true,
+        sum = 0;
+
+      for (let projectScoreItem of projectScoreList) {
+        if (projectScoreItem === null) {
+          projectScoreFinished = false;
+          break;
+        }
+        sum += projectScoreItem;
+      }
+
+      for (let patentScoreItem of patentScoreList) {
+        if (patentScoreItem === null) {
+          patentScoreFinished = false;
+          break;
+        }
+        sum += patentScoreItem;
+      }
+
+      for (let copyrightScoreItem of copyrightScoreList) {
+        if (copyrightScoreItem === null) {
+          copyrightScoreFinished = false;
+          break;
+        }
+        sum += copyrightScoreItem;
+      }
+
+      for (let awardScoreItem of awardScoreList) {
+        if (awardScoreItem === null) {
+          awardScoreFinished = false;
+          break;
+        }
+        sum += awardScoreItem;
+      }
+
+      for (let thesisScoreItem of thesisScoreList) {
+        if (thesisScoreItem === null) {
+          thesisScoreFinished = false;
+          break;
+        }
+        sum += thesisScoreItem;
+      }
+
+      if (
+        !(
+          projectScoreFinished &&
+          patentScoreFinished &&
+          copyrightScoreFinished &&
+          awardScoreFinished &&
+          thesisScoreFinished
+        )
+      ) {
+        throw error;
+      }
+
+      return await user.update(
+        {
+          totalScore: sum,
+          reviewTime: new Date(),
+        },
+        { where: { uuid: userUuid }, raw: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  },
 };
