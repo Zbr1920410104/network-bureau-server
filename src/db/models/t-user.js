@@ -20,7 +20,12 @@ export default db.define('t_user', {
   verifyStatus: Sequelize.STRING(32), // 核实状态(未填写完毕/待核实/核实不通过/核实通过)
   verifyTime: Sequelize.DATE, // 最新核实时间
   reviewTime: Sequelize.DATE, // 评审时间
-  totalScore: Sequelize.FLOAT(5, 2), // 总得分
+  projectScoreSum: Sequelize.DECIMAL(5, 2), // 项目总得分
+  patentScoreSum: Sequelize.DECIMAL(5, 2), // 专利总得分
+  copyrightScoreSum: Sequelize.DECIMAL(5, 2), // 软件著作权总得分
+  awardScoreSum: Sequelize.DECIMAL(5, 2), // 奖项总得分
+  thesisScoreSum: Sequelize.DECIMAL(5, 2), // 论文/专著总得分
+  totalScore: Sequelize.DECIMAL(5, 2), // 总得分
   lastWriteTime: Sequelize.DATE, // 上次填写时间
   currentWriteTime: Sequelize.DATE, // 最新填写时间
 });

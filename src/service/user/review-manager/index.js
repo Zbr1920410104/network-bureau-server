@@ -23,6 +23,541 @@ import webToken from '../../../util/token';
 
 export default {
   /**
+   * 查询账户信息通过分数限制
+   */
+  queryStaffReviewInfoByScoreLimit: ({ staffItem, scoreLimit, score }) => {
+    switch (staffItem) {
+      case 'total': {
+        switch (scoreLimit) {
+          case '等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                totalScore: score,
+              },
+              raw: true,
+            });
+          case '大于等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                totalScore: { [Op.gte]: score },
+              },
+              raw: true,
+            });
+          case '小于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                totalScore: { [Op.lt]: score },
+              },
+              raw: true,
+            });
+        }
+      }
+      case 'project': {
+        switch (scoreLimit) {
+          case '等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: { role: 15, isCancel: '未注销', projectScoreSum: score },
+              raw: true,
+            });
+          case '大于等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                projectScoreSum: { [Op.gte]: score },
+              },
+              raw: true,
+            });
+          case '小于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                projectScoreSum: { [Op.lt]: score },
+              },
+              raw: true,
+            });
+        }
+      }
+      case 'patent': {
+        switch (scoreLimit) {
+          case '等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                patentScoreSum: score,
+              },
+              raw: true,
+            });
+          case '大于等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                patentScoreSum: { [Op.gte]: score },
+              },
+              raw: true,
+            });
+          case '小于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                patentScoreSum: { [Op.lt]: score },
+              },
+              raw: true,
+            });
+        }
+      }
+      case 'copyright': {
+        switch (scoreLimit) {
+          case '等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                copyrightScoreSum: score,
+              },
+              raw: true,
+            });
+          case '大于等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                copyrightScoreSum: { [Op.gte]: score },
+              },
+              raw: true,
+            });
+          case '小于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                copyrightScoreSum: { [Op.lt]: score },
+              },
+              raw: true,
+            });
+        }
+      }
+      case 'award': {
+        switch (scoreLimit) {
+          case '等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                awardScoreSum: score,
+              },
+              raw: true,
+            });
+          case '大于等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                awardScoreSum: { [Op.gte]: score },
+              },
+              raw: true,
+            });
+          case '小于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                awardScoreSum: { [Op.lt]: score },
+              },
+              raw: true,
+            });
+        }
+      }
+      case 'thesis': {
+        switch (scoreLimit) {
+          case '等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                thesisScoreSum: score,
+              },
+              raw: true,
+            });
+          case '大于等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                thesisScoreSum: { [Op.gte]: score },
+              },
+              raw: true,
+            });
+          case '小于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                thesisScoreSum: { [Op.lt]: score },
+              },
+              raw: true,
+            });
+        }
+      }
+      default: {
+        switch (scoreLimit) {
+          case '等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                totalScore: score,
+              },
+              raw: true,
+            });
+          case '大于等于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                totalScore: { [Op.gte]: score },
+              },
+              raw: true,
+            });
+          case '小于':
+            return user.findAll({
+              attributes: [
+                'uuid',
+                'phone',
+                'name',
+                'reviewTime',
+                'currentWriteTime',
+                'department',
+                'totalScore',
+                'verifyStatus',
+                'projectScoreSum',
+                'patentScoreSum',
+                'copyrightScoreSum',
+                'awardScoreSum',
+                'thesisScoreSum',
+              ],
+              where: {
+                role: 15,
+                isCancel: '未注销',
+                totalScore: { [Op.lt]: score },
+              },
+              raw: true,
+            });
+        }
+      }
+    }
+  },
+  /**
    * 查询账户信息
    */
   queryStaffReviewInfo: () =>
@@ -36,6 +571,11 @@ export default {
         'department',
         'totalScore',
         'verifyStatus',
+        'projectScoreSum',
+        'patentScoreSum',
+        'copyrightScoreSum',
+        'awardScoreSum',
+        'thesisScoreSum',
       ],
       where: { role: 15, isCancel: '未注销' },
       raw: true,
@@ -84,6 +624,11 @@ export default {
         'currentWriteTime',
         'department',
         'verifyStatus',
+        'projectScoreSum',
+        'patentScoreSum',
+        'copyrightScoreSum',
+        'awardScoreSum',
+        'thesisScoreSum',
       ],
       where: {
         name: {
@@ -109,6 +654,11 @@ export default {
           'currentWriteTime',
           'department',
           'verifyStatus',
+          'projectScoreSum',
+          'patentScoreSum',
+          'copyrightScoreSum',
+          'awardScoreSum',
+          'thesisScoreSum',
         ],
         where: { totalScore: { [Op.ne]: null }, role: 15, isCancel: '未注销' },
         raw: true,
@@ -123,6 +673,11 @@ export default {
           'currentWriteTime',
           'department',
           'verifyStatus',
+          'projectScoreSum',
+          'patentScoreSum',
+          'copyrightScoreSum',
+          'awardScoreSum',
+          'thesisScoreSum',
         ],
         where: { totalScore: null, role: 15, isCancel: '未注销' },
         raw: true,
@@ -444,14 +999,18 @@ export default {
         copyrightScoreFinished = true,
         awardScoreFinished = true,
         thesisScoreFinished = true,
-        sum = 0;
+        projectScoreSum = 0,
+        patentScoreSum = 0,
+        copyrightScoreSum = 0,
+        awardScoreSum = 0,
+        thesisScoreSum = 0;
 
       for (let projectScoreItem of projectScoreList) {
         if (projectScoreItem === null) {
           projectScoreFinished = false;
           break;
         }
-        sum += projectScoreItem;
+        projectScoreSum += projectScoreItem;
       }
 
       for (let patentScoreItem of patentScoreList) {
@@ -459,7 +1018,7 @@ export default {
           patentScoreFinished = false;
           break;
         }
-        sum += patentScoreItem;
+        patentScoreSum += patentScoreItem;
       }
 
       for (let copyrightScoreItem of copyrightScoreList) {
@@ -467,7 +1026,7 @@ export default {
           copyrightScoreFinished = false;
           break;
         }
-        sum += copyrightScoreItem;
+        copyrightScoreSum += copyrightScoreItem;
       }
 
       for (let awardScoreItem of awardScoreList) {
@@ -475,7 +1034,7 @@ export default {
           awardScoreFinished = false;
           break;
         }
-        sum += awardScoreItem;
+        awardScoreSum += awardScoreItem;
       }
 
       for (let thesisScoreItem of thesisScoreList) {
@@ -483,7 +1042,7 @@ export default {
           thesisScoreFinished = false;
           break;
         }
-        sum += thesisScoreItem;
+        thesisScoreSum += thesisScoreItem;
       }
 
       if (
@@ -498,9 +1057,21 @@ export default {
         throw error;
       }
 
+      let totalSum =
+        projectScoreSum +
+        patentScoreSum +
+        copyrightScoreSum +
+        awardScoreSum +
+        thesisScoreSum;
+
       return await user.update(
         {
-          totalScore: sum,
+          projectScoreSum: projectScoreSum.toFixed(2),
+          patentScoreSum: patentScoreSum.toFixed(2),
+          copyrightScoreSum: copyrightScoreSum.toFixed(2),
+          awardScoreSum: awardScoreSum.toFixed(2),
+          thesisScoreSum: thesisScoreSum.toFixed(2),
+          totalScore: totalSum.toFixed(2),
           reviewTime: new Date(),
         },
         { where: { uuid: userUuid }, raw: true }

@@ -19,11 +19,29 @@ const router = new Router({
  */
 router.get('/getStaffReviewInfo', async (ctx, next) => {
   try {
-    const { reviewStatus, name } = ctx.state.param;
+    const {
+      reviewStatus,
+      name,
+      staffItem,
+      scoreLimit,
+      score,
+    } = ctx.state.param;
+
+    console.log('haha', reviewStatus, name, staffItem, scoreLimit, score);
 
     let data;
 
-    if (name?.length > 0) {
+    if (score >= 0 && score !== '') {
+      data = await service.queryStaffReviewInfoByScoreLimit({
+        staffItem,
+        scoreLimit,
+        score,
+      });
+
+      if (!data.length) {
+        throw new CustomError('未找到用户');
+      }
+    } else if (name?.length > 0) {
       data = await service.queryStaffReviewInfoByName(name);
 
       if (!data.length) {
