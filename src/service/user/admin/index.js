@@ -15,8 +15,13 @@ import md5 from 'md5';
 import { MANAGER_PAGE_SIZE } from '../../../config/system-config';
 
 // 工具类
+import roleToText from '../../../util/role-to-text';
+import xlsx from 'node-xlsx';
 import CustomError from '../../../util/custom-error';
 import webToken from '../../../util/token';
+
+// oss
+import client from '../../../util/oss';
 
 export default {
   /**
@@ -329,4 +334,51 @@ export default {
       where: { uuid },
       raw: true,
     }),
+
+  /**
+   * 导出所有人信息表
+   */
+  accountExportAllStaffInfoExcel: async () => {
+    const _data = await user.findAll({
+      attributes: [
+        'userName',
+        'name',
+        'phone',
+        'role',
+        'isCancel',
+        'department',
+      ],
+      raw: true,
+    });
+
+    let data = [];
+    let title = ['账号', '姓名', '电话', '权限', '状态', '部门'];
+    data.push(title);
+    _data.forEach((element) => {
+      let arrInner = [];
+      arrInner.push(element.userName);
+      arrInner.push(element.name);
+      arrInner.push(element.phone);
+      arrInner.push(roleToText(element.role));
+      arrInner.push(element.isCancel);
+      arrInner.push(element.department);
+      data.push(arrInner); //data中添加的要是数组，可以将对象的值分解添加进数组，例如：['1','name','上海']
+    });
+
+    let buffer = xlsx.build([
+      {
+        name: 'sheet1',
+        data: data,
+      },
+    ]);
+
+    // 上传到oss
+    const fileUuid = uuid.v1(),
+      fileUrl = `temp/adminExportAll/${fileUuid}.xlsx`;
+
+    // 上传文件
+    await client.put(fileUrl, buffer);
+
+    return await client.signatureUrl(fileUrl);
+  },
 };

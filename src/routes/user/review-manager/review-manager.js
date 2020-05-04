@@ -434,4 +434,20 @@ router.post('/finishReviewManagerReview', async (ctx) => {
   }
 });
 
+/**
+ * 导出所有人信息表
+ */
+router.post('/exportAllStaffInfoExcel', async (ctx) => {
+  try {
+    const data = await service.exportAllStaffInfoExcel();
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

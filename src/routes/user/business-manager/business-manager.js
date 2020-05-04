@@ -493,4 +493,52 @@ router.post('/finishBusinessManagerVerify', async (ctx) => {
   }
 });
 
+/**
+ * 导出所有人填写信息表
+ */
+router.get('/getStaffWriteStatusList', async (ctx) => {
+  try {
+    const { verifyStatus, name } = ctx.state.param;
+
+    let data;
+
+    if (name?.length > 0) {
+      data = await service.queryStaffWriteStatusByName(name);
+
+      if (!data.length) {
+        throw new CustomError('未找到该用户');
+      }
+    } else {
+      if (verifyStatus === '0') {
+        data = await service.queryStaffWriteStatus();
+      } else {
+        data = await service.queryStaffWriteStatusByVerifyStatus(verifyStatus);
+      }
+    }
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 导出所有人审核信息表
+ */
+router.get('/getStaffVerifyStatusList', async (ctx) => {
+  try {
+    const data = await service.getStaffVerifyStatusList();
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

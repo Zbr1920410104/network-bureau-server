@@ -478,4 +478,69 @@ export default {
       throw error;
     }
   },
+
+  /**
+   * 导出所有人填写信息表
+   */
+  getStaffWriteStatusList: async () => {
+    const _data = await user.findAll({
+      attributes: [
+        'userName',
+        'name',
+        'totalScore',
+        'projectScoreSum',
+        'patentScoreSum',
+        'copyrightScoreSum',
+        'awardScoreSum',
+        'thesisScoreSum',
+      ],
+      where: {
+        totalScore: { [Op.ne]: null },
+        role: 15,
+        isCancel: '未注销',
+      },
+      raw: true,
+    });
+
+    let data = []; // 其实最后就是把这个数组写入excel
+    let title = [
+      '账号',
+      '姓名',
+      '项目得分',
+      '专利得分',
+      '软件著作权得分',
+      '奖项得分',
+      '论文/专著得分',
+      '总得分',
+    ]; //这是第一行 俗称列名
+    data.push(title); // 添加完列名 下面就是添加真正的内容了
+    _data.forEach((element) => {
+      let arrInner = [];
+      arrInner.push(element.userName);
+      arrInner.push(element.name);
+      arrInner.push(element.projectScoreSum);
+      arrInner.push(element.patentScoreSum);
+      arrInner.push(element.copyrightScoreSum);
+      arrInner.push(element.awardScoreSum);
+      arrInner.push(element.thesisScoreSum);
+      arrInner.push(element.totalScore);
+      data.push(arrInner); //data中添加的要是数组，可以将对象的值分解添加进数组，例如：['1','name','上海']
+    });
+
+    let buffer = xlsx.build([
+      {
+        name: 'sheet1',
+        data: data,
+      },
+    ]);
+
+    // 上传到oss
+    const fileUuid = uuid.v1(),
+      fileUrl = `temp/exportAll/${fileUuid}.xlsx`;
+
+    // 上传文件
+    await client.put(fileUrl, buffer);
+
+    return await client.signatureUrl(fileUrl);
+  },
 };
