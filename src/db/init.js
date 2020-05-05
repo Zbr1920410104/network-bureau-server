@@ -14,6 +14,7 @@ require('@babel/register')({
 
 const user = require('./models/t-user').default;
 const department = require('./models/t-department').default;
+const staffStatus = require('./models/staff-status').default;
 require('./models/staff-award').default;
 require('./models/staff-basic').default;
 require('./models/staff-copyright').default;
@@ -76,6 +77,13 @@ Promise.all([
         password: 'e10adc3949ba59abbe56e057f20f883e',
         department: '评审科',
         departmentUuid: 'pingshenke',
+      }),
+      staffStatus.create({
+        uuid: 'woshiyigeyuangong',
+        userName: 'yuangong',
+        name: '员工1',
+        verifyStatus: '未提交',
+        isCancel:'未注销'
       }),
       department.create({
         uuid: 'zhanlueyanjiuke',

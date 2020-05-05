@@ -5,6 +5,7 @@ import staffPatent from '../../../db/models/staff-patent';
 import staffCopyright from '../../../db/models/staff-copyright';
 import staffAward from '../../../db/models/staff-award';
 import staffThesis from '../../../db/models/staff-thesis';
+import staffStatus from '../../../db/models/staff-status';
 
 import uuid from 'uuid';
 
@@ -923,20 +924,79 @@ export default {
   /**
    * 完成填写
    */
-  updateStaffWriteStatus: ({
+  updateStaffWriteStatus: async ({
     uuid,
     verifyStatus,
     verifyTime,
     lastWriteTime,
     currentWriteTime,
-  }) =>
-    user.update(
-      {
-        verifyStatus,
-        lastWriteTime,
-        currentWriteTime,
-        verifyTime,
-      },
-      { where: { uuid }, raw: true }
-    ),
+  }) => {
+    const [
+      basicWriteStatus,
+      projectWriteStatus,
+      patentWriteStatus,
+      copyrightWriteStatus,
+      awardWriteStatus,
+      thesisWriteStatus,
+    ] = await Promise.all([
+      staffBasic.findOne({
+        attributes: ['currentWriteTime'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffProject.findAll({
+        attributes: ['currentWriteTime'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffPatent.findAll({
+        attributes: ['currentWriteTime'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffCopyright.findAll({
+        attributes: ['currentWriteTime'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffAward.findAll({
+        attributes: ['currentWriteTime'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffThesis.findAll({
+        attributes: ['currentWriteTime'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+    ]);
+
+    return await Promise.all([
+      user.update(
+        {
+          verifyStatus,
+          lastWriteTime,
+          currentWriteTime,
+          verifyTime,
+        },
+        { where: { uuid }, raw: true }
+      ),
+      staffStatus.update(
+        {
+          basicWriteStatus: basicWriteStatus.currentWriteTime
+            ? '已填写'
+            : '未填写',
+          projectWriteStatus: projectWriteStatus.length ? '已填写' : '未填写',
+          patentWriteStatus: patentWriteStatus.length ? '已填写' : '未填写',
+          copyrightWriteStatus: copyrightWriteStatus.length
+            ? '已填写'
+            : '未填写',
+          awardWriteStatus: awardWriteStatus.length ? '已填写' : '未填写',
+          thesisWriteStatus: thesisWriteStatus.length ? '已填写' : '未填写',
+          verifyStatus,
+        },
+        { where: { uuid }, raw: true }
+      ),
+    ]);
+  },
 };

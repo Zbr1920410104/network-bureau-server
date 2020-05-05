@@ -5,11 +5,18 @@ import staffCopyright from '../../../db/models/staff-copyright';
 import staffAward from '../../../db/models/staff-award';
 import staffThesis from '../../../db/models/staff-thesis';
 import user from '../../../db/models/t-user';
+import staffStatus from '../../../db/models/staff-status';
 
 import { db } from '../../../db/db-connect';
 
 // uuid
 import uuid from 'uuid';
+
+// 工具
+import xlsx from 'node-xlsx';
+
+// oss
+import client from '../../../util/oss';
 
 // 加密
 import md5 from 'md5';
@@ -87,9 +94,18 @@ export default {
         'department',
       ],
       where: {
-        name: {
-          [Op.like]: `%${name}%`,
-        },
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${name}%`,
+            },
+          },
+          {
+            userName: {
+              [Op.like]: `%${name}%`,
+            },
+          },
+        ],
         role: 15,
         isCancel: '未注销',
       },
@@ -483,20 +499,19 @@ export default {
    * 导出所有人填写信息表
    */
   getStaffWriteStatusList: async () => {
-    const _data = await user.findAll({
+    const _data = await staffStatus.findAll({
       attributes: [
         'userName',
         'name',
-        'totalScore',
-        'projectScoreSum',
-        'patentScoreSum',
-        'copyrightScoreSum',
-        'awardScoreSum',
-        'thesisScoreSum',
+        'basicWriteStatus',
+        'projectWriteStatus',
+        'patentWriteStatus',
+        'copyrightWriteStatus',
+        'awardWriteStatus',
+        'thesisWriteStatus',
+        'verifyStatus',
       ],
       where: {
-        totalScore: { [Op.ne]: null },
-        role: 15,
         isCancel: '未注销',
       },
       raw: true,
@@ -506,24 +521,168 @@ export default {
     let title = [
       '账号',
       '姓名',
-      '项目得分',
-      '专利得分',
-      '软件著作权得分',
-      '奖项得分',
-      '论文/专著得分',
-      '总得分',
+      '基本信息',
+      '项目',
+      '专利',
+      '软件著作权',
+      '奖项',
+      '论文/专著',
+      '是否提交',
     ]; //这是第一行 俗称列名
     data.push(title); // 添加完列名 下面就是添加真正的内容了
     _data.forEach((element) => {
       let arrInner = [];
       arrInner.push(element.userName);
       arrInner.push(element.name);
-      arrInner.push(element.projectScoreSum);
-      arrInner.push(element.patentScoreSum);
-      arrInner.push(element.copyrightScoreSum);
-      arrInner.push(element.awardScoreSum);
-      arrInner.push(element.thesisScoreSum);
-      arrInner.push(element.totalScore);
+      arrInner.push(element.basicWriteStatus);
+      arrInner.push(element.projectWriteStatus);
+      arrInner.push(element.patentWriteStatus);
+      arrInner.push(element.copyrightWriteStatus);
+      arrInner.push(element.awardWriteStatus);
+      arrInner.push(element.thesisWriteStatus);
+      arrInner.push(element.verifyStatus !== '未提交' ? '已提交' : '未提交');
+      data.push(arrInner); //data中添加的要是数组，可以将对象的值分解添加进数组，例如：['1','name','上海']
+    });
+
+    let buffer = xlsx.build([
+      {
+        name: 'sheet1',
+        data: data,
+      },
+    ]);
+
+    // 上传到oss
+    const fileUuid = uuid.v1(),
+      fileUrl = `temp/exportAll/${fileUuid}.xlsx`;
+
+    // 上传文件
+    await client.put(fileUrl, buffer);
+
+    return await client.signatureUrl(fileUrl);
+  },
+
+  /**
+   * 导出所有人填写信息表
+   */
+  getStaffWriteStatusListByName: async (name) => {
+    const _data = await staffStatus.findAll({
+      attributes: [
+        'userName',
+        'name',
+        'basicWriteStatus',
+        'projectWriteStatus',
+        'patentWriteStatus',
+        'copyrightWriteStatus',
+        'awardWriteStatus',
+        'thesisWriteStatus',
+        'verifyStatus',
+      ],
+      where: {
+        [Op.or]: [
+          {
+            name: {
+              [Op.like]: `%${name}%`,
+            },
+          },
+          {
+            userName: {
+              [Op.like]: `%${name}%`,
+            },
+          },
+        ],
+        isCancel: '未注销',
+      },
+      raw: true,
+    });
+
+    let data = []; // 其实最后就是把这个数组写入excel
+    let title = [
+      '账号',
+      '姓名',
+      '基本信息',
+      '项目',
+      '专利',
+      '软件著作权',
+      '奖项',
+      '论文/专著',
+      '是否提交',
+    ]; //这是第一行 俗称列名
+    data.push(title); // 添加完列名 下面就是添加真正的内容了
+    _data.forEach((element) => {
+      let arrInner = [];
+      arrInner.push(element.userName);
+      arrInner.push(element.name);
+      arrInner.push(element.basicWriteStatus);
+      arrInner.push(element.projectWriteStatus);
+      arrInner.push(element.patentWriteStatus);
+      arrInner.push(element.copyrightWriteStatus);
+      arrInner.push(element.awardWriteStatus);
+      arrInner.push(element.thesisWriteStatus);
+      arrInner.push(element.verifyStatus !== '未提交' ? '已提交' : '未提交');
+      data.push(arrInner); //data中添加的要是数组，可以将对象的值分解添加进数组，例如：['1','name','上海']
+    });
+
+    let buffer = xlsx.build([
+      {
+        name: 'sheet1',
+        data: data,
+      },
+    ]);
+
+    // 上传到oss
+    const fileUuid = uuid.v1(),
+      fileUrl = `temp/exportAll/${fileUuid}.xlsx`;
+
+    // 上传文件
+    await client.put(fileUrl, buffer);
+
+    return await client.signatureUrl(fileUrl);
+  },
+
+  /**
+   * 导出所有人填写信息表
+   */
+  getStaffWriteStatusListByVerifyStatus: async (verifyStatus) => {
+    const _data = await staffStatus.findAll({
+      attributes: [
+        'userName',
+        'name',
+        'basicWriteStatus',
+        'projectWriteStatus',
+        'patentWriteStatus',
+        'copyrightWriteStatus',
+        'awardWriteStatus',
+        'thesisWriteStatus',
+        'verifyStatus',
+      ],
+      where: { verifyStatus, isCancel: '未注销' },
+      raw: true,
+    });
+
+    let data = []; // 其实最后就是把这个数组写入excel
+    let title = [
+      '账号',
+      '姓名',
+      '基本信息',
+      '项目',
+      '专利',
+      '软件著作权',
+      '奖项',
+      '论文/专著',
+      '是否提交',
+    ]; //这是第一行 俗称列名
+    data.push(title); // 添加完列名 下面就是添加真正的内容了
+    _data.forEach((element) => {
+      let arrInner = [];
+      arrInner.push(element.userName);
+      arrInner.push(element.name);
+      arrInner.push(element.basicWriteStatus);
+      arrInner.push(element.projectWriteStatus);
+      arrInner.push(element.patentWriteStatus);
+      arrInner.push(element.copyrightWriteStatus);
+      arrInner.push(element.awardWriteStatus);
+      arrInner.push(element.thesisWriteStatus);
+      arrInner.push(element.verifyStatus !== '未提交' ? '已提交' : '未提交');
       data.push(arrInner); //data中添加的要是数组，可以将对象的值分解添加进数组，例如：['1','name','上海']
     });
 

@@ -1,6 +1,7 @@
 import department from '../../../db/models/t-department';
 import timeSet from '../../../db/models/sys-time-set';
 import user from '../../../db/models/t-user';
+import staffStatus from '../../../db/models/staff-status';
 
 import Sequelize from 'sequelize';
 const Op = Sequelize.Op,
@@ -236,7 +237,7 @@ export default {
   /**
    * 添加用户
    */
-  insertAccount: ({
+  insertAccount: async ({
     phone,
     name,
     role,
@@ -244,22 +245,54 @@ export default {
     userName,
     verifyStatus,
     departmentUuid,
-  }) =>
-    user.create(
-      {
-        uuid: uuid.v1(),
-        phone,
-        name,
-        role,
-        department,
-        userName,
-        verifyStatus,
-        departmentUuid,
-        isCancel: '未注销',
-        password: md5('123456'),
-      },
-      { raw: true }
-    ),
+  }) => {
+    if (role === 15) {
+      const userUuid = uuid.v1();
+      return await Promise.all([
+        user.create(
+          {
+            uuid: userUuid,
+            phone,
+            name,
+            role,
+            department,
+            userName,
+            verifyStatus,
+            departmentUuid,
+            isCancel: '未注销',
+            password: md5('123456'),
+          },
+          { raw: true }
+        ),
+        staffStatus.create(
+          {
+            uuid: userUuid,
+            name,
+            userName,
+            verifyStatus,
+            isCancel: '未注销',
+          },
+          { raw: true }
+        ),
+      ]);
+    } else {
+      return await user.create(
+        {
+          uuid: userUuid,
+          phone,
+          name,
+          role,
+          department,
+          userName,
+          verifyStatus,
+          departmentUuid,
+          isCancel: '未注销',
+          password: md5('123456'),
+        },
+        { raw: true }
+      );
+    }
+  },
   /**
    * 查询科室
    */
@@ -298,33 +331,51 @@ export default {
   /**
    * 管理员注销账号
    */
-  updatAccountCancel: (uuid) =>
-    user.update(
-      {
-        isCancel: '已注销',
-      },
-      { where: { uuid }, raw: true }
-    ),
+  updatAccountCancel: async (uuid) => {
+    await Promise.all([
+      user.update(
+        {
+          isCancel: '已注销',
+        },
+        { where: { uuid }, raw: true }
+      ),
+      staffStatus.update(
+        {
+          isCancel: '已注销',
+        },
+        { where: { uuid }, raw: true }
+      ),
+    ]);
+  },
   /**
    * 修改用户
    */
-  updateAccount: ({
+  updateAccount: async ({
     phone,
     name,
     role,
     department,
     userName,
     departmentUuid,
-  }) =>
-    user.update(
-      {
-        phone,
-        name,
-        department,
-        departmentUuid,
-      },
-      { where: { userName: userName, role: role }, raw: true }
-    ),
+  }) => {
+    return await Promise.all([
+      user.update(
+        {
+          phone,
+          name,
+          department,
+          departmentUuid,
+        },
+        { where: { userName: userName, role: role }, raw: true }
+      ),
+      staffStatus.update(
+        {
+          name,
+        },
+        { where: { userName: userName }, raw: true }
+      ),
+    ]);
+  },
   /**
    * 查询用户信息通过uuid
    */

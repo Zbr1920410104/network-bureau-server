@@ -503,16 +503,18 @@ router.get('/getStaffWriteStatusList', async (ctx) => {
     let data;
 
     if (name?.length > 0) {
-      data = await service.queryStaffWriteStatusByName(name);
+      data = await service.getStaffWriteStatusListByName(name);
 
       if (!data.length) {
         throw new CustomError('未找到该用户');
       }
     } else {
       if (verifyStatus === '0') {
-        data = await service.queryStaffWriteStatus();
+        data = await service.getStaffWriteStatusList();
       } else {
-        data = await service.queryStaffWriteStatusByVerifyStatus(verifyStatus);
+        data = await service.getStaffWriteStatusListByVerifyStatus(
+          verifyStatus
+        );
       }
     }
 
