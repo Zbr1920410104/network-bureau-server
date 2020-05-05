@@ -439,7 +439,7 @@ router.post('/finishReviewManagerReview', async (ctx) => {
  */
 router.post('/exportAllStaffInfoExcel', async (ctx) => {
   try {
-    const data = await service.exportAllStaffInfoExcel();
+    const data = await service.exportAllStaffScoreExcel();
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,

@@ -868,7 +868,7 @@ export default {
       '奖项',
       '论文/专著',
       '是否提交',
-    ]; //这是第一行 俗称列名
+    ]; // 这是第一行 俗称列名
     data.push(title); // 添加完列名 下面就是添加真正的内容了
     _data.forEach((element) => {
       let arrInner = [];
@@ -881,7 +881,7 @@ export default {
       arrInner.push(element.awardWriteStatus);
       arrInner.push(element.thesisWriteStatus);
       arrInner.push(element.verifyStatus !== '未提交' ? '已提交' : '未提交');
-      data.push(arrInner); //data中添加的要是数组，可以将对象的值分解添加进数组，例如：['1','name','上海']
+      data.push(arrInner); // data中添加的要是数组，可以将对象的值分解添加进数组
     });
 
     let buffer = xlsx.build([
@@ -983,7 +983,7 @@ export default {
       '奖项',
       '论文/专著',
       '核实状态',
-    ]; //这是第一行 俗称列名
+    ]; // 这是第一行 俗称列名
     data.push(title); // 添加完列名 下面就是添加真正的内容了
     _data.forEach((element) => {
       let arrInner = [];
@@ -996,7 +996,7 @@ export default {
       arrInner.push(element.awardVerifyStatus);
       arrInner.push(element.thesisVerifyStatus);
       arrInner.push(element.verifyStatus);
-      data.push(arrInner); //data中添加的要是数组，可以将对象的值分解添加进数组，例如：['1','name','上海']
+      data.push(arrInner); // data中添加的要是数组，可以将对象的值分解添加进数组
     });
 
     let buffer = xlsx.build([

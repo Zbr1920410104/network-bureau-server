@@ -1085,17 +1085,25 @@ export default {
   /**
    * 查询所有人填写信息
    */
-  queryStaffWriteStatus: async () => {
+  exportAllStaffScoreExcel: async () => {
     const _data = await user.findAll({
-      attributes: ['userName', 'name', 'currentWriteTime'],
+      attributes: [
+        'userName',
+        'name',
+        'projectScoreSum',
+        'patentScoreSum',
+        'copyrightScoreSum',
+        'awardScoreSum',
+        'thesisScoreSum',
+        'totalScore',
+      ],
       where: {
         role: 15,
         isCancel: '未注销',
+        totalScore: { [Op.ne]: null },
       },
       raw: true,
     });
-
-    console.log('_data=', _data);
 
     let data = []; // 其实最后就是把这个数组写入excel
     let title = [

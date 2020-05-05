@@ -259,7 +259,6 @@ export default {
     staffProject.findAll({
       attributes: [
         'uuid',
-        'isVerify',
         'name',
         'type',
         'startTime',
@@ -272,6 +271,7 @@ export default {
         'content',
         'isVerify',
         'currentWriteTime',
+        'verifyRemarks',
       ],
       where: { userUuid },
       raw: true,
@@ -341,6 +341,7 @@ export default {
         participant,
         content,
         isVerify: '未核实',
+        verifyRemarks: '',
       },
       { where: { uuid }, raw: true }
     ),
@@ -392,7 +393,7 @@ export default {
         'patentName',
         'patentCode',
         'patentNation',
-        'isVerify',
+        'verifyRemarks',
         'currentWriteTime',
       ],
       where: { userUuid },
@@ -440,6 +441,7 @@ export default {
         patentCode,
         patentNation,
         isVerify: '未核实',
+        verifyRemarks: '',
       },
       { where: { uuid }, raw: true }
     ),
@@ -491,7 +493,7 @@ export default {
         'copyrightName',
         'copyrightCode',
         'copyrightArrange',
-        'isVerify',
+        'verifyRemarks',
         'currentWriteTime',
       ],
       where: { userUuid },
@@ -544,6 +546,7 @@ export default {
         copyrightCode,
         copyrightArrange,
         isVerify: '未核实',
+        verifyRemarks: '',
       },
       { where: { uuid }, raw: true }
     ),
@@ -600,7 +603,7 @@ export default {
         'awardTime',
         'awardGrade',
         'awardDepartment',
-        'isVerify',
+        'verifyRemarks',
         'currentWriteTime',
         'awardNameList',
       ],
@@ -660,6 +663,7 @@ export default {
         awardDepartment,
         awardNameList,
         isVerify: '未核实',
+        verifyRemarks: '',
       },
       { where: { uuid }, raw: true }
     ),
@@ -723,7 +727,7 @@ export default {
         'thesisCode',
         'thesisFirstAuthor',
         'thesisAuthorSequence',
-        'isVerify',
+        'verifyRemarks',
         'currentWriteTime',
       ],
       where: { userUuid },
@@ -788,6 +792,7 @@ export default {
         thesisFirstAuthor,
         thesisAuthorSequence,
         isVerify: '未核实',
+        verifyRemarks: '',
       },
       { where: { uuid }, raw: true }
     ),
