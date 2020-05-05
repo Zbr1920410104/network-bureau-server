@@ -89,6 +89,7 @@ export default {
     staffBasic.findOne({
       attributes: [
         'isVerify',
+        'verifyRemarks',
         'name',
         'idNumber',
         'sex',
@@ -162,6 +163,8 @@ export default {
         researchDirection,
         studyExperience,
         workExperience,
+        isVerify: '未核实',
+        verifyRemarks: '',
       },
       { where: { userUuid }, raw: true }
     ),
@@ -337,6 +340,7 @@ export default {
         controller,
         participant,
         content,
+        isVerify: '未核实',
       },
       { where: { uuid }, raw: true }
     ),
@@ -435,6 +439,7 @@ export default {
         patentName,
         patentCode,
         patentNation,
+        isVerify: '未核实',
       },
       { where: { uuid }, raw: true }
     ),
@@ -538,6 +543,7 @@ export default {
         copyrightName,
         copyrightCode,
         copyrightArrange,
+        isVerify: '未核实',
       },
       { where: { uuid }, raw: true }
     ),
@@ -653,6 +659,7 @@ export default {
         awardGrade,
         awardDepartment,
         awardNameList,
+        isVerify: '未核实',
       },
       { where: { uuid }, raw: true }
     ),
@@ -780,6 +787,7 @@ export default {
         thesisCode,
         thesisFirstAuthor,
         thesisAuthorSequence,
+        isVerify: '未核实',
       },
       { where: { uuid }, raw: true }
     ),
@@ -971,7 +979,11 @@ export default {
       }),
     ]);
 
-    return await Promise.all([
+    if (!basicWriteStatus.currentWriteTime) {
+      throw new CustomError('请填写基本信息!');
+    }
+
+    await Promise.all([
       user.update(
         {
           verifyStatus,
@@ -998,5 +1010,135 @@ export default {
         { where: { uuid }, raw: true }
       ),
     ]);
+
+    const [
+      basicVerify,
+      projectVerify,
+      patentVerify,
+      copyrightVerify,
+      awardVerify,
+      thesisVerify,
+    ] = await Promise.all([
+      staffBasic.findOne({
+        attributes: ['isVerify'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffProject.findAll({
+        attributes: ['isVerify'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffPatent.findAll({
+        attributes: ['isVerify'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffCopyright.findAll({
+        attributes: ['isVerify'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffAward.findAll({
+        attributes: ['isVerify'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffThesis.findAll({
+        attributes: ['isVerify'],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+    ]);
+
+    let basicVerifyStatus = '',
+      projectVerifyStatus = '',
+      patentVerifyStatus = '',
+      copyrightVerifyStatus = '',
+      awardVerifyStatus = '',
+      thesisVerifyStatus = '';
+
+    if (basicVerify.isVerify === '核实不通过') {
+      throw new CustomError('请按统计员修改意见完成修改后完成提交!');
+    } else {
+      basicVerifyStatus = basicVerify.isVerify;
+    }
+
+    if (!projectVerify.length) {
+      projectVerifyStatus = '未填写';
+    } else {
+      let projectVerifyList = projectVerify.map((value) => value.isVerify);
+      if (projectVerifyList.indexOf('核实不通过') !== -1) {
+        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
+      } else if (projectVerifyList.indexOf('未核实') !== -1) {
+        projectVerifyStatus = '未核实';
+      } else {
+        projectVerifyStatus = '核实通过';
+      }
+    }
+
+    if (!patentVerify.length) {
+      patentVerifyStatus = '未填写';
+    } else {
+      let patentVerifyList = patentVerify.map((value) => value.isVerify);
+      if (patentVerifyList.indexOf('核实不通过') !== -1) {
+        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
+      } else if (patentVerifyList.indexOf('未核实') !== -1) {
+        patentVerifyStatus = '未核实';
+      } else {
+        patentVerifyStatus = '核实通过';
+      }
+    }
+
+    if (!copyrightVerify.length) {
+      copyrightVerifyStatus = '未填写';
+    } else {
+      let copyrightVerifyList = copyrightVerify.map((value) => value.isVerify);
+      if (copyrightVerifyList.indexOf('核实不通过') !== -1) {
+        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
+      } else if (copyrightVerifyList.indexOf('未核实') !== -1) {
+        copyrightVerifyStatus = '未核实';
+      } else {
+        copyrightVerifyStatus = '核实通过';
+      }
+    }
+
+    if (!awardVerify.length) {
+      awardVerifyStatus = '未填写';
+    } else {
+      let awardVerifyList = awardVerify.map((value) => value.isVerify);
+      if (awardVerifyList.indexOf('核实不通过') !== -1) {
+        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
+      } else if (awardVerifyList.indexOf('未核实') !== -1) {
+        awardVerifyStatus = '未核实';
+      } else {
+        awardVerifyStatus = '核实通过';
+      }
+    }
+
+    if (!thesisVerify.length) {
+      thesisVerifyStatus = '未填写';
+    } else {
+      let thesisVerifyList = thesisVerify.map((value) => value.isVerify);
+      if (thesisVerifyList.indexOf('核实不通过') !== -1) {
+        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
+      } else if (thesisVerifyList.indexOf('未核实') !== -1) {
+        thesisVerifyStatus = '未核实';
+      } else {
+        thesisVerifyStatus = '核实通过';
+      }
+    }
+
+    await staffStatus.update(
+      {
+        basicVerifyStatus,
+        projectVerifyStatus,
+        patentVerifyStatus,
+        copyrightVerifyStatus,
+        awardVerifyStatus,
+        thesisVerifyStatus,
+      },
+      { where: { uuid }, raw: true }
+    );
   },
 };

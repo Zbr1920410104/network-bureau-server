@@ -218,7 +218,7 @@ router.post('/setVerifyBasicFailStatus', async (ctx, next) => {
  */
 router.post('/setVerifyProjectSuccessStatus', async (ctx, next) => {
   try {
-    const { uuid } = ctx.state.param;
+    const { uuid, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
@@ -228,6 +228,7 @@ router.post('/setVerifyProjectSuccessStatus', async (ctx, next) => {
       isVerify: '核实通过',
       verifyUserUuid,
       verifyTime: new Date(),
+      staffUuid,
     });
 
     ctx.body = new Res({
@@ -244,7 +245,7 @@ router.post('/setVerifyProjectSuccessStatus', async (ctx, next) => {
  */
 router.post('/setVerifyProjectFailStatus', async (ctx, next) => {
   try {
-    const { uuid, verifyRemarks } = ctx.state.param;
+    const { uuid, verifyRemarks, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
@@ -254,6 +255,7 @@ router.post('/setVerifyProjectFailStatus', async (ctx, next) => {
       isVerify: '核实不通过',
       verifyUserUuid,
       verifyTime: new Date(),
+      staffUuid,
     });
 
     ctx.body = new Res({
@@ -270,12 +272,13 @@ router.post('/setVerifyProjectFailStatus', async (ctx, next) => {
  */
 router.post('/setVerifyPatentSuccessStatus', async (ctx, next) => {
   try {
-    const { uuid } = ctx.state.param;
+    const { uuid, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
     const data = await service.updateVerifyPatentStatus({
       uuid,
+      staffUuid,
       verifyRemarks: '',
       isVerify: '核实通过',
       verifyUserUuid,
@@ -296,12 +299,13 @@ router.post('/setVerifyPatentSuccessStatus', async (ctx, next) => {
  */
 router.post('/setVerifyPatentFailStatus', async (ctx, next) => {
   try {
-    const { uuid, verifyRemarks } = ctx.state.param;
+    const { uuid, verifyRemarks, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
     const data = await service.updateVerifyPatentStatus({
       uuid,
+      staffUuid,
       verifyRemarks,
       isVerify: '核实不通过',
       verifyUserUuid,
@@ -322,12 +326,13 @@ router.post('/setVerifyPatentFailStatus', async (ctx, next) => {
  */
 router.post('/setVerifyCopyrightSuccessStatus', async (ctx, next) => {
   try {
-    const { uuid } = ctx.state.param;
+    const { uuid, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
     const data = await service.updateVerifyCopyrightStatus({
       uuid,
+      staffUuid,
       verifyRemarks: '',
       isVerify: '核实通过',
       verifyUserUuid,
@@ -348,12 +353,13 @@ router.post('/setVerifyCopyrightSuccessStatus', async (ctx, next) => {
  */
 router.post('/setVerifyCopyrightFailStatus', async (ctx, next) => {
   try {
-    const { uuid, verifyRemarks } = ctx.state.param;
+    const { uuid, verifyRemarks, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
     const data = await service.updateVerifyCopyrightStatus({
       uuid,
+      staffUuid,
       verifyRemarks,
       isVerify: '核实不通过',
       verifyUserUuid,
@@ -374,12 +380,13 @@ router.post('/setVerifyCopyrightFailStatus', async (ctx, next) => {
  */
 router.post('/setVerifyAwardSuccessStatus', async (ctx, next) => {
   try {
-    const { uuid } = ctx.state.param;
+    const { uuid, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
     const data = await service.updateVerifyAwardStatus({
       uuid,
+      staffUuid,
       verifyRemarks: '',
       isVerify: '核实通过',
       verifyUserUuid,
@@ -400,12 +407,13 @@ router.post('/setVerifyAwardSuccessStatus', async (ctx, next) => {
  */
 router.post('/setVerifyAwardFailStatus', async (ctx, next) => {
   try {
-    const { uuid, verifyRemarks } = ctx.state.param;
+    const { uuid, verifyRemarks, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
     const data = await service.updateVerifyAwardStatus({
       uuid,
+      staffUuid,
       verifyRemarks,
       isVerify: '核实不通过',
       verifyUserUuid,
@@ -426,12 +434,13 @@ router.post('/setVerifyAwardFailStatus', async (ctx, next) => {
  */
 router.post('/setVerifyThesisSuccessStatus', async (ctx, next) => {
   try {
-    const { uuid } = ctx.state.param;
+    const { uuid, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
     const data = await service.updateVerifyThesisStatus({
       uuid,
+      staffUuid,
       verifyRemarks: '',
       isVerify: '核实通过',
       verifyUserUuid,
@@ -452,12 +461,13 @@ router.post('/setVerifyThesisSuccessStatus', async (ctx, next) => {
  */
 router.post('/setVerifyThesisFailStatus', async (ctx, next) => {
   try {
-    const { uuid, verifyRemarks } = ctx.state.param;
+    const { uuid, verifyRemarks, staffUuid } = ctx.state.param;
 
     const verifyUserUuid = ctx.state.user.uuid;
 
     const data = await service.updateVerifyThesisStatus({
       uuid,
+      staffUuid,
       verifyRemarks,
       isVerify: '核实不通过',
       verifyUserUuid,
@@ -503,18 +513,16 @@ router.get('/getStaffWriteStatusList', async (ctx) => {
     let data;
 
     if (name?.length > 0) {
-      data = await service.getStaffWriteStatusListByName(name);
+      data = await service.getStaffWriteStatusList({ name });
 
       if (!data.length) {
         throw new CustomError('未找到该用户');
       }
     } else {
       if (verifyStatus === '0') {
-        data = await service.getStaffWriteStatusList();
+        data = await service.getStaffWriteStatusList({});
       } else {
-        data = await service.getStaffWriteStatusListByVerifyStatus(
-          verifyStatus
-        );
+        data = await service.getStaffWriteStatusList({ verifyStatus });
       }
     }
 
@@ -532,7 +540,23 @@ router.get('/getStaffWriteStatusList', async (ctx) => {
  */
 router.get('/getStaffVerifyStatusList', async (ctx) => {
   try {
-    const data = await service.getStaffVerifyStatusList();
+    const { verifyStatus, name } = ctx.state.param;
+
+    let data;
+
+    if (name?.length > 0) {
+      data = await service.getStaffVerifyStatusList({ name });
+
+      if (!data.length) {
+        throw new CustomError('未找到该用户');
+      }
+    } else {
+      if (verifyStatus === '0') {
+        data = await service.getStaffVerifyStatusList({});
+      } else {
+        data = await service.getStaffVerifyStatusList({ verifyStatus });
+      }
+    }
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
