@@ -18,6 +18,24 @@ const router = new Router({
 /**
  * 通过token获取自己信息
  */
+router.get('/getUserName', async (ctx, next) => {
+  try {
+    const { user } = ctx.state.param;
+
+    const data = await service.selectUserName({ userName: user });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    ctx.throw(RESPONSE_CODE.unauthorized);
+  }
+});
+
+/**
+ * 通过token获取自己信息
+ */
 router.get('/getMyInfo', async (ctx, next) => {
   try {
     ctx.body = new Res({

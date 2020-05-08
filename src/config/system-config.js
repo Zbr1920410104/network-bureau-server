@@ -6,6 +6,7 @@ export const UNLESS_PATH_ARR = [
    * 管理端
    */
   '/user/getUserToken',
+  '/user/getUserName',
   '/user/updatePassword',
 ];
 

@@ -12,6 +12,16 @@ import { db } from '../../db/db-connect';
 
 export default {
   /**
+   * 根据账号查询姓名
+   */
+  selectUserName: async ({ userName }) => {
+    return await user.findOne({
+      attributes: ['name'],
+      raw: true,
+      where: { userName },
+    });
+  },
+  /**
    * 根据uuid查询用户
    */
   selectUserByUuid: async (uuid) => {
