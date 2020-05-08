@@ -971,7 +971,7 @@ router.post('/finishStaffWrite', async (ctx) => {
 
     const data = await service.updateStaffWriteStatus({
       uuid,
-      verifyStatus:'待核实',
+      verifyStatus: '待核实',
       lastWriteTime: currentWriteTime,
       currentWriteTime: new Date(),
     });
@@ -980,6 +980,27 @@ router.post('/finishStaffWrite', async (ctx) => {
       status: RESPONSE_CODE.success,
       data,
       msg: '修改填写状态成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 导出个人信息表
+ */
+router.post('/getPersonalExportInfoUrl', async (ctx) => {
+  try {
+    const { exportList } = ctx.state.param;
+    const uuid = ctx.state.user.uuid;
+    const data = await service.getStaffExportInfoUrl({
+      userUuid: uuid,
+      exportList,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
     });
   } catch (error) {
     throw error;

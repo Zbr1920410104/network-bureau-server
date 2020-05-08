@@ -1,7 +1,14 @@
 const Sequelize = require('sequelize');
 const { db } = require('../db-connect');
 
-export default db.define('t_user', {
+const staffBasic = require('./staff-basic').default;
+const staffProject = require('./staff-project').default;
+const staffPatent = require('./staff-patent').default;
+const staffCopyright = require('./staff-copyright').default;
+const staffAward = require('./staff-award').default;
+const staffThesis = require('./staff-thesis').default;
+
+const user = db.define('t_user', {
   uuid: {
     type: Sequelize.STRING(36),
     primaryKey: true,
@@ -29,3 +36,41 @@ export default db.define('t_user', {
   lastWriteTime: Sequelize.DATE, // 上次填写时间
   currentWriteTime: Sequelize.DATE, // 最新填写时间
 });
+
+user.hasOne(staffBasic, {
+  foreignKey: 'userUuid',
+  sourceKey: 'uuid',
+  as: 'staffBasic',
+});
+
+user.hasMany(staffProject, {
+  foreignKey: 'userUuid',
+  sourceKey: 'uuid',
+  as: 'staffProject',
+});
+
+user.hasMany(staffPatent, {
+  foreignKey: 'userUuid',
+  sourceKey: 'uuid',
+  as: 'staffPatent',
+});
+
+user.hasMany(staffCopyright, {
+  foreignKey: 'userUuid',
+  sourceKey: 'uuid',
+  as: 'staffCopyright',
+});
+
+user.hasMany(staffAward, {
+  foreignKey: 'userUuid',
+  sourceKey: 'uuid',
+  as: 'staffAward',
+});
+
+user.hasMany(staffThesis, {
+  foreignKey: 'userUuid',
+  sourceKey: 'uuid',
+  as: 'staffThesis',
+});
+
+export default user;

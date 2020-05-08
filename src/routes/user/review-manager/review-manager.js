@@ -27,8 +27,6 @@ router.get('/getStaffReviewInfo', async (ctx, next) => {
       score,
     } = ctx.state.param;
 
-    console.log('haha', reviewStatus, name, staffItem, scoreLimit, score);
-
     let data;
 
     if (score >= 0 && score !== '') {
@@ -440,6 +438,82 @@ router.post('/finishReviewManagerReview', async (ctx) => {
 router.post('/exportAllStaffInfoExcel', async (ctx) => {
   try {
     const data = await service.exportAllStaffScoreExcel();
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 导出个人信息表
+ */
+router.post('/getReviewManagerExportInfoUrl', async (ctx) => {
+  try {
+    const { uuid, exportList } = ctx.state.param;
+    const data = await service.getStaffExportSearchInfoUrl({
+      userUuid: uuid,
+      exportList,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 导出所有人信息表
+ */
+router.post('/getReviewManagerExportAllInfoUrl', async (ctx) => {
+  try {
+    const {
+      reviewStatus,
+      name,
+      staffItem,
+      scoreLimit,
+      score,
+      exportAllList,
+    } = ctx.state.param;
+
+    let userList;
+
+    if (score >= 0 && score !== '') {
+      userList = await service.queryStaffReviewInfoByScoreLimit({
+        staffItem,
+        scoreLimit,
+        score,
+      });
+
+      if (!userList.length) {
+        throw new CustomError('未找到用户');
+      }
+    } else if (name?.length > 0) {
+      userList = await service.queryStaffReviewInfoByName(name);
+
+      if (!userList.length) {
+        throw new CustomError('未找到该用户');
+      }
+    } else {
+      if (reviewStatus === '0') {
+        userList = await service.queryStaffReviewInfo();
+      } else {
+        userList = await service.queryStaffReviewInfoByReviewStatus(
+          reviewStatus
+        );
+      }
+    }
+
+    const data = await service.getSearchExportInfoUrl({
+      userList,
+      exportList: exportAllList,
+    });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,

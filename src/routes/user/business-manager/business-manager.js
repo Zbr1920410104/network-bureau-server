@@ -567,4 +567,43 @@ router.get('/getStaffVerifyStatusList', async (ctx) => {
   }
 });
 
+/**
+ * 导出个人信息表
+ */
+router.post('/getStaffExportInfoUrl', async (ctx) => {
+  try {
+    const { verifyStatus, name, exportList } = ctx.state.param;
+
+    let userList;
+
+    if (name?.length > 0) {
+      userList = await service.getStaffUuidByNameAndVerifyStatus({ name });
+
+      if (!userList.length) {
+        throw new CustomError('未找到该用户');
+      }
+    } else {
+      if (verifyStatus === '0') {
+        userList = await service.getStaffUuidByNameAndVerifyStatus({});
+      } else {
+        userList = await service.getStaffUuidByNameAndVerifyStatus({
+          verifyStatus,
+        });
+      }
+    }
+
+    const data = await service.getSearchExportInfoUrl({
+      userList,
+      exportList,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

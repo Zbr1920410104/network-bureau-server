@@ -1139,7 +1139,7 @@ export default {
 
     // 上传到oss
     const fileUuid = uuid.v1(),
-      fileUrl = `temp/exportAll/${fileUuid}.xlsx`;
+      fileUrl = `temp/allScore/${fileUuid}.xlsx`;
 
     // 上传文件
     await client.put(fileUrl, buffer);
