@@ -72,27 +72,41 @@ export default {
   /**
    * 保存统计管理员系统时间
    */
-  updateBusinessManagerTime: ({ startTime, endTime }) =>
-    timeSet.update(
-      {
-        startTime,
-        endTime,
-      },
-      { where: { userRole: 10 }, raw: true }
-    ),
+  updateBusinessManagerTime: ({ startTime, endTime }) => {
+    if (startTime > endTime) {
+      throw new CustomError('开始时间不得早于截止时间');
+    } else if (new Date(endTime) < new Date()) {
+      throw new CustomError('截止时间不得早于当前时间');
+    } else {
+      return timeSet.update(
+        {
+          startTime,
+          endTime,
+        },
+        { where: { userRole: 10 }, raw: true }
+      );
+    }
+  },
   /**
    * 创建统计管理员系统时间
    */
-  insertBusinessManagerTime: ({ startTime, endTime }) =>
-    timeSet.create(
-      {
-        uuid: uuid.v1(),
-        startTime,
-        endTime,
-        userRole: 10,
-      },
-      { raw: true }
-    ),
+  insertBusinessManagerTime: ({ startTime, endTime }) => {
+    if (startTime > endTime) {
+      throw new CustomError('开始时间不得早于截止时间');
+    } else if (new Date(endTime) < new Date()) {
+      throw new CustomError('截止时间不得早于当前时间');
+    } else {
+      return timeSet.create(
+        {
+          uuid: uuid.v1(),
+          startTime,
+          endTime,
+          userRole: 10,
+        },
+        { raw: true }
+      );
+    }
+  },
   /**
    * 查询统计管理员系统时间
    */
@@ -105,27 +119,41 @@ export default {
   /**
    * 保存评审管理员系统时间
    */
-  updateReviewManagerTime: ({ startTime, endTime }) =>
-    timeSet.update(
-      {
-        startTime,
-        endTime,
-      },
-      { where: { userRole: 5 }, raw: true }
-    ),
+  updateReviewManagerTime: ({ startTime, endTime }) => {
+    if (startTime > endTime) {
+      throw new CustomError('开始时间不得早于截止时间');
+    } else if (new Date(endTime) < new Date()) {
+      throw new CustomError('截止时间不得早于当前时间');
+    } else {
+      return timeSet.update(
+        {
+          startTime,
+          endTime,
+        },
+        { where: { userRole: 5 }, raw: true }
+      );
+    }
+  },
   /**
    * 创建评审管理员系统时间
    */
-  insertReviewManagerTime: ({ startTime, endTime }) =>
-    timeSet.create(
-      {
-        uuid: uuid.v1(),
-        startTime,
-        endTime,
-        userRole: 5,
-      },
-      { raw: true }
-    ),
+  insertReviewManagerTime: ({ startTime, endTime }) => {
+    if (startTime > endTime) {
+      throw new CustomError('开始时间不得早于截止时间');
+    } else if (new Date(endTime) < new Date()) {
+      throw new CustomError('截止时间不得早于当前时间');
+    } else {
+      return timeSet.create(
+        {
+          uuid: uuid.v1(),
+          startTime,
+          endTime,
+          userRole: 5,
+        },
+        { raw: true }
+      );
+    }
+  },
   /**
    * 查询评审管理员系统时间
    */
@@ -138,27 +166,41 @@ export default {
   /**
    * 保存普通员工系统时间
    */
-  updateStaffTime: ({ startTime, endTime }) =>
-    timeSet.update(
-      {
-        startTime,
-        endTime,
-      },
-      { where: { userRole: 15 }, raw: true }
-    ),
+  updateStaffTime: ({ startTime, endTime }) => {
+    if (startTime > endTime) {
+      throw new CustomError('开始时间不得早于截止时间');
+    } else if (new Date(endTime) < new Date()) {
+      throw new CustomError('截止时间不得早于当前时间');
+    } else {
+      return timeSet.update(
+        {
+          startTime,
+          endTime,
+        },
+        { where: { userRole: 15 }, raw: true }
+      );
+    }
+  },
   /**
    * 创建普通员工系统时间
    */
-  insertStaffTime: ({ startTime, endTime }) =>
-    timeSet.create(
-      {
-        uuid: uuid.v1(),
-        startTime,
-        endTime,
-        userRole: 15,
-      },
-      { raw: true }
-    ),
+  insertStaffTime: ({ startTime, endTime }) => {
+    if (startTime > endTime) {
+      throw new CustomError('开始时间不得早于截止时间');
+    } else if (new Date(endTime) < new Date()) {
+      throw new CustomError('截止时间不得早于当前时间');
+    } else {
+      return timeSet.create(
+        {
+          uuid: uuid.v1(),
+          startTime,
+          endTime,
+          userRole: 15,
+        },
+        { raw: true }
+      );
+    }
+  },
   /**
    * 查询普通员工系统时间
    */

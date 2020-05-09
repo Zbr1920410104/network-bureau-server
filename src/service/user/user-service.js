@@ -9,6 +9,7 @@ import webToken from '../../util/token';
 // oss
 import client from '../../util/oss';
 import { db } from '../../db/db-connect';
+import sysTimeSet from '../../db/models/sys-time-set';
 
 export default {
   /**
@@ -79,6 +80,26 @@ export default {
         throw new CustomError('账号或密码错误');
       } else if (userInfo.isCancel === '已注销') {
         throw new CustomError('账号已注销');
+      } else if (userInfo.role !== 1) {
+        const sysTime = await sysTimeSet.findOne({
+          attributes: ['startTime', 'endTime'],
+          where: { userRole: userInfo.role },
+          raw: true,
+        });
+
+        const currentTime = new Date();
+
+        const startTime = new Date(sysTime.startTime);
+        const endTime = new Date(sysTime.endTime);
+
+        if (
+          currentTime.getTime() < startTime.getTime() ||
+          currentTime.getTime() > endTime.getTime() ||
+          !startTime ||
+          !endTime
+        ) {
+          throw new CustomError('不在系统开放时间内,无法登录!');
+        }
       }
 
       return {
