@@ -70,8 +70,8 @@ export default {
     user.findAll({
       attributes: [
         'uuid',
-        'phone',
         'name',
+        'userName',
         'verifyStatus',
         'currentWriteTime',
         'department',
@@ -87,8 +87,8 @@ export default {
     user.findAll({
       attributes: [
         'uuid',
-        'phone',
         'name',
+        'userName',
         'verifyStatus',
         'currentWriteTime',
         'department',
@@ -119,8 +119,8 @@ export default {
     user.findAll({
       attributes: [
         'uuid',
-        'phone',
         'name',
+        'userName',
         'verifyStatus',
         'currentWriteTime',
         'department',
@@ -737,7 +737,7 @@ export default {
       // ) {
       //   throw error;
       // }
-      const staffVerifyStatus = await staffStatus.findAll({
+      const staffVerifyStatus = await staffStatus.findOne({
         attributes: [
           'basicVerifyStatus',
           'projectVerifyStatus',
@@ -751,17 +751,17 @@ export default {
       });
 
       if (
-        staffVerifyStatus.basicVerifyStatus === '未核实' &&
-        staffVerifyStatus.basicVerifyStatus === '核实不通过' &&
-        staffVerifyStatus.projectVerifyStatus === '未核实' &&
-        staffVerifyStatus.projectVerifyStatus === '核实不通过' &&
-        staffVerifyStatus.patentVerifyStatus === '未核实' &&
-        staffVerifyStatus.patentVerifyStatus === '核实不通过' &&
-        staffVerifyStatus.copyrightVerifyStatus === '未核实' &&
-        staffVerifyStatus.copyrightVerifyStatus === '核实不通过' &&
-        staffVerifyStatus.awardVerifyStatus === '未核实' &&
-        staffVerifyStatus.awardVerifyStatus === '核实不通过' &&
-        staffVerifyStatus.thesisVerifyStatus === '未核实' &&
+        staffVerifyStatus.basicVerifyStatus === '未核实' ||
+        staffVerifyStatus.basicVerifyStatus === '核实不通过' ||
+        staffVerifyStatus.projectVerifyStatus === '未核实' ||
+        staffVerifyStatus.projectVerifyStatus === '核实不通过' ||
+        staffVerifyStatus.patentVerifyStatus === '未核实' ||
+        staffVerifyStatus.patentVerifyStatus === '核实不通过' ||
+        staffVerifyStatus.copyrightVerifyStatus === '未核实' ||
+        staffVerifyStatus.copyrightVerifyStatus === '核实不通过' ||
+        staffVerifyStatus.awardVerifyStatus === '未核实' ||
+        staffVerifyStatus.awardVerifyStatus === '核实不通过' ||
+        staffVerifyStatus.thesisVerifyStatus === '未核实' ||
         staffVerifyStatus.thesisVerifyStatus === '核实不通过'
       ) {
         throw error;
@@ -1036,10 +1036,10 @@ export default {
       staffCopyright.findAll({
         where: { userUuid },
       }),
-      staffThesis.findAll({
+      staffAward.findAll({
         where: { userUuid },
       }),
-      staffProject.findAll({
+      staffThesis.findAll({
         where: { userUuid },
       }),
     ]);
@@ -1250,33 +1250,32 @@ export default {
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.nation);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.nativePlace);
           arrInner.push(
-            _data[0].dataValues.staffBasic.dataValues?.politicalAffiliation
+            _data[0].dataValues.staffBasic?.dataValues.politicalAffiliation
           );
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.department);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.officePhone);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.phone);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.education);
           arrInner.push(
-            _data[0].dataValues.staffBasic.dataValues?.graduateSchool
+            _data[0].dataValues.staffBasic?.dataValues.graduateSchool
           );
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.major);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.duty);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.workTime);
           arrInner.push(
-            _data[0].dataValues.staffBasic?.dataValues?.professionTitle
+            _data[0].dataValues.staffBasic?.dataValues.professionTitle
           );
-          arrInner.push(_data[0].dataValues?.staffBasic?.dataValues.getTime);
+          arrInner.push(_data[0].dataValues.staffBasic?.dataValues.getTime);
           arrInner.push(
-            _data[0].dataValues.staffBasic?.dataValues?.researchDirection
-          );
-          arrInner.push(
-            _data[0].dataValues.staffBasic?.dataValues?.studyExperience
+            _data[0].dataValues.staffBasic?.dataValues.researchDirection
           );
           arrInner.push(
-            _data[0].dataValues.staffBasic?.dataValues?.workExperience
+            _data[0].dataValues.staffBasic?.dataValues.studyExperience
+          );
+          arrInner.push(
+            _data[0].dataValues.staffBasic?.dataValues.workExperience
           );
         } else {
-          arrInner.push(null);
           arrInner.push(null);
           arrInner.push(null);
           arrInner.push(null);
@@ -1298,27 +1297,27 @@ export default {
         }
       }
       if (exportList.indexOf(1) !== -1) {
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.type);
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.name);
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.startTime);
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.endTime);
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.code);
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.resource);
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.funds);
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.controller);
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.participant);
-        arrInner.push(_data[0].dataValues?.staffProject[item]?.content);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.type);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.name);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.startTime);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.endTime);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.code);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.resource);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.funds);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.controller);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.participant);
+        arrInner.push(_data[0].dataValues.staffProject[item]?.content);
       }
       if (exportList.indexOf(2) !== -1) {
-        arrInner.push(_data[0].dataValues?.staffPatent[item]?.patentType);
-        arrInner.push(_data[0].dataValues?.staffPatent[item]?.patentName);
-        arrInner.push(_data[0].dataValues?.staffPatent[item]?.patentCode);
-        arrInner.push(_data[0].dataValues?.staffPatent[item]?.patentNation);
+        arrInner.push(_data[0].dataValues.staffPatent[item]?.patentType);
+        arrInner.push(_data[0].dataValues.staffPatent[item]?.patentName);
+        arrInner.push(_data[0].dataValues.staffPatent[item]?.patentCode);
+        arrInner.push(_data[0].dataValues.staffPatent[item]?.patentNation);
       }
       if (exportList.indexOf(3) !== -1) {
-        arrInner.push(_data[0].dataValues?.staffCopyright[item]?.copyrightType);
-        arrInner.push(_data[0].dataValues?.staffCopyright[item]?.copyrightName);
-        arrInner.push(_data[0].dataValues?.staffCopyright[item]?.copyrightCode);
+        arrInner.push(_data[0].dataValues.staffCopyright[item]?.copyrightType);
+        arrInner.push(_data[0].dataValues.staffCopyright[item]?.copyrightName);
+        arrInner.push(_data[0].dataValues.staffCopyright[item]?.copyrightCode);
         arrInner.push(
           _data[0].dataValues?.staffCopyright[item]?.copyrightArrange
         );
@@ -1515,10 +1514,10 @@ export default {
         staffCopyright.findAll({
           where: { userUuid: staffList[num] },
         }),
-        staffThesis.findAll({
+        staffAward.findAll({
           where: { userUuid: staffList[num] },
         }),
-        staffProject.findAll({
+        staffThesis.findAll({
           where: { userUuid: staffList[num] },
         }),
       ]);
@@ -1643,7 +1642,7 @@ export default {
               _data[0].dataValues.staffBasic?.dataValues.nativePlace
             );
             arrInner.push(
-              _data[0].dataValues.staffBasic.dataValues?.politicalAffiliation
+              _data[0].dataValues.staffBasic?.dataValues.politicalAffiliation
             );
             arrInner.push(
               _data[0].dataValues.staffBasic?.dataValues.department
@@ -1654,7 +1653,7 @@ export default {
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.phone);
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.education);
             arrInner.push(
-              _data[0].dataValues.staffBasic.dataValues?.graduateSchool
+              _data[0].dataValues.staffBasic?.dataValues.graduateSchool
             );
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.major);
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.duty);
@@ -1662,7 +1661,7 @@ export default {
             arrInner.push(
               _data[0].dataValues.staffBasic?.dataValues?.professionTitle
             );
-            arrInner.push(_data[0].dataValues?.staffBasic?.dataValues.getTime);
+            arrInner.push(_data[0].dataValues.staffBasic?.dataValues.getTime);
             arrInner.push(
               _data[0].dataValues.staffBasic?.dataValues?.researchDirection
             );
@@ -1694,35 +1693,35 @@ export default {
           }
         }
         if (exportList.indexOf(1) !== -1) {
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.type);
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.name);
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.startTime);
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.endTime);
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.code);
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.resource);
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.funds);
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.controller);
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.participant);
-          arrInner.push(_data[0].dataValues?.staffProject[item]?.content);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.type);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.name);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.startTime);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.endTime);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.code);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.resource);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.funds);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.controller);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.participant);
+          arrInner.push(_data[0].dataValues.staffProject[item]?.content);
         }
         if (exportList.indexOf(2) !== -1) {
-          arrInner.push(_data[0].dataValues?.staffPatent[item]?.patentType);
-          arrInner.push(_data[0].dataValues?.staffPatent[item]?.patentName);
-          arrInner.push(_data[0].dataValues?.staffPatent[item]?.patentCode);
-          arrInner.push(_data[0].dataValues?.staffPatent[item]?.patentNation);
+          arrInner.push(_data[0].dataValues.staffPatent[item]?.patentType);
+          arrInner.push(_data[0].dataValues.staffPatent[item]?.patentName);
+          arrInner.push(_data[0].dataValues.staffPatent[item]?.patentCode);
+          arrInner.push(_data[0].dataValues.staffPatent[item]?.patentNation);
         }
         if (exportList.indexOf(3) !== -1) {
           arrInner.push(
-            _data[0].dataValues?.staffCopyright[item]?.copyrightType
+            _data[0].dataValues.staffCopyright[item]?.copyrightType
           );
           arrInner.push(
-            _data[0].dataValues?.staffCopyright[item]?.copyrightName
+            _data[0].dataValues.staffCopyright[item]?.copyrightName
           );
           arrInner.push(
-            _data[0].dataValues?.staffCopyright[item]?.copyrightCode
+            _data[0].dataValues.staffCopyright[item]?.copyrightCode
           );
           arrInner.push(
-            _data[0].dataValues?.staffCopyright[item]?.copyrightArrange
+            _data[0].dataValues.staffCopyright[item]?.copyrightArrange
           );
         }
         if (exportList.indexOf(4) !== -1) {

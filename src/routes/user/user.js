@@ -29,7 +29,7 @@ router.get('/getUserName', async (ctx, next) => {
       data,
     });
   } catch (error) {
-    ctx.throw(RESPONSE_CODE.unauthorized);
+    throw error;
   }
 });
 

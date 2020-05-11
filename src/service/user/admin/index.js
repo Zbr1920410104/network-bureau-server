@@ -326,7 +326,6 @@ export default {
           role,
           department,
           userName,
-          verifyStatus,
           departmentUuid,
           isCancel: '未注销',
           password: md5('123456'),

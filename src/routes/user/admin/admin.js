@@ -268,7 +268,7 @@ router.post('/addAccount', async (ctx, next) => {
     let verifyStatus;
 
     if (role === 15) {
-      verifyStatus = '未填写完毕';
+      verifyStatus = '未提交';
     }
 
     const data = await service.insertAccount({

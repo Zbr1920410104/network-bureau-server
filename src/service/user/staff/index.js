@@ -9,13 +9,15 @@ import staffStatus from '../../../db/models/staff-status';
 
 import uuid from 'uuid';
 
-// 工具类
-import CustomError from '../../../util/custom-error';
-import webToken from '../../../util/token';
-
 // oss
 import client from '../../../util/oss';
 import { db } from '../../../db/db-connect';
+
+// 工具类
+import CustomError from '../../../util/custom-error';
+import webToken from '../../../util/token';
+import Sequelize from 'sequelize';
+const Op = Sequelize.Op;
 
 export default {
   /**
@@ -172,46 +174,24 @@ export default {
    * 查询员工填写信息
    */
   getStaffWriteInfo: async (userUuid) => {
-    try {
-      let lastWriteList = await user.findOne({
-        attributes: ['name', 'department', 'lastWriteTime'],
-        where: { uuid: userUuid },
-        raw: true,
-      });
-
-      if ('lastWriteTime' in lastWriteList) {
-        lastWriteList.id = 2;
-        lastWriteList.writeTime = lastWriteList.lastWriteTime;
-      }
-
-      let currentWriteList = await user.findOne({
-        attributes: [
-          'name',
-          'department',
-          'currentWriteTime',
-          'verifyStatus',
-          'verifyTime',
-        ],
-        where: { uuid: userUuid },
-        raw: true,
-      });
-
-      if ('currentWriteTime' in currentWriteList) {
-        currentWriteList.id = 1;
-        currentWriteList.writeTime = currentWriteList.currentWriteTime;
-        if (!currentWriteList.verifyStatus) {
-          currentWriteList.verifyStatus = '未填写完毕';
-        }
-      }
-
-      if ('lastWriteTime' in lastWriteList) {
-        return [currentWriteList, lastWriteList];
-      } else if ('currentWriteTime' in currentWriteList) {
-        return [currentWriteList];
-      } else return [];
-    } catch (error) {
-      throw error;
-    }
+    return await user.findAll({
+      attributes: [
+        'name',
+        'department',
+        'lastWriteTime',
+        'currentWriteTime',
+        'verifyStatus',
+        'verifyTime',
+        'totalScore',
+        'projectScoreSum',
+        'patentScoreSum',
+        'copyrightScoreSum',
+        'awardScoreSum',
+        'thesisScoreSum',
+      ],
+      where: { uuid: userUuid },
+      raw: true,
+    });
   },
 
   /**
@@ -272,6 +252,7 @@ export default {
         'isVerify',
         'currentWriteTime',
         'verifyRemarks',
+        'score',
       ],
       where: { userUuid },
       raw: true,
@@ -343,7 +324,7 @@ export default {
         isVerify: '未核实',
         verifyRemarks: '',
       },
-      { where: { uuid }, raw: true }
+      { where: { uuid, isVerify: { [Op.ne]: '核实通过' } }, raw: true }
     ),
 
   /**
@@ -395,6 +376,7 @@ export default {
         'patentNation',
         'verifyRemarks',
         'currentWriteTime',
+        'score',
       ],
       where: { userUuid },
       raw: true,
@@ -495,6 +477,7 @@ export default {
         'copyrightArrange',
         'verifyRemarks',
         'currentWriteTime',
+        'score',
       ],
       where: { userUuid },
       raw: true,
@@ -606,6 +589,7 @@ export default {
         'verifyRemarks',
         'currentWriteTime',
         'awardNameList',
+        'score',
       ],
       where: { userUuid },
       raw: true,
@@ -729,6 +713,7 @@ export default {
         'thesisAuthorSequence',
         'verifyRemarks',
         'currentWriteTime',
+        'score',
       ],
       where: { userUuid },
       raw: true,

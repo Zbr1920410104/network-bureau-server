@@ -41,8 +41,8 @@ Promise.all([
         phone: '18351923820',
         name: '超级管理员',
         password: 'e10adc3949ba59abbe56e057f20f883e',
-        department: '管理科',
-        departmentUuid: 'guanlike',
+        department: '综合管理科',
+        departmentUuid: 'zongheguanli',
       }),
       user.create({
         uuid: 'woshiyigeyuangong',
@@ -54,7 +54,7 @@ Promise.all([
         password: 'e10adc3949ba59abbe56e057f20f883e',
         department: '战略研究科',
         departmentUuid: 'zhanlueyanjiuke',
-        verifyStatus: '未填写完毕',
+        verifyStatus: '未提交',
       }),
       user.create({
         uuid: 'woshiyigetongji',
@@ -64,8 +64,8 @@ Promise.all([
         phone: '18351923820',
         name: '统计1',
         password: 'e10adc3949ba59abbe56e057f20f883e',
-        department: '统计科',
-        departmentUuid: 'tongjike',
+        department: '综合管理科',
+        departmentUuid: 'zongheguanli',
       }),
       user.create({
         uuid: 'woshiyigepingshen',
@@ -75,8 +75,8 @@ Promise.all([
         phone: '18351923820',
         name: '评审1',
         password: 'e10adc3949ba59abbe56e057f20f883e',
-        department: '评审科',
-        departmentUuid: 'pingshenke',
+        department: '综合管理科',
+        departmentUuid: 'zongheguanli',
       }),
       staffStatus.create({
         uuid: 'woshiyigeyuangong',
@@ -90,12 +90,12 @@ Promise.all([
         name: '战略研究科',
       }),
       department.create({
-        uuid: 'tongjike',
-        name: '统计科',
+        uuid: 'zongheguanli',
+        name: '综合管理科',
       }),
       department.create({
-        uuid: 'pingshenke',
-        name: '评审科',
+        uuid: 'caiwuke',
+        name: '财务科',
       }),
     ])
   )

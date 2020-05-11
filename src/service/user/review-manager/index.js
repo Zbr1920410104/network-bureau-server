@@ -34,7 +34,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -58,7 +58,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -82,7 +82,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -110,7 +110,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -130,7 +130,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -154,7 +154,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -182,7 +182,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -206,7 +206,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -230,7 +230,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -258,7 +258,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -282,7 +282,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -306,7 +306,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -334,7 +334,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -358,7 +358,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -382,7 +382,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -410,7 +410,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -434,7 +434,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -458,7 +458,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -486,7 +486,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -510,7 +510,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -534,7 +534,7 @@ export default {
             return user.findAll({
               attributes: [
                 'uuid',
-                'phone',
+                'userName',
                 'name',
                 'reviewTime',
                 'currentWriteTime',
@@ -565,7 +565,7 @@ export default {
     user.findAll({
       attributes: [
         'uuid',
-        'phone',
+        'userName',
         'name',
         'reviewTime',
         'currentWriteTime',
@@ -618,7 +618,7 @@ export default {
     user.findAll({
       attributes: [
         'uuid',
-        'phone',
+        'userName',
         'name',
         'totalScore',
         'reviewTime',
@@ -649,7 +649,7 @@ export default {
       return await user.findAll({
         attributes: [
           'uuid',
-          'phone',
+          'userName',
           'name',
           'totalScore',
           'currentWriteTime',
@@ -668,7 +668,7 @@ export default {
       return await user.findAll({
         attributes: [
           'uuid',
-          'phone',
+          'userName',
           'name',
           'totalScore',
           'currentWriteTime',
