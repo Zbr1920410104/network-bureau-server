@@ -1,13 +1,15 @@
-import enterpriseRegistrationService from './enterprise/enterprise-registration-service';
-import enterpriseUserService from './enterprise/enterprise-user-service';
-import managerUserService from './manager/manager-user-service';
-import fileService from './user/file-service';
-import fieldTestsService from './enterprise/registration/field-tests';
+import fileService from './file/file-service';
+import userService from './user/user-service';
+import adminService from './user/admin/index';
+import staffService from './user/staff/index';
+import businessManagerService from './user/business-manager/index';
+import reviewManagerService from './user/review-manager/index';
 
 export default {
-  ...enterpriseRegistrationService,
-  ...enterpriseUserService,
-  ...managerUserService,
   ...fileService,
-  ...fieldTestsService
+  ...userService,
+  ...adminService,
+  ...staffService,
+  ...businessManagerService,
+  ...reviewManagerService,
 };

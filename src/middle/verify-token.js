@@ -22,22 +22,11 @@ export default async (ctx, next) => {
       // 获取jwt
       const token = ctx.header.authorization;
       let data = webToken.resolveToken(token),
-        user = null;
+        userInfo = null;
 
-      switch (data.auth) {
-        case 'manager':
-          user = await service.selectManagerByManagerUuid(data.uuid);
+      userInfo = await service.selectUserByUuid(data.uuid);
 
-          break;
-        case 'enterprise':
-          user = await service.getEnterpriseByUuid(data.uuid);
-
-          // 设置上权限号
-          user.role = 100;
-          break;
-      }
-
-      ctx.state.user = user;
+      ctx.state.user = userInfo;
     } catch (error) {
       ctx.throw(RESPONSE_CODE.unauthorized);
     }

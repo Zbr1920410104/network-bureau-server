@@ -1,38 +1,23 @@
 // 权限
 export const AUTHORITY = {
-  SUPER: {
-    name: '超级管理员',
+  ADMIN: {
+    name: '管理员',
     code: 1,
-    router: '/superManager'
+    router: '/admin'
   },
-  ACCOUNTANT: {
-    name: '财务',
+  REVIEW_MANAGER: {
+    name: '评审员',
     code: 5,
-    router: '/accountantManager'
+    router: '/reviewManager'
   },
-  PROJECT_MANAGER: {
-    name: '项目管理人员',
+  BUSINESS_MANAGER: {
+    name: '统计员',
     code: 10,
-    router: '/projectManager'
+    router: '/businessManager'
   },
-  TECH_LEADER: {
-    name: '技术负责人',
+  STAFF: {
+    name: '普通员工',
     code: 15,
-    router: '/techLeaderManager'
-  },
-  TECH: {
-    name: '技术人员',
-    code: 20,
-    router: '/techManager'
-  },
-  CERTIFIER: {
-    name: '批准人',
-    code: 25,
-    router: '/certifierManager'
-  },
-  ENTERPRISE: {
-    name: '企业',
-    code: 100,
-    router: '/enterprise'
+    router: '/staff'
   }
 };

@@ -8,17 +8,13 @@ import logger from 'koa-logger';
 import cors from 'koa2-cors';
 
 // 路由
-import enterpriseUsers from './src/routes/enterprise/enterprise-user';
-import managerUsers from './src/routes/manager/manager-user';
-import superManager from './src/routes/manager/super-manager';
-import projectManager from './src/routes/manager/project-manager';
-import accountantManager from './src/routes/manager/accountant-manager';
-import techLeaderManager from './src/routes/manager/tech-leader-manager';
-import techManager from './src/routes/manager/tech-manager';
-import certifier from './src/routes/manager/certifier-manager';
-import enterpriseRegistration from './src/routes/enterprise/enterprise-registration';
+import users from './src/routes/user/user';
+import admin from './src/routes/user/admin/admin';
+import businessManager from './src/routes/user/business-manager/business-manager';
+import reviewManager from './src/routes/user/review-manager/review-manager';
+import staff from './src/routes/user/staff/staff';
 
-import file from './src/routes/user/file';
+import file from './src/routes/file/file';
 
 // 中间件
 import verifyToken from './src/middle/verify-token';
@@ -59,19 +55,11 @@ app.use(async (ctx, next) => {
 });
 
 // routes
-app.use(enterpriseUsers.routes(), enterpriseUsers.allowedMethods());
-app.use(managerUsers.routes(), managerUsers.allowedMethods());
-// 超级管理员权限
-app.use(superManager.routes(), superManager.allowedMethods());
-app.use(projectManager.routes(), projectManager.allowedMethods());
-app.use(accountantManager.routes(), accountantManager.allowedMethods());
-app.use(techLeaderManager.routes(), techLeaderManager.allowedMethods());
-app.use(techManager.routes(), techManager.allowedMethods());
-app.use(certifier.routes(), certifier.allowedMethods());
-app.use(
-  enterpriseRegistration.routes(),
-  enterpriseRegistration.allowedMethods()
-);
+app.use(users.routes(), users.allowedMethods());
+app.use(admin.routes(), admin.allowedMethods());
+app.use(businessManager.routes(), businessManager.allowedMethods());
+app.use(reviewManager.routes(), reviewManager.allowedMethods());
+app.use(staff.routes(), staff.allowedMethods());
 app.use(file.routes(), file.allowedMethods());
 
 // error-handling
