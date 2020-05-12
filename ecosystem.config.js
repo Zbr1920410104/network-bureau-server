@@ -26,7 +26,7 @@ module.exports = {
     production: {
       user: 'root',
       host: '39.97.175.30',
-      ref: 'origin/dev',
+      ref: 'origin/master',
       repo: 'git@github.com:Zbr1920410104/network-bureau-server.git',
       path: '/network-bureau/network-bureau-server',
       'post-deploy':
