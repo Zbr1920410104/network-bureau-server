@@ -87,18 +87,20 @@ export default {
           raw: true,
         });
 
-        const currentTime = new Date();
+        if (sysTime.length) {
+          const currentTime = new Date();
 
-        const startTime = new Date(sysTime.startTime);
-        const endTime = new Date(sysTime.endTime);
+          const startTime = new Date(sysTime.startTime);
+          const endTime = new Date(sysTime.endTime);
 
-        if (
-          currentTime.getTime() < startTime.getTime() ||
-          currentTime.getTime() > endTime.getTime() ||
-          !startTime ||
-          !endTime
-        ) {
-          throw new CustomError('不在系统开放时间内,无法登录!');
+          if (
+            currentTime.getTime() < startTime.getTime() ||
+            currentTime.getTime() > endTime.getTime() ||
+            !startTime ||
+            !endTime
+          ) {
+            throw new CustomError('不在系统开放时间内,无法登录!');
+          }
         }
       }
 
