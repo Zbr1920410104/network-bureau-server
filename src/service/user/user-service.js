@@ -87,7 +87,7 @@ export default {
           raw: true,
         });
 
-        if (sysTime.length) {
+        if (sysTime) {
           const currentTime = new Date();
 
           const startTime = new Date(sysTime.startTime);
