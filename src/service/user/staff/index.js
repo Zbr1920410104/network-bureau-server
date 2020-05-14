@@ -969,7 +969,7 @@ export default {
       }),
     ]);
 
-    if (!basicWriteStatus.currentWriteTime) {
+    if (!basicWriteStatus?.currentWriteTime) {
       throw new CustomError('请填写基本信息!');
     }
 
