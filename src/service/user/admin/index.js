@@ -288,8 +288,8 @@ export default {
     verifyStatus,
     departmentUuid,
   }) => {
+    const userUuid = uuid.v1();
     if (role === 15) {
-      const userUuid = uuid.v1();
       return await Promise.all([
         user.create(
           {

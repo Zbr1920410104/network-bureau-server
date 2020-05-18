@@ -24,7 +24,8 @@ export default db.define('staff_basic', {
   department: Sequelize.STRING(32), // 科室
   officePhone: Sequelize.STRING(32), // 办公电话
   phone: Sequelize.STRING(32), // 手机号码
-  education: Sequelize.STRING(32), // 学历/学位
+  education: Sequelize.STRING(32), // 学历
+  degree: Sequelize.STRING(32), // 学位
   graduateSchool: Sequelize.STRING(32), // 毕业学校
   major: Sequelize.STRING(32), // 所学专业
   duty: Sequelize.STRING(32), // 职务

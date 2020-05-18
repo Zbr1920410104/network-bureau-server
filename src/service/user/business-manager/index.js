@@ -14,6 +14,7 @@ import uuid from 'uuid';
 
 // 工具
 import xlsx from 'node-xlsx';
+import moment from 'moment';
 
 // oss
 import client from '../../../util/oss';
@@ -1261,11 +1262,23 @@ export default {
           );
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.major);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.duty);
-          arrInner.push(_data[0].dataValues.staffBasic?.dataValues.workTime);
+          arrInner.push(
+            _data[0].dataValues.staffBasic
+              ? moment(
+                  _data[0].dataValues.staffBasic?.dataValues.workTime
+                ).format('YYYY-MM-DD')
+              : null
+          );
           arrInner.push(
             _data[0].dataValues.staffBasic?.dataValues.professionTitle
           );
-          arrInner.push(_data[0].dataValues.staffBasic?.dataValues.getTime);
+          arrInner.push(
+            _data[0].dataValues.staffBasic
+              ? moment(
+                  _data[0].dataValues.staffBasic?.dataValues.getTime
+                ).format('YYYY-MM-DD')
+              : null
+          );
           arrInner.push(
             _data[0].dataValues.staffBasic?.dataValues.researchDirection
           );
@@ -1299,8 +1312,20 @@ export default {
       if (exportList.indexOf(1) !== -1) {
         arrInner.push(_data[0].dataValues.staffProject[item]?.type);
         arrInner.push(_data[0].dataValues.staffProject[item]?.name);
-        arrInner.push(_data[0].dataValues.staffProject[item]?.startTime);
-        arrInner.push(_data[0].dataValues.staffProject[item]?.endTime);
+        arrInner.push(
+          _data[0].dataValues.staffProject[item]
+            ? moment(_data[0].dataValues.staffProject[item]?.startTime).format(
+                'YYYY-MM-DD'
+              )
+            : null
+        );
+        arrInner.push(
+          _data[0].dataValues.staffProject[item]
+            ? moment(_data[0].dataValues.staffProject[item]?.endTime).format(
+                'YYYY-MM-DD'
+              )
+            : null
+        );
         arrInner.push(_data[0].dataValues.staffProject[item]?.code);
         arrInner.push(_data[0].dataValues.staffProject[item]?.resource);
         arrInner.push(_data[0].dataValues.staffProject[item]?.funds);
@@ -1323,25 +1348,35 @@ export default {
         );
       }
       if (exportList.indexOf(4) !== -1) {
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardType);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardName);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardTime);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardGrade);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardDepartment);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardNameList);
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardType);
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardName);
+        arrInner.push(
+          _data[0].dataValues.staffAward[item]
+            ? moment(_data[0].dataValues.staffAward[item]?.awardTime).format(
+                'YYYY-MM-DD'
+              )
+            : null
+        );
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardGrade);
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardDepartment);
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardNameList);
       }
       if (exportList.indexOf(5) !== -1) {
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisTitle);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisType);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisJournal);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisTime);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisGrade);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisCode);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisTitle);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisType);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisJournal);
         arrInner.push(
-          _data[0].dataValues.staffThesis?.[item]?.thesisFirstAuthor
+          _data[0].dataValues.staffThesis[item]
+            ? moment(_data[0].dataValues.staffThesis[item]?.thesisTime).format(
+                'YYYY-MM-DD'
+              )
+            : null
         );
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisGrade);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisCode);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisFirstAuthor);
         arrInner.push(
-          _data[0].dataValues.staffThesis?.[item]?.thesisAuthorSequence
+          _data[0].dataValues.staffThesis[item]?.thesisAuthorSequence
         );
       }
       data.push(arrInner);
@@ -1657,11 +1692,23 @@ export default {
             );
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.major);
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.duty);
-            arrInner.push(_data[0].dataValues.staffBasic?.dataValues.workTime);
+            arrInner.push(
+              _data[0].dataValues.staffBasic
+                ? moment(
+                    _data[0].dataValues.staffBasic?.dataValues.workTime
+                  ).format('YYYY-MM-DD')
+                : null
+            );
             arrInner.push(
               _data[0].dataValues.staffBasic?.dataValues?.professionTitle
             );
-            arrInner.push(_data[0].dataValues.staffBasic?.dataValues.getTime);
+            arrInner.push(
+              _data[0].dataValues.staffBasic
+                ? moment(
+                    _data[0].dataValues.staffBasic?.dataValues.getTime
+                  ).format('YYYY-MM-DD')
+                : null
+            );
             arrInner.push(
               _data[0].dataValues.staffBasic?.dataValues?.researchDirection
             );
@@ -1695,8 +1742,20 @@ export default {
         if (exportList.indexOf(1) !== -1) {
           arrInner.push(_data[0].dataValues.staffProject[item]?.type);
           arrInner.push(_data[0].dataValues.staffProject[item]?.name);
-          arrInner.push(_data[0].dataValues.staffProject[item]?.startTime);
-          arrInner.push(_data[0].dataValues.staffProject[item]?.endTime);
+          arrInner.push(
+            _data[0].dataValues.staffProject[item]
+              ? moment(
+                  _data[0].dataValues.staffProject[item]?.startTime
+                ).format('YYYY-MM-DD')
+              : null
+          );
+          arrInner.push(
+            _data[0].dataValues.staffProject[item]
+              ? moment(_data[0].dataValues.staffProject[item]?.endTime).format(
+                  'YYYY-MM-DD'
+                )
+              : null
+          );
           arrInner.push(_data[0].dataValues.staffProject[item]?.code);
           arrInner.push(_data[0].dataValues.staffProject[item]?.resource);
           arrInner.push(_data[0].dataValues.staffProject[item]?.funds);
@@ -1725,27 +1784,37 @@ export default {
           );
         }
         if (exportList.indexOf(4) !== -1) {
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardType);
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardName);
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardTime);
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardGrade);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardType);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardName);
           arrInner.push(
-            _data[0].dataValues.staffAward?.[item]?.awardDepartment
+            _data[0].dataValues.staffAward[item]
+              ? moment(_data[0].dataValues.staffAward[item]?.awardTime).format(
+                  'YYYY-MM-DD'
+                )
+              : null
           );
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardNameList);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardGrade);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardDepartment);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardNameList);
         }
         if (exportList.indexOf(5) !== -1) {
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisTitle);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisType);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisJournal);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisTime);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisGrade);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisCode);
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisTitle);
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisType);
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisJournal);
           arrInner.push(
-            _data[0].dataValues.staffThesis?.[item]?.thesisFirstAuthor
+            _data[0].dataValues.staffThesis[item]
+              ? moment(
+                  _data[0].dataValues.staffThesis[item]?.thesisTime
+                ).format('YYYY-MM-DD')
+              : null
+          );
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisGrade);
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisCode);
+          arrInner.push(
+            _data[0].dataValues.staffThesis[item]?.thesisFirstAuthor
           );
           arrInner.push(
-            _data[0].dataValues.staffThesis?.[item]?.thesisAuthorSequence
+            _data[0].dataValues.staffThesis[item]?.thesisAuthorSequence
           );
         }
         data.push(arrInner);
