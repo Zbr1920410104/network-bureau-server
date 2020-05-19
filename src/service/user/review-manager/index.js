@@ -597,6 +597,7 @@ export default {
         'officePhone',
         'phone',
         'education',
+        'degree',
         'graduateSchool',
         'major',
         'duty',

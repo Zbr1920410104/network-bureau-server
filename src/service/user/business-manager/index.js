@@ -48,6 +48,7 @@ export default {
         'officePhone',
         'phone',
         'education',
+        'degree',
         'graduateSchool',
         'major',
         'duty',
@@ -1074,6 +1075,7 @@ export default {
             'officePhone',
             'phone',
             'education',
+            'degree',
             'graduateSchool',
             'major',
             'duty',
@@ -1163,7 +1165,8 @@ export default {
             '科室',
             '办公电话',
             '手机号码',
-            '学历/学位',
+            '学历',
+            '学位',
             '毕业学校',
             '所学专业',
             '职务',
@@ -1257,6 +1260,7 @@ export default {
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.officePhone);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.phone);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.education);
+          arrInner.push(_data[0].dataValues.staffBasic?.dataValues.degree);
           arrInner.push(
             _data[0].dataValues.staffBasic?.dataValues.graduateSchool
           );
@@ -1289,6 +1293,7 @@ export default {
             _data[0].dataValues.staffBasic?.dataValues.workExperience
           );
         } else {
+          arrInner.push(null);
           arrInner.push(null);
           arrInner.push(null);
           arrInner.push(null);
@@ -1453,7 +1458,8 @@ export default {
             '科室',
             '办公电话',
             '手机号码',
-            '学历/学位',
+            '学历',
+            '学位',
             '毕业学校',
             '所学专业',
             '职务',
@@ -1587,6 +1593,7 @@ export default {
               'officePhone',
               'phone',
               'education',
+              'degree',
               'graduateSchool',
               'major',
               'duty',
@@ -1687,6 +1694,7 @@ export default {
             );
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.phone);
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.education);
+            arrInner.push(_data[0].dataValues.staffBasic?.dataValues.degree);
             arrInner.push(
               _data[0].dataValues.staffBasic?.dataValues.graduateSchool
             );
@@ -1719,6 +1727,7 @@ export default {
               _data[0].dataValues.staffBasic?.dataValues?.workExperience
             );
           } else {
+            arrInner.push(null);
             arrInner.push(null);
             arrInner.push(null);
             arrInner.push(null);
