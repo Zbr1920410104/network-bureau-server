@@ -72,14 +72,21 @@ export default {
   /**
    * 保存统计管理员系统时间
    */
-  updateBusinessManagerTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  updateBusinessManagerTime: ({
+    startTime,
+    endTime,
+    sysSwitch,
+    timeSwitch,
+  }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
     } else if (new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.update(
         {
+          sysSwitch,
+          timeSwitch,
           startTime,
           endTime,
         },
@@ -90,8 +97,13 @@ export default {
   /**
    * 创建统计管理员系统时间
    */
-  insertBusinessManagerTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  insertBusinessManagerTime: ({
+    startTime,
+    endTime,
+    sysSwitch,
+    timeSwitch,
+  }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
     } else if (new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
@@ -99,6 +111,8 @@ export default {
       return timeSet.create(
         {
           uuid: uuid.v1(),
+          sysSwitch,
+          timeSwitch,
           startTime,
           endTime,
           userRole: 10,
@@ -112,21 +126,23 @@ export default {
    */
   selectBusinessManagerTime: () =>
     timeSet.findOne({
-      attributes: ['startTime', 'endTime'],
+      attributes: ['startTime', 'endTime', 'sysSwitch', 'timeSwitch'],
       where: { userRole: 10 },
       raw: true,
     }),
   /**
    * 保存评审管理员系统时间
    */
-  updateReviewManagerTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  updateReviewManagerTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
     } else if (new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.update(
         {
+          sysSwitch,
+          timeSwitch,
           startTime,
           endTime,
         },
@@ -137,8 +153,8 @@ export default {
   /**
    * 创建评审管理员系统时间
    */
-  insertReviewManagerTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  insertReviewManagerTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
     } else if (new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
@@ -146,6 +162,8 @@ export default {
       return timeSet.create(
         {
           uuid: uuid.v1(),
+          sysSwitch,
+          timeSwitch,
           startTime,
           endTime,
           userRole: 5,
@@ -159,15 +177,15 @@ export default {
    */
   selectReviewManagerTime: () =>
     timeSet.findOne({
-      attributes: ['startTime', 'endTime'],
+      attributes: ['startTime', 'endTime', 'sysSwitch', 'timeSwitch'],
       where: { userRole: 5 },
       raw: true,
     }),
   /**
    * 保存普通员工系统时间
    */
-  updateStaffTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  updateStaffTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
     } else if (new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
@@ -176,6 +194,8 @@ export default {
         {
           startTime,
           endTime,
+          sysSwitch,
+          timeSwitch,
         },
         { where: { userRole: 15 }, raw: true }
       );
@@ -184,8 +204,8 @@ export default {
   /**
    * 创建普通员工系统时间
    */
-  insertStaffTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  insertStaffTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
     } else if (new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
@@ -195,6 +215,8 @@ export default {
           uuid: uuid.v1(),
           startTime,
           endTime,
+          sysSwitch,
+          timeSwitch,
           userRole: 15,
         },
         { raw: true }
@@ -206,7 +228,7 @@ export default {
    */
   selectStaffTime: () =>
     timeSet.findOne({
-      attributes: ['startTime', 'endTime'],
+      attributes: ['startTime', 'endTime', 'sysSwitch', 'timeSwitch'],
       where: { userRole: 15 },
       raw: true,
     }),

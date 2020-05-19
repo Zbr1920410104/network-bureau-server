@@ -81,7 +81,7 @@ router.del('/deleteDepartment', async (ctx, next) => {
  */
 router.post('/saveBusinessManagerTime', async (ctx) => {
   try {
-    const { startTime, endTime, uuid } = ctx.state.param;
+    const { startTime, endTime, sysSwitch, timeSwitch } = ctx.state.param;
 
     const res = await service.selectBusinessManagerTime();
     let data;
@@ -90,11 +90,15 @@ router.post('/saveBusinessManagerTime', async (ctx) => {
       data = await service.insertBusinessManagerTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     } else {
       data = await service.updateBusinessManagerTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     }
     ctx.body = new Res({
@@ -128,7 +132,7 @@ router.get('/selectBusinessManagerTime', async (ctx, next) => {
  */
 router.post('/saveReviewManagerTime', async (ctx) => {
   try {
-    const { startTime, endTime } = ctx.state.param;
+    const { startTime, endTime, sysSwitch, timeSwitch } = ctx.state.param;
 
     const res = await service.selectReviewManagerTime();
     let data;
@@ -137,11 +141,15 @@ router.post('/saveReviewManagerTime', async (ctx) => {
       data = await service.insertReviewManagerTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     } else {
       data = await service.updateReviewManagerTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     }
     ctx.body = new Res({
@@ -175,7 +183,7 @@ router.get('/selectReviewManagerTime', async (ctx, next) => {
  */
 router.post('/saveStaffTime', async (ctx) => {
   try {
-    const { startTime, endTime } = ctx.state.param;
+    const { startTime, endTime, sysSwitch, timeSwitch } = ctx.state.param;
 
     const res = await service.selectStaffTime();
     let data;
@@ -184,11 +192,15 @@ router.post('/saveStaffTime', async (ctx) => {
       data = await service.insertStaffTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     } else {
       data = await service.updateStaffTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     }
     ctx.body = new Res({

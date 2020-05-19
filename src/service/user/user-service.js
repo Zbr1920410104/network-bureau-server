@@ -82,24 +82,26 @@ export default {
         throw new CustomError('账号已注销');
       } else if (userInfo.role !== 1) {
         const sysTime = await sysTimeSet.findOne({
-          attributes: ['startTime', 'endTime'],
+          attributes: ['startTime', 'endTime', 'sysSwitch', 'timeSwitch'],
           where: { userRole: userInfo.role },
           raw: true,
         });
 
         if (sysTime) {
-          const currentTime = new Date();
+          if (sysTime.sysSwitch && sysTime.timeSwitch) {
+            const currentTime = new Date();
 
-          const startTime = new Date(sysTime.startTime);
-          const endTime = new Date(sysTime.endTime);
+            const startTime = new Date(sysTime.startTime);
+            const endTime = new Date(sysTime.endTime);
 
-          if (
-            currentTime.getTime() < startTime.getTime() ||
-            currentTime.getTime() > endTime.getTime() ||
-            !startTime ||
-            !endTime
-          ) {
-            throw new CustomError('不在系统开放时间内,无法登录!');
+            if (
+              currentTime.getTime() < startTime.getTime() ||
+              currentTime.getTime() > endTime.getTime()
+            ) {
+              throw new CustomError('不在此用户系统开放时间内,无法登录!');
+            }
+          } else if (!sysTime.sysSwitch) {
+            throw new CustomError('不在此用户系统开放时间内,无法登录!');
           }
         }
       }
