@@ -312,7 +312,7 @@ router.get('/getDepartment', async (ctx, next) => {
  */
 router.post('/resetPassword', async (ctx, next) => {
   try {
-    const { uuid } = ctx.state.param;
+    const { userUuid: uuid } = ctx.state.param;
 
     const data = await service.updatePassword(uuid);
 
@@ -331,7 +331,7 @@ router.post('/resetPassword', async (ctx, next) => {
  */
 router.post('/accountCancel', async (ctx, next) => {
   try {
-    const { uuid } = ctx.state.param;
+    const { userUuid: uuid } = ctx.state.param;
 
     const data = await service.updatAccountCancel(uuid);
 
