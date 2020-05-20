@@ -80,7 +80,7 @@ export default {
   }) => {
     if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.update(
@@ -105,7 +105,7 @@ export default {
   }) => {
     if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.create(
@@ -136,7 +136,7 @@ export default {
   updateReviewManagerTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
     if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.update(
@@ -156,7 +156,7 @@ export default {
   insertReviewManagerTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
     if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.create(
@@ -187,7 +187,7 @@ export default {
   updateStaffTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
     if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.update(
@@ -207,7 +207,7 @@ export default {
   insertStaffTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
     if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.create(
