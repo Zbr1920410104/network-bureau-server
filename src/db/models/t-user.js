@@ -21,6 +21,7 @@ const user = db.define('t_user', {
   isCancel: Sequelize.STRING(32), // 是否注销
   phone: Sequelize.STRING(32),
   password: Sequelize.STRING(32),
+  defaultPassword: Sequelize.STRING(32), // 默认密码
   department: Sequelize.STRING(32), // 科室
   departmentUuid: Sequelize.STRING(36), // 科室uuid
   // 以下字段仅供普通员工使用

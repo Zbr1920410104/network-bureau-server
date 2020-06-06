@@ -384,13 +384,57 @@ export default {
   /**
    * 管理员重置密码
    */
-  updatePassword: (uuid) =>
-    user.update(
+  updatePassword: async (uuid) => {
+    const { defaultPassword } = await user.findOne({
+      where: { role: 1 },
+      attributes: ['defaultPassword'],
+      raw: true,
+    });
+
+    return await user.update(
       {
-        password: md5('123456'),
+        password: defaultPassword,
       },
       { where: { uuid }, raw: true }
-    ),
+    );
+  },
+
+  /**
+   * 管理员修改默认密码
+   */
+  updateDefaultPassword: async ({ oldPassword, newPassword }) => {
+    const { defaultPassword } = await user.findOne({
+      where: { role: 1 },
+      attributes: ['defaultPassword'],
+      raw: true,
+    });
+
+    if (defaultPassword !== md5(oldPassword)) {
+      throw new CustomError('原默认密码输入错误!');
+    } else {
+      await user.update(
+        {
+          defaultPassword: md5(newPassword),
+        },
+        { where: { role: 1 }, raw: true }
+      );
+
+      const defaultUser = await user.findAll({
+        where: { password: md5(oldPassword) },
+        attributes: ['uuid'],
+        raw: true,
+      });
+
+      const uuidList = defaultUser.map((item) => item.uuid);
+
+      return await user.update(
+        {
+          password: md5(newPassword),
+        },
+        { where: { uuid: uuidList }, raw: true }
+      );
+    }
+  },
   /**
    * 管理员注销账号
    */

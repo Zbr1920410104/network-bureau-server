@@ -127,4 +127,14 @@ export default {
       },
       { where: { uuid, password: oldPassword }, raw: true }
     ),
+  /**
+   * 查找默认密码
+   */
+  selectDefaultPassword: async() => {
+    return await user.findOne({
+      where: { role: 1 },
+      attributes: ['defaultPassword'],
+      raw: true,
+    });
+  },
 };

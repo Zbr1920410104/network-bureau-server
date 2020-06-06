@@ -98,4 +98,20 @@ router.post('/savePassword', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询科室
+ */
+router.get('/getDefaultPassword', async (ctx, next) => {
+  try {
+    const data = await service.selectDefaultPassword();
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;

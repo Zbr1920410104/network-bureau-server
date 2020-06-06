@@ -41,6 +41,7 @@ Promise.all([
         phone: '18351923820',
         name: '超级管理员',
         password: 'e10adc3949ba59abbe56e057f20f883e',
+        defaultPassword: 'e10adc3949ba59abbe56e057f20f883e',
         department: '综合管理科',
         departmentUuid: 'zongheguanli',
       }),
@@ -83,7 +84,7 @@ Promise.all([
         userName: 'yuangong',
         name: '员工1',
         verifyStatus: '未提交',
-        isCancel:'未注销'
+        isCancel: '未注销',
       }),
       department.create({
         uuid: 'zhanlueyanjiuke',

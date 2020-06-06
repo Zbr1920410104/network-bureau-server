@@ -339,23 +339,44 @@ router.post('/resetPassword', async (ctx, next) => {
 });
 
 /**
- * 账号注销
+ * 管理员修改默认密码
  */
-router.post('/accountCancel', async (ctx, next) => {
+router.post('/changeDefaultPassword', async (ctx, next) => {
   try {
-    const { userUuid: uuid } = ctx.state.param;
+    const { oldPassword, newPassword } = ctx.state.param;
 
-    const data = await service.updatAccountCancel(uuid);
+    const data = await service.updateDefaultPassword({
+      oldPassword,
+      newPassword,
+    });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '账号已注销',
+      msg: '默认密码修改成功',
     });
   } catch (error) {
     throw error;
   }
-});
+}),
+  /**
+   * 账号注销
+   */
+  router.post('/accountCancel', async (ctx, next) => {
+    try {
+      const { userUuid: uuid } = ctx.state.param;
+
+      const data = await service.updatAccountCancel(uuid);
+
+      ctx.body = new Res({
+        status: RESPONSE_CODE.success,
+        data,
+        msg: '账号已注销',
+      });
+    } catch (error) {
+      throw error;
+    }
+  });
 
 /**
  * 修改用户
