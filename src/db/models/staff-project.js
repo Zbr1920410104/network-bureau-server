@@ -33,4 +33,7 @@ export default db.define('staff_project', {
   controller: Sequelize.STRING(32), // 负责人
   participant: Sequelize.TEXT, // 参与者名单
   content: Sequelize.TEXT, // 主要研究内容
+  firstUrl: Sequelize.TEXT, // 第一个url
+  secondUrl: Sequelize.TEXT, // 第二个url
+  thirdUrl: Sequelize.TEXT, // 第三个url
 });

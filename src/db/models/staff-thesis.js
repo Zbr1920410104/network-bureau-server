@@ -27,5 +27,7 @@ export default db.define('staff_thesis', {
   thesisCode: Sequelize.STRING(32), // 论文索引号
   thesisFirstAuthor: Sequelize.STRING(32), // 第一作者
   thesisAuthorSequence: Sequelize.STRING(32), // 提交人作者次序
-  url: Sequelize.TEXT, // 论文文件url
+  firstUrl: Sequelize.TEXT, // 第一个url
+  secondUrl: Sequelize.TEXT, // 第二个url
+  thirdUrl: Sequelize.TEXT, // 第三个url
 });
