@@ -248,6 +248,7 @@ export default {
         'department',
       ],
       raw: true,
+      order: [['role'], ['name']],
     }),
   /**
    * 查询账户信息通过权限
@@ -311,6 +312,11 @@ export default {
     departmentUuid,
   }) => {
     const userUuid = uuid.v1();
+    const { defaultPassword } = await user.findOne({
+      where: { role: 1 },
+      attributes: ['defaultPassword'],
+      raw: true,
+    });
     if (role === 15) {
       return await Promise.all([
         user.create(
@@ -324,7 +330,7 @@ export default {
             verifyStatus,
             departmentUuid,
             isCancel: '未注销',
-            password: md5('123456'),
+            password: defaultPassword,
           },
           { raw: true }
         ),
@@ -350,7 +356,7 @@ export default {
           userName,
           departmentUuid,
           isCancel: '未注销',
-          password: md5('123456'),
+          password: defaultPassword,
         },
         { raw: true }
       );
