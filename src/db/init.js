@@ -21,7 +21,7 @@ require('./models/staff-copyright').default;
 require('./models/staff-patent').default;
 require('./models/staff-project').default;
 require('./models/staff-thesis').default;
-require('./models/sys-time-set').default;
+const sysTimeSet = require('./models/sys-time-set').default;
 const sequelize = require('./db-connect');
 
 Promise.all([
@@ -97,6 +97,24 @@ Promise.all([
       department.create({
         uuid: 'caiwuke',
         name: '财务科',
+      }),
+      sysTimeSet.create({
+        uuid: 'yuangong',
+        sysSwitch: 1,
+        timeSwitch: 0,
+        userRole: 15,
+      }),
+      sysTimeSet.create({
+        uuid: 'tongji',
+        sysSwitch: 0,
+        timeSwitch: 0,
+        userRole: 10,
+      }),
+      sysTimeSet.create({
+        uuid: 'pingshen',
+        sysSwitch: 0,
+        timeSwitch: 0,
+        userRole: 5,
       }),
     ])
   )
