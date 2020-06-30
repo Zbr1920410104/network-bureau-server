@@ -40,7 +40,7 @@ Promise.all([
         isCancel: '未注销',
         phone: '18351923820',
         name: '超级管理员',
-        password: 'e10adc3949ba59abbe56e057f20f883e',
+        password: '21232f297a57a5a743894a0e4a801fc3',
         defaultPassword: 'e10adc3949ba59abbe56e057f20f883e',
         department: '综合管理科',
         departmentUuid: 'zongheguanli',
