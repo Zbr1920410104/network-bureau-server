@@ -2,6 +2,12 @@ import department from '../../../db/models/t-department';
 import timeSet from '../../../db/models/sys-time-set';
 import user from '../../../db/models/t-user';
 import staffStatus from '../../../db/models/staff-status';
+import staffBasic from '../../../db/models/staff-basic';
+import staffProject from '../../../db/models/staff-project';
+import staffPatent from '../../../db/models/staff-patent';
+import staffCopyright from '../../../db/models/staff-copyright';
+import staffAward from '../../../db/models/staff-award';
+import staffThesis from '../../../db/models/staff-thesis';
 
 import Sequelize from 'sequelize';
 const Op = Sequelize.Op,
@@ -446,18 +452,14 @@ export default {
    */
   updatAccountCancel: async (uuid) => {
     await Promise.all([
-      user.update(
-        {
-          isCancel: '已注销',
-        },
-        { where: { uuid }, raw: true }
-      ),
-      staffStatus.update(
-        {
-          isCancel: '已注销',
-        },
-        { where: { uuid }, raw: true }
-      ),
+      user.destroy({ where: { uuid }, raw: true }),
+      staffStatus.destroy({ where: { uuid }, raw: true }),
+      staffBasic.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffProject.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffPatent.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffAward.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffCopyright.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffThesis.destroy({ where: { userUuid: uuid }, raw: true }),
     ]);
   },
   /**

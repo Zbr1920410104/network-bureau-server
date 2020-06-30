@@ -56,8 +56,25 @@ export default {
     researchDirection,
     studyExperience,
     workExperience,
-  }) =>
-    staffBasic.create(
+  }) => {
+    const clearExperience = (str) => {
+      // 去除换行
+      str = str.replace(/<\/?.+?>/g, '');
+      str = str.replace(/[\r\n]/g, '');
+      // 去除空格
+      str = str.replace(/\s+/g, '');
+      return str;
+    };
+
+    if (clearExperience(workExperience).length > 500) {
+      throw new CustomError('工作经历字数超过500!');
+    }
+
+    if (clearExperience(studyExperience).length > 500) {
+      throw new CustomError('学习经历字数超过500!');
+    }
+
+    return staffBasic.create(
       {
         uuid: uuid.v1(),
         userUuid,
@@ -85,7 +102,8 @@ export default {
         workExperience,
       },
       { raw: true }
-    ),
+    );
+  },
   /**
    * 查询基本信息
    */
@@ -121,7 +139,7 @@ export default {
   /**
    * 修改基本信息
    */
-  updateStaffBasic: ({
+  updateStaffBasic: async ({
     userUuid,
     lastWriteTime,
     currentWriteTime,
@@ -145,8 +163,25 @@ export default {
     researchDirection,
     studyExperience,
     workExperience,
-  }) =>
-    staffBasic.update(
+  }) => {
+    const clearExperience = (str) => {
+      // 去除换行
+      str = str.replace(/<\/?.+?>/g, '');
+      str = str.replace(/[\r\n]/g, '');
+      // 去除空格
+      str = str.replace(/\s+/g, '');
+      return str;
+    };
+
+    if (clearExperience(workExperience).length > 500) {
+      throw new CustomError('工作经历字数超过500!');
+    }
+
+    if (clearExperience(studyExperience).length > 500) {
+      throw new CustomError('学习经历字数超过500!');
+    }
+
+    return await staffBasic.update(
       {
         lastWriteTime,
         currentWriteTime,
@@ -174,7 +209,8 @@ export default {
         verifyRemarks: '',
       },
       { where: { userUuid }, raw: true }
-    ),
+    );
+  },
   /**
    * 查询员工填写信息
    */
