@@ -592,8 +592,6 @@ router.post('/getStaffExportInfoUrl', async (ctx) => {
       }
     }
 
-    console.log('列表=', userList);
-
     const data = await service.getSearchExportInfoUrl({
       userList,
       exportList,
