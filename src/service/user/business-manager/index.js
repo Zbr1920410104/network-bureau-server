@@ -1414,8 +1414,6 @@ export default {
           arrInner.push(null);
           arrInner.push(null);
           arrInner.push(null);
-          arrInner.push(null);
-          arrInner.push(null);
         }
       }
       if (exportList.indexOf(1) !== -1) {
