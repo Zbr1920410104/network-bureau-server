@@ -1200,7 +1200,7 @@ export default {
     let projectTitle =
       exportList.indexOf(1) !== -1
         ? [
-            '项目类型(1:主持,2:参与)',
+            '项目类型',
             '项目名称',
             '项目开始时间',
             '项目结束时间',
@@ -1249,7 +1249,65 @@ export default {
           ]
         : [];
 
-    let title = [
+    let firstBasicTitle =
+      exportList.indexOf(0) !== -1
+        ? [
+            '基本信息',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        : [];
+
+    let firstProjectTitle =
+      exportList.indexOf(1) !== -1
+        ? ['项目', null, null, null, null, null, null, null, null, null]
+        : [];
+
+    let firstPatentTitle =
+      exportList.indexOf(2) !== -1 ? ['专利', null, null, null] : [];
+
+    let firstCopyrightTitle =
+      exportList.indexOf(3) !== -1 ? ['软件著作权', null, null, null] : [];
+
+    let firstAwardTitle =
+      exportList.indexOf(4) !== -1
+        ? ['奖项', null, null, null, null, null]
+        : [];
+
+    let firstThesisTitle =
+      exportList.indexOf(5) !== -1
+        ? ['论文/专著', null, null, null, null, null, null, null]
+        : [];
+
+    let firstTitle = [
+      '用户信息',
+      null,
+      ...firstBasicTitle,
+      ...firstProjectTitle,
+      ...firstPatentTitle,
+      ...firstCopyrightTitle,
+      ...firstAwardTitle,
+      ...firstThesisTitle,
+    ]; //这是第一行 俗称列名
+    data.push(firstTitle);
+
+    let secondTitle = [
       '用户名',
       '姓名',
       ...basicTitle,
@@ -1259,8 +1317,34 @@ export default {
       ...awardTitle,
       ...thesisTitle,
     ]; //这是第一行 俗称列名
-    data.push(title); // 添加完列名 下面就是添加真正的内容了
+    data.push(secondTitle); // 添加完列名 下面就是添加真正的内容了
 
+    let titleRange = [
+      {
+        s: { c: 0, r: 0 },
+        e: { c: 1, r: 0 },
+      },
+    ];
+
+    const columnNum = [19, 10, 4, 4, 6, 8];
+    for (let indexNum = 0, columnsum = 2; indexNum < 6; indexNum++) {
+      if (exportList.indexOf(indexNum) !== -1) {
+        titleRange.push({
+          s: { c: columnsum, r: 0 },
+          e: { c: columnsum + columnNum[indexNum] - 1, r: 0 },
+        });
+        columnsum += columnNum[indexNum];
+      }
+    }
+
+    if (exportList.indexOf(0) !== -1) {
+      titleRange.push({
+        s: { c: 2, r: 0 },
+        e: { c: 20, r: 0 },
+      });
+    }
+
+    let range = [];
     for (let item = 0; item < maxNum; item++) {
       let arrInner = [];
       arrInner.push(_data[0].dataValues.userName);
@@ -1330,10 +1414,18 @@ export default {
           arrInner.push(null);
           arrInner.push(null);
           arrInner.push(null);
+          arrInner.push(null);
+          arrInner.push(null);
         }
       }
       if (exportList.indexOf(1) !== -1) {
-        arrInner.push(_data[0].dataValues.staffProject[item]?.type);
+        arrInner.push(
+          _data[0].dataValues.staffProject[item]?.type === 1
+            ? '主持项目'
+            : _data[0].dataValues.staffProject[item]?.type === 2
+            ? '参与项目'
+            : null
+        );
         arrInner.push(_data[0].dataValues.staffProject[item]?.name);
         arrInner.push(
           _data[0].dataValues.staffProject[item]
@@ -1403,14 +1495,36 @@ export default {
         );
       }
       data.push(arrInner);
+
+      // 合并账户信息和基本信息
+      if (exportList.indexOf(0) !== -1) {
+        for (let column = 0; column < 21; column++) {
+          range[column] = {
+            s: { c: column, r: 2 },
+            e: { c: column, r: maxNum + 1 },
+          };
+        }
+      } else {
+        for (let newColumn = 0; newColumn < 2; newColumn++) {
+          range[newColumn] = {
+            s: { c: newColumn, r: 2 },
+            e: { c: newColumn, r: maxNum + 1 },
+          };
+        }
+      }
     }
 
-    let buffer = xlsx.build([
-      {
-        name: 'sheet1',
-        data: data,
-      },
-    ]);
+    const options = { '!merges': [...range, ...titleRange] };
+
+    let buffer = xlsx.build(
+      [
+        {
+          name: 'sheet1',
+          data: data,
+        },
+      ],
+      options
+    );
 
     // 上传到oss
     const fileUuid = uuid.v1(),
