@@ -471,7 +471,7 @@ router.post('/getReviewManagerExportInfoUrl', async (ctx) => {
 /**
  * 导出所有人信息表
  */
-router.post('/getReviewManagerExportAllInfoUrl', async (ctx) => {
+router.get('/getReviewManagerExportAllInfoUrl', async (ctx) => {
   try {
     const {
       reviewStatus,

@@ -22,5 +22,8 @@ export default db.define('staff_copyright', {
   copyrightType: Sequelize.STRING(32), // 权利取得方式
   copyrightName: Sequelize.STRING(32), // 软件著作权名称
   copyrightCode: Sequelize.STRING(32), // 登记号
-  copyrightArrange: Sequelize.STRING(32) // 授权范围
+  copyrightArrange: Sequelize.STRING(32), // 授权范围
+  firstUrl: Sequelize.TEXT, // 第一个url
+  secondUrl: Sequelize.TEXT, // 第二个url
+  thirdUrl: Sequelize.TEXT, // 第三个url
 });

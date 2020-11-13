@@ -2,6 +2,12 @@ import department from '../../../db/models/t-department';
 import timeSet from '../../../db/models/sys-time-set';
 import user from '../../../db/models/t-user';
 import staffStatus from '../../../db/models/staff-status';
+import staffBasic from '../../../db/models/staff-basic';
+import staffProject from '../../../db/models/staff-project';
+import staffPatent from '../../../db/models/staff-patent';
+import staffCopyright from '../../../db/models/staff-copyright';
+import staffAward from '../../../db/models/staff-award';
+import staffThesis from '../../../db/models/staff-thesis';
 
 import Sequelize from 'sequelize';
 const Op = Sequelize.Op,
@@ -72,14 +78,21 @@ export default {
   /**
    * 保存统计管理员系统时间
    */
-  updateBusinessManagerTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  updateBusinessManagerTime: ({
+    startTime,
+    endTime,
+    sysSwitch,
+    timeSwitch,
+  }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.update(
         {
+          sysSwitch,
+          timeSwitch,
           startTime,
           endTime,
         },
@@ -90,15 +103,22 @@ export default {
   /**
    * 创建统计管理员系统时间
    */
-  insertBusinessManagerTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  insertBusinessManagerTime: ({
+    startTime,
+    endTime,
+    sysSwitch,
+    timeSwitch,
+  }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.create(
         {
           uuid: uuid.v1(),
+          sysSwitch,
+          timeSwitch,
           startTime,
           endTime,
           userRole: 10,
@@ -112,21 +132,23 @@ export default {
    */
   selectBusinessManagerTime: () =>
     timeSet.findOne({
-      attributes: ['startTime', 'endTime'],
+      attributes: ['startTime', 'endTime', 'sysSwitch', 'timeSwitch'],
       where: { userRole: 10 },
       raw: true,
     }),
   /**
    * 保存评审管理员系统时间
    */
-  updateReviewManagerTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  updateReviewManagerTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.update(
         {
+          sysSwitch,
+          timeSwitch,
           startTime,
           endTime,
         },
@@ -137,15 +159,17 @@ export default {
   /**
    * 创建评审管理员系统时间
    */
-  insertReviewManagerTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  insertReviewManagerTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.create(
         {
           uuid: uuid.v1(),
+          sysSwitch,
+          timeSwitch,
           startTime,
           endTime,
           userRole: 5,
@@ -159,23 +183,25 @@ export default {
    */
   selectReviewManagerTime: () =>
     timeSet.findOne({
-      attributes: ['startTime', 'endTime'],
+      attributes: ['startTime', 'endTime', 'sysSwitch', 'timeSwitch'],
       where: { userRole: 5 },
       raw: true,
     }),
   /**
    * 保存普通员工系统时间
    */
-  updateStaffTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  updateStaffTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.update(
         {
           startTime,
           endTime,
+          sysSwitch,
+          timeSwitch,
         },
         { where: { userRole: 15 }, raw: true }
       );
@@ -184,10 +210,10 @@ export default {
   /**
    * 创建普通员工系统时间
    */
-  insertStaffTime: ({ startTime, endTime }) => {
-    if (startTime > endTime) {
+  insertStaffTime: ({ startTime, endTime, sysSwitch, timeSwitch }) => {
+    if (sysSwitch && timeSwitch && startTime > endTime) {
       throw new CustomError('开始时间不得早于截止时间');
-    } else if (new Date(endTime) < new Date()) {
+    } else if (sysSwitch && timeSwitch && new Date(endTime) < new Date()) {
       throw new CustomError('截止时间不得早于当前时间');
     } else {
       return timeSet.create(
@@ -195,6 +221,8 @@ export default {
           uuid: uuid.v1(),
           startTime,
           endTime,
+          sysSwitch,
+          timeSwitch,
           userRole: 15,
         },
         { raw: true }
@@ -206,7 +234,7 @@ export default {
    */
   selectStaffTime: () =>
     timeSet.findOne({
-      attributes: ['startTime', 'endTime'],
+      attributes: ['startTime', 'endTime', 'sysSwitch', 'timeSwitch'],
       where: { userRole: 15 },
       raw: true,
     }),
@@ -226,6 +254,7 @@ export default {
         'department',
       ],
       raw: true,
+      order: [['role'], ['name']],
     }),
   /**
    * 查询账户信息通过权限
@@ -288,8 +317,13 @@ export default {
     verifyStatus,
     departmentUuid,
   }) => {
+    const userUuid = uuid.v1();
+    const { defaultPassword } = await user.findOne({
+      where: { role: 1 },
+      attributes: ['defaultPassword'],
+      raw: true,
+    });
     if (role === 15) {
-      const userUuid = uuid.v1();
       return await Promise.all([
         user.create(
           {
@@ -302,7 +336,7 @@ export default {
             verifyStatus,
             departmentUuid,
             isCancel: '未注销',
-            password: md5('123456'),
+            password: defaultPassword,
           },
           { raw: true }
         ),
@@ -328,7 +362,7 @@ export default {
           userName,
           departmentUuid,
           isCancel: '未注销',
-          password: md5('123456'),
+          password: defaultPassword,
         },
         { raw: true }
       );
@@ -362,30 +396,70 @@ export default {
   /**
    * 管理员重置密码
    */
-  updatePassword: (uuid) =>
-    user.update(
+  updatePassword: async (uuid) => {
+    const { defaultPassword } = await user.findOne({
+      where: { role: 1 },
+      attributes: ['defaultPassword'],
+      raw: true,
+    });
+
+    return await user.update(
       {
-        password: md5('123456'),
+        password: defaultPassword,
       },
       { where: { uuid }, raw: true }
-    ),
+    );
+  },
+
+  /**
+   * 管理员修改默认密码
+   */
+  updateDefaultPassword: async ({ oldPassword, newPassword }) => {
+    const { defaultPassword } = await user.findOne({
+      where: { role: 1 },
+      attributes: ['defaultPassword'],
+      raw: true,
+    });
+
+    if (defaultPassword !== md5(oldPassword)) {
+      throw new CustomError('原默认密码输入错误!');
+    } else {
+      await user.update(
+        {
+          defaultPassword: md5(newPassword),
+        },
+        { where: { role: 1 }, raw: true }
+      );
+
+      const defaultUser = await user.findAll({
+        where: { password: md5(oldPassword) },
+        attributes: ['uuid'],
+        raw: true,
+      });
+
+      const uuidList = defaultUser.map((item) => item.uuid);
+
+      return await user.update(
+        {
+          password: md5(newPassword),
+        },
+        { where: { uuid: uuidList }, raw: true }
+      );
+    }
+  },
   /**
    * 管理员注销账号
    */
   updatAccountCancel: async (uuid) => {
     await Promise.all([
-      user.update(
-        {
-          isCancel: '已注销',
-        },
-        { where: { uuid }, raw: true }
-      ),
-      staffStatus.update(
-        {
-          isCancel: '已注销',
-        },
-        { where: { uuid }, raw: true }
-      ),
+      user.destroy({ where: { uuid }, raw: true }),
+      staffStatus.destroy({ where: { uuid }, raw: true }),
+      staffBasic.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffProject.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffPatent.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffAward.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffCopyright.destroy({ where: { userUuid: uuid }, raw: true }),
+      staffThesis.destroy({ where: { userUuid: uuid }, raw: true }),
     ]);
   },
   /**

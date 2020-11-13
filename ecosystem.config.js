@@ -26,8 +26,8 @@ module.exports = {
     production: {
       user: 'root',
       host: '39.97.175.30',
-      ref: 'origin/dev',
-      repo: 'git@github.com:a896853205/network-bureau-server.git',
+      ref: 'origin/master',
+      repo: 'git@github.com:Zbr1920410104/network-bureau-server.git',
       path: '/network-bureau/network-bureau-server',
       'post-deploy':
         'npm install && pm2 reload ecosystem.config.js --env production',

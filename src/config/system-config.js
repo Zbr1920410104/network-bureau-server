@@ -8,6 +8,7 @@ export const UNLESS_PATH_ARR = [
   '/user/getUserToken',
   '/user/getUserName',
   '/user/updatePassword',
+  '/user/getDefaultPassword',
 ];
 
 export const MANAGER_PAGE_SIZE = 10;

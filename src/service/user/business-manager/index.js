@@ -14,6 +14,7 @@ import uuid from 'uuid';
 
 // 工具
 import xlsx from 'node-xlsx';
+import moment from 'moment';
 
 // oss
 import client from '../../../util/oss';
@@ -47,6 +48,7 @@ export default {
         'officePhone',
         'phone',
         'education',
+        'degree',
         'graduateSchool',
         'major',
         'duty',
@@ -150,6 +152,10 @@ export default {
         'currentWriteTime',
         'verifyRemarks',
         'verifyTime',
+        'reviewRemarks',
+        'firstUrl',
+        'secondUrl',
+        'thirdUrl',
       ],
       where: { userUuid },
       raw: true,
@@ -170,6 +176,10 @@ export default {
         'currentWriteTime',
         'verifyRemarks',
         'verifyTime',
+        'reviewRemarks',
+        'firstUrl',
+        'secondUrl',
+        'thirdUrl',
       ],
       where: { userUuid },
       raw: true,
@@ -190,6 +200,10 @@ export default {
         'currentWriteTime',
         'verifyRemarks',
         'verifyTime',
+        'reviewRemarks',
+        'firstUrl',
+        'secondUrl',
+        'thirdUrl',
       ],
       where: { userUuid },
       raw: true,
@@ -212,7 +226,10 @@ export default {
         'awardNameList',
         'verifyRemarks',
         'verifyTime',
-        'url',
+        'reviewRemarks',
+        'firstUrl',
+        'secondUrl',
+        'thirdUrl',
       ],
       where: { userUuid },
       raw: true,
@@ -237,7 +254,10 @@ export default {
         'currentWriteTime',
         'verifyRemarks',
         'verifyTime',
-        'url',
+        'reviewRemarks',
+        'firstUrl',
+        'secondUrl',
+        'thirdUrl',
       ],
       where: { userUuid },
       raw: true,
@@ -1073,6 +1093,7 @@ export default {
             'officePhone',
             'phone',
             'education',
+            'degree',
             'graduateSchool',
             'major',
             'duty',
@@ -1162,7 +1183,8 @@ export default {
             '科室',
             '办公电话',
             '手机号码',
-            '学历/学位',
+            '学历',
+            '学位',
             '毕业学校',
             '所学专业',
             '职务',
@@ -1178,7 +1200,7 @@ export default {
     let projectTitle =
       exportList.indexOf(1) !== -1
         ? [
-            '项目类型(1:主持,2:参与)',
+            '项目类型',
             '项目名称',
             '项目开始时间',
             '项目结束时间',
@@ -1227,7 +1249,65 @@ export default {
           ]
         : [];
 
-    let title = [
+    let firstBasicTitle =
+      exportList.indexOf(0) !== -1
+        ? [
+            '基本信息',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        : [];
+
+    let firstProjectTitle =
+      exportList.indexOf(1) !== -1
+        ? ['项目', null, null, null, null, null, null, null, null, null]
+        : [];
+
+    let firstPatentTitle =
+      exportList.indexOf(2) !== -1 ? ['专利', null, null, null] : [];
+
+    let firstCopyrightTitle =
+      exportList.indexOf(3) !== -1 ? ['软件著作权', null, null, null] : [];
+
+    let firstAwardTitle =
+      exportList.indexOf(4) !== -1
+        ? ['奖项', null, null, null, null, null]
+        : [];
+
+    let firstThesisTitle =
+      exportList.indexOf(5) !== -1
+        ? ['论文/专著', null, null, null, null, null, null, null]
+        : [];
+
+    let firstTitle = [
+      '用户信息',
+      null,
+      ...firstBasicTitle,
+      ...firstProjectTitle,
+      ...firstPatentTitle,
+      ...firstCopyrightTitle,
+      ...firstAwardTitle,
+      ...firstThesisTitle,
+    ]; //这是第一行 俗称列名
+    data.push(firstTitle);
+
+    let secondTitle = [
       '用户名',
       '姓名',
       ...basicTitle,
@@ -1237,8 +1317,34 @@ export default {
       ...awardTitle,
       ...thesisTitle,
     ]; //这是第一行 俗称列名
-    data.push(title); // 添加完列名 下面就是添加真正的内容了
+    data.push(secondTitle); // 添加完列名 下面就是添加真正的内容了
 
+    let titleRange = [
+      {
+        s: { c: 0, r: 0 },
+        e: { c: 1, r: 0 },
+      },
+    ];
+
+    const columnNum = [19, 10, 4, 4, 6, 8];
+    for (let indexNum = 0, columnsum = 2; indexNum < 6; indexNum++) {
+      if (exportList.indexOf(indexNum) !== -1) {
+        titleRange.push({
+          s: { c: columnsum, r: 0 },
+          e: { c: columnsum + columnNum[indexNum] - 1, r: 0 },
+        });
+        columnsum += columnNum[indexNum];
+      }
+    }
+
+    if (exportList.indexOf(0) !== -1) {
+      titleRange.push({
+        s: { c: 2, r: 0 },
+        e: { c: 20, r: 0 },
+      });
+    }
+
+    let range = [];
     for (let item = 0; item < maxNum; item++) {
       let arrInner = [];
       arrInner.push(_data[0].dataValues.userName);
@@ -1256,16 +1362,29 @@ export default {
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.officePhone);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.phone);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.education);
+          arrInner.push(_data[0].dataValues.staffBasic?.dataValues.degree);
           arrInner.push(
             _data[0].dataValues.staffBasic?.dataValues.graduateSchool
           );
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.major);
           arrInner.push(_data[0].dataValues.staffBasic?.dataValues.duty);
-          arrInner.push(_data[0].dataValues.staffBasic?.dataValues.workTime);
+          arrInner.push(
+            _data[0].dataValues.staffBasic
+              ? moment(
+                  _data[0].dataValues.staffBasic?.dataValues.workTime
+                ).format('YYYY-MM-DD')
+              : null
+          );
           arrInner.push(
             _data[0].dataValues.staffBasic?.dataValues.professionTitle
           );
-          arrInner.push(_data[0].dataValues.staffBasic?.dataValues.getTime);
+          arrInner.push(
+            _data[0].dataValues.staffBasic
+              ? moment(
+                  _data[0].dataValues.staffBasic?.dataValues.getTime
+                ).format('YYYY-MM-DD')
+              : null
+          );
           arrInner.push(
             _data[0].dataValues.staffBasic?.dataValues.researchDirection
           );
@@ -1294,13 +1413,32 @@ export default {
           arrInner.push(null);
           arrInner.push(null);
           arrInner.push(null);
+          arrInner.push(null);
         }
       }
       if (exportList.indexOf(1) !== -1) {
-        arrInner.push(_data[0].dataValues.staffProject[item]?.type);
+        arrInner.push(
+          _data[0].dataValues.staffProject[item]?.type === 1
+            ? '主持项目'
+            : _data[0].dataValues.staffProject[item]?.type === 2
+            ? '参与项目'
+            : null
+        );
         arrInner.push(_data[0].dataValues.staffProject[item]?.name);
-        arrInner.push(_data[0].dataValues.staffProject[item]?.startTime);
-        arrInner.push(_data[0].dataValues.staffProject[item]?.endTime);
+        arrInner.push(
+          _data[0].dataValues.staffProject[item]
+            ? moment(_data[0].dataValues.staffProject[item]?.startTime).format(
+                'YYYY-MM-DD'
+              )
+            : null
+        );
+        arrInner.push(
+          _data[0].dataValues.staffProject[item]
+            ? moment(_data[0].dataValues.staffProject[item]?.endTime).format(
+                'YYYY-MM-DD'
+              )
+            : null
+        );
         arrInner.push(_data[0].dataValues.staffProject[item]?.code);
         arrInner.push(_data[0].dataValues.staffProject[item]?.resource);
         arrInner.push(_data[0].dataValues.staffProject[item]?.funds);
@@ -1323,36 +1461,68 @@ export default {
         );
       }
       if (exportList.indexOf(4) !== -1) {
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardType);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardName);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardTime);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardGrade);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardDepartment);
-        arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardNameList);
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardType);
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardName);
+        arrInner.push(
+          _data[0].dataValues.staffAward[item]
+            ? moment(_data[0].dataValues.staffAward[item]?.awardTime).format(
+                'YYYY-MM-DD'
+              )
+            : null
+        );
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardGrade);
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardDepartment);
+        arrInner.push(_data[0].dataValues.staffAward[item]?.awardNameList);
       }
       if (exportList.indexOf(5) !== -1) {
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisTitle);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisType);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisJournal);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisTime);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisGrade);
-        arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisCode);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisTitle);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisType);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisJournal);
         arrInner.push(
-          _data[0].dataValues.staffThesis?.[item]?.thesisFirstAuthor
+          _data[0].dataValues.staffThesis[item]
+            ? moment(_data[0].dataValues.staffThesis[item]?.thesisTime).format(
+                'YYYY-MM-DD'
+              )
+            : null
         );
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisGrade);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisCode);
+        arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisFirstAuthor);
         arrInner.push(
-          _data[0].dataValues.staffThesis?.[item]?.thesisAuthorSequence
+          _data[0].dataValues.staffThesis[item]?.thesisAuthorSequence
         );
       }
       data.push(arrInner);
+
+      // 合并账户信息和基本信息
+      if (exportList.indexOf(0) !== -1) {
+        for (let column = 0; column < 21; column++) {
+          range[column] = {
+            s: { c: column, r: 2 },
+            e: { c: column, r: maxNum + 1 },
+          };
+        }
+      } else {
+        for (let newColumn = 0; newColumn < 2; newColumn++) {
+          range[newColumn] = {
+            s: { c: newColumn, r: 2 },
+            e: { c: newColumn, r: maxNum + 1 },
+          };
+        }
+      }
     }
 
-    let buffer = xlsx.build([
-      {
-        name: 'sheet1',
-        data: data,
-      },
-    ]);
+    const options = { '!merges': [...range, ...titleRange] };
+
+    let buffer = xlsx.build(
+      [
+        {
+          name: 'sheet1',
+          data: data,
+        },
+      ],
+      options
+    );
 
     // 上传到oss
     const fileUuid = uuid.v1(),
@@ -1407,6 +1577,90 @@ export default {
    */
   getSearchExportInfoUrl: async ({ userList, exportList }) => {
     let data = []; // 其实最后就是把这个数组写入excel
+
+    let firstBasicTitle =
+      exportList.indexOf(0) !== -1
+        ? [
+            '基本信息',
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
+        : [];
+
+    let firstProjectTitle =
+      exportList.indexOf(1) !== -1
+        ? ['项目', null, null, null, null, null, null, null, null, null]
+        : [];
+
+    let firstPatentTitle =
+      exportList.indexOf(2) !== -1 ? ['专利', null, null, null] : [];
+
+    let firstCopyrightTitle =
+      exportList.indexOf(3) !== -1 ? ['软件著作权', null, null, null] : [];
+
+    let firstAwardTitle =
+      exportList.indexOf(4) !== -1
+        ? ['奖项', null, null, null, null, null]
+        : [];
+
+    let firstThesisTitle =
+      exportList.indexOf(5) !== -1
+        ? ['论文/专著', null, null, null, null, null, null, null]
+        : [];
+
+    let firstTitle = [
+      '用户信息',
+      null,
+      ...firstBasicTitle,
+      ...firstProjectTitle,
+      ...firstPatentTitle,
+      ...firstCopyrightTitle,
+      ...firstAwardTitle,
+      ...firstThesisTitle,
+    ]; //这是第一行
+    data.push(firstTitle);
+
+    let titleRange = [
+      {
+        s: { c: 0, r: 0 },
+        e: { c: 1, r: 0 },
+      },
+    ];
+
+    const columnNum = [19, 10, 4, 4, 6, 8];
+    for (let indexNum = 0, columnsum = 2; indexNum < 6; indexNum++) {
+      if (exportList.indexOf(indexNum) !== -1) {
+        titleRange.push({
+          s: { c: columnsum, r: 0 },
+          e: { c: columnsum + columnNum[indexNum] - 1, r: 0 },
+        });
+        columnsum += columnNum[indexNum];
+      }
+    }
+
+    if (exportList.indexOf(0) !== -1) {
+      titleRange.push({
+        s: { c: 2, r: 0 },
+        e: { c: 20, r: 0 },
+      });
+    }
+
     let basicTitle =
       exportList.indexOf(0) !== -1
         ? [
@@ -1418,7 +1672,8 @@ export default {
             '科室',
             '办公电话',
             '手机号码',
-            '学历/学位',
+            '学历',
+            '学位',
             '毕业学校',
             '所学专业',
             '职务',
@@ -1434,7 +1689,7 @@ export default {
     let projectTitle =
       exportList.indexOf(1) !== -1
         ? [
-            '项目类型(1:主持,2:参与)',
+            '项目类型',
             '项目名称',
             '项目开始时间',
             '项目结束时间',
@@ -1483,7 +1738,7 @@ export default {
           ]
         : [];
 
-    let title = [
+    let secondTitle = [
       '用户名',
       '姓名',
       ...basicTitle,
@@ -1492,12 +1747,14 @@ export default {
       ...copyrightTitle,
       ...awardTitle,
       ...thesisTitle,
-    ]; //这是第一行 俗称列名
-    data.push(title); // 添加完列名 下面就是添加真正的内容了
+    ]; //这是第二行
+    data.push(secondTitle); // 添加完列名 下面就是添加真正的内容了
 
     const staffList = userList.map((item) => item.uuid);
 
-    for (let num = 0; num < staffList.length; num++) {
+    let range = [];
+
+    for (let num = 0, rowNum = 2; num < staffList.length; num++) {
       const [
         projectList,
         patentList,
@@ -1552,6 +1809,7 @@ export default {
               'officePhone',
               'phone',
               'education',
+              'degree',
               'graduateSchool',
               'major',
               'duty',
@@ -1652,16 +1910,29 @@ export default {
             );
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.phone);
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.education);
+            arrInner.push(_data[0].dataValues.staffBasic?.dataValues.degree);
             arrInner.push(
               _data[0].dataValues.staffBasic?.dataValues.graduateSchool
             );
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.major);
             arrInner.push(_data[0].dataValues.staffBasic?.dataValues.duty);
-            arrInner.push(_data[0].dataValues.staffBasic?.dataValues.workTime);
+            arrInner.push(
+              _data[0].dataValues.staffBasic
+                ? moment(
+                    _data[0].dataValues.staffBasic?.dataValues.workTime
+                  ).format('YYYY-MM-DD')
+                : null
+            );
             arrInner.push(
               _data[0].dataValues.staffBasic?.dataValues?.professionTitle
             );
-            arrInner.push(_data[0].dataValues.staffBasic?.dataValues.getTime);
+            arrInner.push(
+              _data[0].dataValues.staffBasic
+                ? moment(
+                    _data[0].dataValues.staffBasic?.dataValues.getTime
+                  ).format('YYYY-MM-DD')
+                : null
+            );
             arrInner.push(
               _data[0].dataValues.staffBasic?.dataValues?.researchDirection
             );
@@ -1690,13 +1961,32 @@ export default {
             arrInner.push(null);
             arrInner.push(null);
             arrInner.push(null);
+            arrInner.push(null);
           }
         }
         if (exportList.indexOf(1) !== -1) {
-          arrInner.push(_data[0].dataValues.staffProject[item]?.type);
+          arrInner.push(
+            _data[0].dataValues.staffProject[item]?.type === 1
+              ? '主持项目'
+              : _data[0].dataValues.staffProject[item]?.type === 2
+              ? '参与项目'
+              : null
+          );
           arrInner.push(_data[0].dataValues.staffProject[item]?.name);
-          arrInner.push(_data[0].dataValues.staffProject[item]?.startTime);
-          arrInner.push(_data[0].dataValues.staffProject[item]?.endTime);
+          arrInner.push(
+            _data[0].dataValues.staffProject[item]
+              ? moment(
+                  _data[0].dataValues.staffProject[item]?.startTime
+                ).format('YYYY-MM-DD')
+              : null
+          );
+          arrInner.push(
+            _data[0].dataValues.staffProject[item]
+              ? moment(_data[0].dataValues.staffProject[item]?.endTime).format(
+                  'YYYY-MM-DD'
+                )
+              : null
+          );
           arrInner.push(_data[0].dataValues.staffProject[item]?.code);
           arrInner.push(_data[0].dataValues.staffProject[item]?.resource);
           arrInner.push(_data[0].dataValues.staffProject[item]?.funds);
@@ -1725,39 +2015,72 @@ export default {
           );
         }
         if (exportList.indexOf(4) !== -1) {
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardType);
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardName);
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardTime);
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardGrade);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardType);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardName);
           arrInner.push(
-            _data[0].dataValues.staffAward?.[item]?.awardDepartment
+            _data[0].dataValues.staffAward[item]
+              ? moment(_data[0].dataValues.staffAward[item]?.awardTime).format(
+                  'YYYY-MM-DD'
+                )
+              : null
           );
-          arrInner.push(_data[0].dataValues.staffAward?.[item]?.awardNameList);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardGrade);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardDepartment);
+          arrInner.push(_data[0].dataValues.staffAward[item]?.awardNameList);
         }
         if (exportList.indexOf(5) !== -1) {
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisTitle);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisType);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisJournal);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisTime);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisGrade);
-          arrInner.push(_data[0].dataValues.staffThesis?.[item]?.thesisCode);
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisTitle);
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisType);
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisJournal);
           arrInner.push(
-            _data[0].dataValues.staffThesis?.[item]?.thesisFirstAuthor
+            _data[0].dataValues.staffThesis[item]
+              ? moment(
+                  _data[0].dataValues.staffThesis[item]?.thesisTime
+                ).format('YYYY-MM-DD')
+              : null
+          );
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisGrade);
+          arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisCode);
+          arrInner.push(
+            _data[0].dataValues.staffThesis[item]?.thesisFirstAuthor
           );
           arrInner.push(
-            _data[0].dataValues.staffThesis?.[item]?.thesisAuthorSequence
+            _data[0].dataValues.staffThesis[item]?.thesisAuthorSequence
           );
         }
         data.push(arrInner);
       }
+
+      // 合并账户信息和基本信息
+      if (exportList.indexOf(0) !== -1) {
+        for (let column = 0; column < 21; column++) {
+          range.push({
+            s: { c: column, r: rowNum },
+            e: { c: column, r: maxNum + rowNum - 1 },
+          });
+        }
+      } else {
+        for (let newColumn = 0; newColumn < 2; newColumn++) {
+          range.push({
+            s: { c: newColumn, r: rowNum },
+            e: { c: newColumn, r: maxNum + rowNum - 1 },
+          });
+        }
+      }
+      rowNum += maxNum;
     }
 
-    let buffer = xlsx.build([
-      {
-        name: 'sheet1',
-        data: data,
-      },
-    ]);
+    const options = { '!merges': [...range, ...titleRange] };
+
+    let buffer = xlsx.build(
+      [
+        {
+          name: 'sheet1',
+          data: data,
+        },
+      ],
+      options
+    );
 
     // 上传到oss
     const fileUuid = uuid.v1(),

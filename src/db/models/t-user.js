@@ -21,6 +21,7 @@ const user = db.define('t_user', {
   isCancel: Sequelize.STRING(32), // 是否注销
   phone: Sequelize.STRING(32),
   password: Sequelize.STRING(32),
+  defaultPassword: Sequelize.STRING(32), // 默认密码
   department: Sequelize.STRING(32), // 科室
   departmentUuid: Sequelize.STRING(36), // 科室uuid
   // 以下字段仅供普通员工使用
@@ -32,7 +33,7 @@ const user = db.define('t_user', {
   copyrightScoreSum: Sequelize.DECIMAL(5, 2), // 软件著作权总得分
   awardScoreSum: Sequelize.DECIMAL(5, 2), // 奖项总得分
   thesisScoreSum: Sequelize.DECIMAL(5, 2), // 论文/专著总得分
-  totalScore: Sequelize.DECIMAL(5, 2), // 总得分
+  totalScore: Sequelize.DECIMAL(6, 2), // 总得分
   lastWriteTime: Sequelize.DATE, // 上次填写时间
   currentWriteTime: Sequelize.DATE, // 最新填写时间
 });

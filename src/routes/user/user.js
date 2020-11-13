@@ -66,7 +66,7 @@ router.get('/getUserToken', async (ctx, next) => {
 });
 
 /**
- * 账号注销
+ * 修改密码
  */
 router.post('/savePassword', async (ctx, next) => {
   try {
@@ -74,7 +74,9 @@ router.post('/savePassword', async (ctx, next) => {
 
     const uuid = ctx.state.user.uuid;
 
-    if (newPassword === '123456') {
+    const { defaultPassword } = await service.selectDefaultPassword();
+
+    if (defaultPassword === md5(newPassword)) {
       throw error;
     }
 
@@ -95,6 +97,22 @@ router.post('/savePassword', async (ctx, next) => {
     }
   } catch (error) {
     throw new CustomError('新密码不可与初始密码相同');
+  }
+});
+
+/**
+ * 查询科室
+ */
+router.get('/getDefaultPassword', async (ctx, next) => {
+  try {
+    const data = await service.selectDefaultPassword();
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
   }
 });
 

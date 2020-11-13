@@ -46,6 +46,7 @@ export default {
     officePhone,
     phone,
     education,
+    degree,
     graduateSchool,
     major,
     duty,
@@ -55,8 +56,25 @@ export default {
     researchDirection,
     studyExperience,
     workExperience,
-  }) =>
-    staffBasic.create(
+  }) => {
+    const clearExperience = (str) => {
+      // 去除换行
+      str = str.replace(/<\/?.+?>/g, '');
+      str = str.replace(/[\r\n]/g, '');
+      // 去除空格
+      str = str.replace(/\s+/g, '');
+      return str;
+    };
+
+    if (clearExperience(workExperience).length > 500) {
+      throw new CustomError('工作经历字数超过500!');
+    }
+
+    if (clearExperience(studyExperience).length > 500) {
+      throw new CustomError('学习经历字数超过500!');
+    }
+
+    return staffBasic.create(
       {
         uuid: uuid.v1(),
         userUuid,
@@ -72,6 +90,7 @@ export default {
         officePhone,
         phone,
         education,
+        degree,
         graduateSchool,
         major,
         duty,
@@ -83,7 +102,8 @@ export default {
         workExperience,
       },
       { raw: true }
-    ),
+    );
+  },
   /**
    * 查询基本信息
    */
@@ -102,6 +122,7 @@ export default {
         'officePhone',
         'phone',
         'education',
+        'degree',
         'graduateSchool',
         'major',
         'duty',
@@ -118,7 +139,7 @@ export default {
   /**
    * 修改基本信息
    */
-  updateStaffBasic: ({
+  updateStaffBasic: async ({
     userUuid,
     lastWriteTime,
     currentWriteTime,
@@ -132,6 +153,7 @@ export default {
     officePhone,
     phone,
     education,
+    degree,
     graduateSchool,
     major,
     duty,
@@ -141,8 +163,25 @@ export default {
     researchDirection,
     studyExperience,
     workExperience,
-  }) =>
-    staffBasic.update(
+  }) => {
+    const clearExperience = (str) => {
+      // 去除换行
+      str = str.replace(/<\/?.+?>/g, '');
+      str = str.replace(/[\r\n]/g, '');
+      // 去除空格
+      str = str.replace(/\s+/g, '');
+      return str;
+    };
+
+    if (clearExperience(workExperience).length > 500) {
+      throw new CustomError('工作经历字数超过500!');
+    }
+
+    if (clearExperience(studyExperience).length > 500) {
+      throw new CustomError('学习经历字数超过500!');
+    }
+
+    return await staffBasic.update(
       {
         lastWriteTime,
         currentWriteTime,
@@ -156,6 +195,7 @@ export default {
         officePhone,
         phone,
         education,
+        degree,
         graduateSchool,
         major,
         duty,
@@ -169,7 +209,8 @@ export default {
         verifyRemarks: '',
       },
       { where: { userUuid }, raw: true }
-    ),
+    );
+  },
   /**
    * 查询员工填写信息
    */
@@ -250,6 +291,7 @@ export default {
         'participant',
         'content',
         'isVerify',
+        'reviewRemarks',
         'currentWriteTime',
         'verifyRemarks',
         'score',
@@ -337,6 +379,118 @@ export default {
     }),
 
   /**
+   * 获取项目的信息
+   */
+  selectUploadProject: (uuid) =>
+    staffProject.findOne({
+      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 保存项目的信息
+   */
+  updateUploadProject: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
+    try {
+      let firstProductionUrl = '',
+        secondProductionUrl = '',
+        thirdProductionUrl = '';
+
+      // 将temp的文件copy到production中
+      const [firstFilePosition] = firstUrl.split('/');
+
+      if (firstFilePosition === 'temp') {
+        const firstTempUrl = firstUrl;
+        firstProductionUrl = firstUrl.replace('temp', 'production');
+
+        const project = await staffProject.findOne({
+          attributes: ['firstUrl'],
+          where: { uuid },
+          raw: true,
+        });
+
+        if (project?.firstUrl) {
+          await client.delete(project.firstUrl);
+        }
+
+        await client.copy(firstProductionUrl, firstTempUrl);
+      } else if (firstFilePosition === 'production') {
+        firstProductionUrl = firstUrl;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      if (secondUrl) {
+        const [secondFilePosition] = secondUrl.split('/');
+        if (secondFilePosition === 'temp') {
+          const secondTempUrl = secondUrl;
+          secondProductionUrl = secondUrl.replace('temp', 'production');
+
+          const project = await staffProject.findOne({
+            attributes: ['secondUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (project?.secondUrl) {
+            await client.delete(project.secondUrl);
+          }
+
+          await client.copy(secondProductionUrl, secondTempUrl);
+        } else if (secondFilePosition === 'production') {
+          secondProductionUrl = secondUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
+      }
+
+      if (thirdUrl) {
+        const [thirdFilePosition] = thirdUrl.split('/');
+        if (thirdFilePosition === 'temp') {
+          const thirdTempUrl = thirdUrl;
+          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+
+          const project = await staffProject.findOne({
+            attributes: ['thirdUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (project?.thirdUrl) {
+            await client.delete(project.thirdUrl);
+          }
+
+          await client.copy(thirdProductionUrl, thirdTempUrl);
+        } else if (thirdFilePosition === 'production') {
+          thirdProductionUrl = thirdUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
+      }
+
+      const { currentWriteTime } = await staffProject.findOne({
+        attributes: ['currentWriteTime'],
+        where: { uuid },
+        raw: true,
+      });
+
+      return await staffProject.update(
+        {
+          lastWriteTime: currentWriteTime,
+          currentWriteTime: new Date(),
+          firstUrl: firstProductionUrl,
+          secondUrl: secondProductionUrl,
+          thirdUrl: thirdProductionUrl,
+        },
+        { where: { uuid }, raw: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
    * 新建一条专利信息
    */
   insertStaffPatent: ({
@@ -375,6 +529,7 @@ export default {
         'patentCode',
         'patentNation',
         'verifyRemarks',
+        'reviewRemarks',
         'currentWriteTime',
         'score',
       ],
@@ -438,6 +593,118 @@ export default {
     }),
 
   /**
+   * 获取专利的信息
+   */
+  selectUploadPatent: (uuid) =>
+    staffPatent.findOne({
+      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 保存专利的信息
+   */
+  updateUploadPatent: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
+    try {
+      let firstProductionUrl = '',
+        secondProductionUrl = '',
+        thirdProductionUrl = '';
+
+      // 将temp的文件copy到production中
+      const [firstFilePosition] = firstUrl.split('/');
+
+      if (firstFilePosition === 'temp') {
+        const firstTempUrl = firstUrl;
+        firstProductionUrl = firstUrl.replace('temp', 'production');
+
+        const patent = await staffPatent.findOne({
+          attributes: ['firstUrl'],
+          where: { uuid },
+          raw: true,
+        });
+
+        if (patent?.firstUrl) {
+          await client.delete(patent.firstUrl);
+        }
+
+        await client.copy(firstProductionUrl, firstTempUrl);
+      } else if (firstFilePosition === 'production') {
+        firstProductionUrl = firstUrl;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      if (secondUrl) {
+        const [secondFilePosition] = secondUrl.split('/');
+        if (secondFilePosition === 'temp') {
+          const secondTempUrl = secondUrl;
+          secondProductionUrl = secondUrl.replace('temp', 'production');
+
+          const patent = await staffPatent.findOne({
+            attributes: ['secondUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (patent?.secondUrl) {
+            await client.delete(patent.secondUrl);
+          }
+
+          await client.copy(secondProductionUrl, secondTempUrl);
+        } else if (secondFilePosition === 'production') {
+          secondProductionUrl = secondUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
+      }
+
+      if (thirdUrl) {
+        const [thirdFilePosition] = thirdUrl.split('/');
+        if (thirdFilePosition === 'temp') {
+          const thirdTempUrl = thirdUrl;
+          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+
+          const patent = await staffPatent.findOne({
+            attributes: ['thirdUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (patent?.thirdUrl) {
+            await client.delete(patent.thirdUrl);
+          }
+
+          await client.copy(thirdProductionUrl, thirdTempUrl);
+        } else if (thirdFilePosition === 'production') {
+          thirdProductionUrl = thirdUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
+      }
+
+      const { currentWriteTime } = await staffPatent.findOne({
+        attributes: ['currentWriteTime'],
+        where: { uuid },
+        raw: true,
+      });
+
+      return await staffPatent.update(
+        {
+          lastWriteTime: currentWriteTime,
+          currentWriteTime: new Date(),
+          firstUrl: firstProductionUrl,
+          secondUrl: secondProductionUrl,
+          thirdUrl: thirdProductionUrl,
+        },
+        { where: { uuid }, raw: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
    * 新建一条软件著作权信息
    */
   insertStaffCopyright: ({
@@ -476,6 +743,7 @@ export default {
         'copyrightCode',
         'copyrightArrange',
         'verifyRemarks',
+        'reviewRemarks',
         'currentWriteTime',
         'score',
       ],
@@ -544,6 +812,118 @@ export default {
     }),
 
   /**
+   * 获取软件著作权的信息
+   */
+  selectUploadCopyright: (uuid) =>
+    staffCopyright.findOne({
+      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 保存软件著作权的信息
+   */
+  updateUploadCopyright: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
+    try {
+      let firstProductionUrl = '',
+        secondProductionUrl = '',
+        thirdProductionUrl = '';
+
+      // 将temp的文件copy到production中
+      const [firstFilePosition] = firstUrl.split('/');
+
+      if (firstFilePosition === 'temp') {
+        const firstTempUrl = firstUrl;
+        firstProductionUrl = firstUrl.replace('temp', 'production');
+
+        const copyright = await staffCopyright.findOne({
+          attributes: ['firstUrl'],
+          where: { uuid },
+          raw: true,
+        });
+
+        if (copyright?.firstUrl) {
+          await client.delete(copyright.firstUrl);
+        }
+
+        await client.copy(firstProductionUrl, firstTempUrl);
+      } else if (firstFilePosition === 'production') {
+        firstProductionUrl = firstUrl;
+      } else {
+        throw new CustomError('oss文件路径错误');
+      }
+
+      if (secondUrl) {
+        const [secondFilePosition] = secondUrl.split('/');
+        if (secondFilePosition === 'temp') {
+          const secondTempUrl = secondUrl;
+          secondProductionUrl = secondUrl.replace('temp', 'production');
+
+          const copyright = await staffCopyright.findOne({
+            attributes: ['secondUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (copyright?.secondUrl) {
+            await client.delete(copyright.secondUrl);
+          }
+
+          await client.copy(secondProductionUrl, secondTempUrl);
+        } else if (secondFilePosition === 'production') {
+          secondProductionUrl = secondUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
+      }
+
+      if (thirdUrl) {
+        const [thirdFilePosition] = thirdUrl.split('/');
+        if (thirdFilePosition === 'temp') {
+          const thirdTempUrl = thirdUrl;
+          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+
+          const copyright = await staffCopyright.findOne({
+            attributes: ['thirdUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (copyright?.thirdUrl) {
+            await client.delete(copyright.thirdUrl);
+          }
+
+          await client.copy(thirdProductionUrl, thirdTempUrl);
+        } else if (thirdFilePosition === 'production') {
+          thirdProductionUrl = thirdUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
+      }
+
+      const { currentWriteTime } = await staffCopyright.findOne({
+        attributes: ['currentWriteTime'],
+        where: { uuid },
+        raw: true,
+      });
+
+      return await staffCopyright.update(
+        {
+          lastWriteTime: currentWriteTime,
+          currentWriteTime: new Date(),
+          firstUrl: firstProductionUrl,
+          secondUrl: secondProductionUrl,
+          thirdUrl: thirdProductionUrl,
+        },
+        { where: { uuid }, raw: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
    * 新建一条奖项信息
    */
   insertStaffAward: ({
@@ -587,6 +967,7 @@ export default {
         'awardGrade',
         'awardDepartment',
         'verifyRemarks',
+        'reviewRemarks',
         'currentWriteTime',
         'awardNameList',
         'score',
@@ -712,6 +1093,7 @@ export default {
         'thesisFirstAuthor',
         'thesisAuthorSequence',
         'verifyRemarks',
+        'reviewRemarks',
         'currentWriteTime',
         'score',
       ],
@@ -796,7 +1178,7 @@ export default {
    */
   selectUploadAward: (uuid) =>
     staffAward.findOne({
-      attributes: ['url'],
+      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
       where: { uuid },
       raw: true,
     }),
@@ -804,31 +1186,85 @@ export default {
   /**
    * 保存奖项的信息
    */
-  updateUploadAward: async ({ uuid, awardUrl }) => {
+  updateUploadAward: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = awardUrl.split('/');
+      let firstProductionUrl = '',
+        secondProductionUrl = '',
+        thirdProductionUrl = '';
 
-      if (filePosition === 'temp') {
-        const tempUrl = awardUrl;
-        productionUrl = awardUrl.replace('temp', 'production');
+      // 将temp的文件copy到production中
+      const [firstFilePosition] = firstUrl.split('/');
+      console.log('firstFilePosition=', firstFilePosition);
+
+      if (firstFilePosition === 'temp') {
+        const firstTempUrl = firstUrl;
+        firstProductionUrl = firstUrl.replace('temp', 'production');
 
         const award = await staffAward.findOne({
-          attributes: ['url'],
+          attributes: ['firstUrl'],
           where: { uuid },
           raw: true,
         });
 
-        if (award?.url) {
-          await client.delete(award.url);
+        if (award?.firstUrl) {
+          await client.delete(award.firstUrl);
         }
 
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = awardUrl;
+        await client.copy(firstProductionUrl, firstTempUrl);
+      } else if (firstFilePosition === 'production') {
+        firstProductionUrl = firstUrl;
       } else {
         throw new CustomError('oss文件路径错误');
+      }
+
+      if (secondUrl) {
+        const [secondFilePosition] = secondUrl.split('/');
+        console.log('secondFilePosition=', secondFilePosition);
+        if (secondFilePosition === 'temp') {
+          const secondTempUrl = secondUrl;
+          secondProductionUrl = secondUrl.replace('temp', 'production');
+
+          const award = await staffAward.findOne({
+            attributes: ['secondUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (award?.secondUrl) {
+            await client.delete(award.secondUrl);
+          }
+
+          await client.copy(secondProductionUrl, secondTempUrl);
+        } else if (secondFilePosition === 'production') {
+          secondProductionUrl = secondUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
+      }
+
+      if (thirdUrl) {
+        const [thirdFilePosition] = thirdUrl.split('/');
+        console.log('thirdFilePosition=', thirdFilePosition);
+        if (thirdFilePosition === 'temp') {
+          const thirdTempUrl = thirdUrl;
+          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+
+          const award = await staffAward.findOne({
+            attributes: ['thirdUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (award?.thirdUrl) {
+            await client.delete(award.thirdUrl);
+          }
+
+          await client.copy(thirdProductionUrl, thirdTempUrl);
+        } else if (thirdFilePosition === 'production') {
+          thirdProductionUrl = thirdUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
       }
 
       const { currentWriteTime } = await staffAward.findOne({
@@ -841,7 +1277,9 @@ export default {
         {
           lastWriteTime: currentWriteTime,
           currentWriteTime: new Date(),
-          url: productionUrl,
+          firstUrl: firstProductionUrl,
+          secondUrl: secondProductionUrl,
+          thirdUrl: thirdProductionUrl,
         },
         { where: { uuid }, raw: true }
       );
@@ -855,7 +1293,7 @@ export default {
    */
   selectUploadThesis: (uuid) =>
     staffThesis.findOne({
-      attributes: ['url'],
+      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
       where: { uuid },
       raw: true,
     }),
@@ -863,31 +1301,82 @@ export default {
   /**
    * 保存论文/专著的信息
    */
-  updateUploadThesis: async ({ uuid, thesisUrl }) => {
+  updateUploadThesis: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
     try {
-      let productionUrl = '';
-      // 将temp的文件copy到production中
-      const [filePosition] = thesisUrl.split('/');
+      let firstProductionUrl = '',
+        secondProductionUrl = '',
+        thirdProductionUrl = '';
 
-      if (filePosition === 'temp') {
-        const tempUrl = thesisUrl;
-        productionUrl = thesisUrl.replace('temp', 'production');
+      // 将temp的文件copy到production中
+      const [firstFilePosition] = firstUrl.split('/');
+
+      if (firstFilePosition === 'temp') {
+        const firstTempUrl = firstUrl;
+        firstProductionUrl = firstUrl.replace('temp', 'production');
 
         const thesis = await staffThesis.findOne({
-          attributes: ['url'],
+          attributes: ['firstUrl'],
           where: { uuid },
           raw: true,
         });
 
-        if (thesis?.url) {
-          await client.delete(thesis.url);
+        if (thesis?.firstUrl) {
+          await client.delete(thesis.firstUrl);
         }
 
-        await client.copy(productionUrl, tempUrl);
-      } else if (filePosition === 'production') {
-        productionUrl = thesisUrl;
+        await client.copy(firstProductionUrl, firstTempUrl);
+      } else if (firstFilePosition === 'production') {
+        firstProductionUrl = firstUrl;
       } else {
         throw new CustomError('oss文件路径错误');
+      }
+
+      if (secondUrl) {
+        const [secondFilePosition] = secondUrl.split('/');
+        if (secondFilePosition === 'temp') {
+          const secondTempUrl = secondUrl;
+          secondProductionUrl = secondUrl.replace('temp', 'production');
+
+          const thesis = await staffThesis.findOne({
+            attributes: ['secondUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (thesis?.secondUrl) {
+            await client.delete(thesis.secondUrl);
+          }
+
+          await client.copy(secondProductionUrl, secondTempUrl);
+        } else if (secondFilePosition === 'production') {
+          secondProductionUrl = secondUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
+      }
+
+      if (thirdUrl) {
+        const [thirdFilePosition] = thirdUrl.split('/');
+        if (thirdFilePosition === 'temp') {
+          const thirdTempUrl = thirdUrl;
+          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+
+          const thesis = await staffThesis.findOne({
+            attributes: ['thirdUrl'],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (thesis?.thirdUrl) {
+            await client.delete(thesis.thirdUrl);
+          }
+
+          await client.copy(thirdProductionUrl, thirdTempUrl);
+        } else if (thirdFilePosition === 'production') {
+          thirdProductionUrl = thirdUrl;
+        } else {
+          throw new CustomError('oss文件路径错误');
+        }
       }
 
       const { currentWriteTime } = await staffThesis.findOne({
@@ -900,7 +1389,9 @@ export default {
         {
           lastWriteTime: currentWriteTime,
           currentWriteTime: new Date(),
-          url: productionUrl,
+          firstUrl: firstProductionUrl,
+          secondUrl: secondProductionUrl,
+          thirdUrl: thirdProductionUrl,
         },
         { where: { uuid }, raw: true }
       );
@@ -969,7 +1460,7 @@ export default {
       }),
     ]);
 
-    if (!basicWriteStatus.currentWriteTime) {
+    if (!basicWriteStatus?.currentWriteTime) {
       throw new CustomError('请填写基本信息!');
     }
 

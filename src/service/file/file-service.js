@@ -17,6 +17,32 @@ const verifyExtensionName = (allowExtensionNameArr, verifyName) =>
 
 export default {
   /**
+   * 上传文件
+   */
+  uploadFile: async (file, folderName) => {
+    try {
+      // 后缀名
+      const extensionName = file.originalname.split('.')[1].toLowerCase();
+
+      // 判断大小是否符合
+      if (file.size > 1024 * 1024 * 10) {
+        // 10MB
+        throw new CustomError('文件大小必须小于10MB');
+      }
+
+      // 上传到oss
+      const fileUuid = uuid.v1(),
+        fileUrl = `temp/${folderName}/${fileUuid}.${extensionName}`;
+
+      // 上传文件
+      await client.put(fileUrl, file.buffer);
+
+      return fileUrl;
+    } catch (error) {
+      throw error;
+    }
+  },
+  /**
    * 上传word/pdf文件
    */
   uploadJpgFile: async (file, folderName) => {

@@ -13,6 +13,23 @@ const router = new Router({
   prefix: '/file'
 });
 
+router.post('/uploadFile', upload.single('file'), async (ctx, next) => {
+  try {
+    const param = ctx.request.file,
+      folderName = ctx.request.body.folderName;
+
+    const data = await service.uploadFile(param, folderName);
+
+    ctx.body = new Res({
+      data,
+      status: RESPONSE_CODE.success,
+      msg: '文件上传成功'
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 router.post('/uploadJpgFile', upload.single('file'), async (ctx, next) => {
   try {
     const param = ctx.request.file,

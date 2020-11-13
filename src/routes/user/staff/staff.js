@@ -43,6 +43,7 @@ router.post('/saveStaffBasic', async (ctx, next) => {
       officePhone,
       phone,
       education,
+      degree,
       graduateSchool,
       major,
       duty,
@@ -70,6 +71,7 @@ router.post('/saveStaffBasic', async (ctx, next) => {
       officePhone,
       phone,
       education,
+      degree,
       graduateSchool,
       major,
       duty,
@@ -125,6 +127,7 @@ router.post('/modifyStaffBasic', async (ctx, next) => {
       officePhone,
       phone,
       education,
+      degree,
       graduateSchool,
       major,
       duty,
@@ -156,6 +159,7 @@ router.post('/modifyStaffBasic', async (ctx, next) => {
       officePhone,
       phone,
       education,
+      degree,
       graduateSchool,
       major,
       duty,
@@ -879,6 +883,132 @@ router.del('/deleteThesis', async (ctx, next) => {
 });
 
 /**
+ * 获取项目的附件信息
+ */
+router.get('/selectUploadProject', async (ctx) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.selectUploadProject(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存项目的附件信息
+ */
+router.post('/saveUploadProject', async (ctx) => {
+  try {
+    const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
+
+    const data = await service.updateUploadProject({
+      uuid,
+      firstUrl,
+      secondUrl,
+      thirdUrl,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '保存项目附件成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 获取专利的附件信息
+ */
+router.get('/selectUploadPatent', async (ctx) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.selectUploadPatent(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存专利的附件信息
+ */
+router.post('/saveUploadPatent', async (ctx) => {
+  try {
+    const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
+
+    const data = await service.updateUploadPatent({
+      uuid,
+      firstUrl,
+      secondUrl,
+      thirdUrl,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '保存专利附件成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 获取软件著作权的附件信息
+ */
+router.get('/selectUploadCopyright', async (ctx) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.selectUploadCopyright(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存软件著作权的附件信息
+ */
+router.post('/saveUploadCopyright', async (ctx) => {
+  try {
+    const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
+
+    const data = await service.updateUploadCopyright({
+      uuid,
+      firstUrl,
+      secondUrl,
+      thirdUrl,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '保存软件著作权附件成功',
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
  * 获取奖项的附件信息
  */
 router.get('/selectUploadAward', async (ctx) => {
@@ -901,11 +1031,13 @@ router.get('/selectUploadAward', async (ctx) => {
  */
 router.post('/saveUploadAward', async (ctx) => {
   try {
-    const { uuid, awardUrl } = ctx.state.param;
+    const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
 
     const data = await service.updateUploadAward({
       uuid,
-      awardUrl,
+      firstUrl,
+      secondUrl,
+      thirdUrl,
     });
 
     ctx.body = new Res({
@@ -941,11 +1073,13 @@ router.get('/selectUploadThesis', async (ctx) => {
  */
 router.post('/saveUploadThesis', async (ctx) => {
   try {
-    const { uuid, thesisUrl } = ctx.state.param;
+    const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
 
     const data = await service.updateUploadThesis({
       uuid,
-      thesisUrl,
+      firstUrl,
+      secondUrl,
+      thirdUrl,
     });
 
     ctx.body = new Res({

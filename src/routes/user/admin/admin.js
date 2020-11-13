@@ -81,7 +81,7 @@ router.del('/deleteDepartment', async (ctx, next) => {
  */
 router.post('/saveBusinessManagerTime', async (ctx) => {
   try {
-    const { startTime, endTime, uuid } = ctx.state.param;
+    const { startTime, endTime, sysSwitch, timeSwitch } = ctx.state.param;
 
     const res = await service.selectBusinessManagerTime();
     let data;
@@ -90,11 +90,15 @@ router.post('/saveBusinessManagerTime', async (ctx) => {
       data = await service.insertBusinessManagerTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     } else {
       data = await service.updateBusinessManagerTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     }
     ctx.body = new Res({
@@ -128,7 +132,7 @@ router.get('/selectBusinessManagerTime', async (ctx, next) => {
  */
 router.post('/saveReviewManagerTime', async (ctx) => {
   try {
-    const { startTime, endTime } = ctx.state.param;
+    const { startTime, endTime, sysSwitch, timeSwitch } = ctx.state.param;
 
     const res = await service.selectReviewManagerTime();
     let data;
@@ -137,11 +141,15 @@ router.post('/saveReviewManagerTime', async (ctx) => {
       data = await service.insertReviewManagerTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     } else {
       data = await service.updateReviewManagerTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     }
     ctx.body = new Res({
@@ -175,7 +183,7 @@ router.get('/selectReviewManagerTime', async (ctx, next) => {
  */
 router.post('/saveStaffTime', async (ctx) => {
   try {
-    const { startTime, endTime } = ctx.state.param;
+    const { startTime, endTime, sysSwitch, timeSwitch } = ctx.state.param;
 
     const res = await service.selectStaffTime();
     let data;
@@ -184,11 +192,15 @@ router.post('/saveStaffTime', async (ctx) => {
       data = await service.insertStaffTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     } else {
       data = await service.updateStaffTime({
         startTime,
         endTime,
+        sysSwitch,
+        timeSwitch,
       });
     }
     ctx.body = new Res({
@@ -312,7 +324,7 @@ router.get('/getDepartment', async (ctx, next) => {
  */
 router.post('/resetPassword', async (ctx, next) => {
   try {
-    const { uuid } = ctx.state.param;
+    const { userUuid: uuid } = ctx.state.param;
 
     const data = await service.updatePassword(uuid);
 
@@ -327,23 +339,44 @@ router.post('/resetPassword', async (ctx, next) => {
 });
 
 /**
- * 账号注销
+ * 管理员修改默认密码
  */
-router.post('/accountCancel', async (ctx, next) => {
+router.post('/changeDefaultPassword', async (ctx, next) => {
   try {
-    const { uuid } = ctx.state.param;
+    const { oldPassword, newPassword } = ctx.state.param;
 
-    const data = await service.updatAccountCancel(uuid);
+    const data = await service.updateDefaultPassword({
+      oldPassword,
+      newPassword,
+    });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '账号已注销',
+      msg: '默认密码修改成功',
     });
   } catch (error) {
     throw error;
   }
-});
+}),
+  /**
+   * 账号注销
+   */
+  router.post('/accountCancel', async (ctx, next) => {
+    try {
+      const { userUuid: uuid } = ctx.state.param;
+
+      const data = await service.updatAccountCancel(uuid);
+
+      ctx.body = new Res({
+        status: RESPONSE_CODE.success,
+        data,
+        msg: '账号已注销',
+      });
+    } catch (error) {
+      throw error;
+    }
+  });
 
 /**
  * 修改用户
