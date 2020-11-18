@@ -57,22 +57,22 @@ export default {
     studyExperience,
     workExperience,
   }) => {
-    const clearExperience = (str) => {
-      // 去除换行
-      str = str.replace(/<\/?.+?>/g, '');
-      str = str.replace(/[\r\n]/g, '');
-      // 去除空格
-      str = str.replace(/\s+/g, '');
-      return str;
-    };
+    // const clearExperience = (str) => {
+    //   // 去除换行
+    //   str = str.replace(/<\/?.+?>/g, '');
+    //   str = str.replace(/[\r\n]/g, '');
+    //   // 去除空格
+    //   str = str.replace(/\s+/g, '');
+    //   return str;
+    // };
 
-    if (clearExperience(workExperience).length > 500) {
-      throw new CustomError('工作经历字数超过500!');
-    }
+    // if (clearExperience(workExperience).length > 500) {
+    //   throw new CustomError('工作经历字数超过500!');
+    // }
 
-    if (clearExperience(studyExperience).length > 500) {
-      throw new CustomError('学习经历字数超过500!');
-    }
+    // if (clearExperience(studyExperience).length > 500) {
+    //   throw new CustomError('学习经历字数超过500!');
+    // }
 
     return staffBasic.create(
       {
