@@ -149,6 +149,8 @@ export default {
         'controller',
         'participant',
         'content',
+        'isChecked',
+        'checkConclusion',
         'isVerify',
         'currentWriteTime',
         'verifyRemarks',
