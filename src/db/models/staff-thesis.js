@@ -20,7 +20,6 @@ export default db.define('staff_thesis', {
   lastWriteTime: Sequelize.DATE, // 上次填写时间
   currentWriteTime: Sequelize.DATE, // 最新填写时间
   thesisTitle: Sequelize.STRING(32), // 标题
-  thesisType: Sequelize.STRING(32), // 类型
   thesisJournal: Sequelize.STRING(32), // 发表期刊名称
   thesisTime: Sequelize.DATE, // 发表时间
   thesisGrade: Sequelize.STRING(32), // 期刊级别

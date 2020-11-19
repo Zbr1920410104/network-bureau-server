@@ -206,6 +206,7 @@ router.post('/createStaffProject', async (ctx, next) => {
   try {
     const {
       type,
+      grade,
       name,
       startTime,
       endTime,
@@ -215,6 +216,8 @@ router.post('/createStaffProject', async (ctx, next) => {
       controller,
       participant,
       content,
+      isChecked,
+      checkConclusion
     } = ctx.state.param;
 
     const userUuid = ctx.state.user.uuid;
@@ -224,6 +227,7 @@ router.post('/createStaffProject', async (ctx, next) => {
       currentWriteTime: new Date(),
       isVerify: '未核实',
       type,
+      grade,
       name,
       startTime,
       endTime,
@@ -233,6 +237,8 @@ router.post('/createStaffProject', async (ctx, next) => {
       controller,
       participant,
       content,
+      isChecked,
+      checkConclusion
     });
 
     ctx.body = new Res({
@@ -291,6 +297,7 @@ router.post('/modifyStaffProject', async (ctx, next) => {
     const {
       uuid,
       type,
+      grade,
       name,
       startTime,
       endTime,
@@ -300,6 +307,8 @@ router.post('/modifyStaffProject', async (ctx, next) => {
       controller,
       participant,
       content,
+      isChecked,
+      checkConclusion
     } = ctx.state.param;
 
     const { currentWriteTime } = await service.selectProjectLastWriteTimeByUuid(
@@ -311,6 +320,7 @@ router.post('/modifyStaffProject', async (ctx, next) => {
       lastWriteTime: currentWriteTime,
       currentWriteTime: new Date(),
       type,
+      grade,
       name,
       startTime,
       endTime,
@@ -320,6 +330,8 @@ router.post('/modifyStaffProject', async (ctx, next) => {
       controller,
       participant,
       content,
+      isChecked,
+      checkConclusion
     });
 
     ctx.body = new Res({
@@ -359,7 +371,10 @@ router.post('/createStaffPatent', async (ctx, next) => {
       patentType,
       patentName,
       patentCode,
-      patentNation,
+      rank,
+      patentee,
+      patentTime,
+      inventor
     } = ctx.state.param;
 
     const userUuid = ctx.state.user.uuid;
@@ -371,7 +386,10 @@ router.post('/createStaffPatent', async (ctx, next) => {
       patentType,
       patentName,
       patentCode,
-      patentNation,
+      rank,
+      patentee,
+      patentTime,
+      inventor
     });
 
     ctx.body = new Res({
@@ -432,7 +450,10 @@ router.post('/modifyStaffPatent', async (ctx, next) => {
       patentType,
       patentName,
       patentCode,
-      patentNation,
+      rank,
+      patentee,
+      patentTime,
+      inventor
     } = ctx.state.param;
 
     const { currentWriteTime } = await service.selectPatentLastWriteTimeByUuid(
@@ -446,7 +467,10 @@ router.post('/modifyStaffPatent', async (ctx, next) => {
       patentType,
       patentName,
       patentCode,
-      patentNation,
+      rank,
+      patentee,
+      patentTime,
+      inventor
     });
 
     ctx.body = new Res({

@@ -139,6 +139,7 @@ export default {
       attributes: [
         'uuid',
         'name',
+        'grade',
         'type',
         'startTime',
         'endTime',
@@ -171,7 +172,10 @@ export default {
         'patentType',
         'patentName',
         'patentCode',
-        'patentNation',
+        'rank',
+        'patentee',
+        'patentTime',
+        'inventor',
         'isVerify',
         'currentWriteTime',
         'verifyRemarks',
@@ -196,6 +200,10 @@ export default {
         'copyrightName',
         'copyrightCode',
         'copyrightArrange',
+        'completeTime',
+        'publishTime',
+        'copyrightOwner',
+        'rank',
         'isVerify',
         'currentWriteTime',
         'verifyRemarks',
@@ -221,6 +229,7 @@ export default {
         'awardTime',
         'awardGrade',
         'awardDepartment',
+        'awardRank',
         'isVerify',
         'currentWriteTime',
         'awardNameList',
@@ -243,7 +252,6 @@ export default {
       attributes: [
         'uuid',
         'thesisTitle',
-        'thesisType',
         'thesisJournal',
         'thesisTime',
         'thesisGrade',
@@ -1111,6 +1119,7 @@ export default {
           attributes: [
             'name',
             'type',
+            'grade',
             'startTime',
             'endTime',
             'code',
@@ -1119,6 +1128,8 @@ export default {
             'controller',
             'participant',
             'content',
+            'isChecked',
+            'checkConclusion'
           ],
           as: 'staffProject',
         },
@@ -1128,7 +1139,10 @@ export default {
             'patentType',
             'patentName',
             'patentCode',
-            'patentNation',
+            'rank',
+            'patentee',
+            'patentTime',
+            'inventor'
           ],
           as: 'staffPatent',
         },
@@ -1139,6 +1153,10 @@ export default {
             'copyrightName',
             'copyrightCode',
             'copyrightArrange',
+            'completeTime',
+            'publishTime',
+            'copyrightOwner',
+            'rank'
           ],
           as: 'staffCopyright',
         },
@@ -1151,6 +1169,7 @@ export default {
             'awardGrade',
             'awardDepartment',
             'awardNameList',
+            'awardRank',
           ],
           as: 'staffAward',
         },
@@ -1158,7 +1177,6 @@ export default {
           model: staffThesis,
           attributes: [
             'thesisTitle',
-            'thesisType',
             'thesisJournal',
             'thesisTime',
             'thesisGrade',
@@ -1175,124 +1193,126 @@ export default {
     let basicTitle =
       exportList.indexOf(0) !== -1
         ? [
-            '身份证号',
-            '性别',
-            '民族',
-            '籍贯',
-            '政治面貌',
-            '科室',
-            '办公电话',
-            '手机号码',
-            '学历',
-            '学位',
-            '毕业学校',
-            '所学专业',
-            '职务',
-            '参加工作时间',
-            '职称',
-            '获得时间',
-            '研究方向',
-            '学习经历',
-            '工作经历',
-          ]
+          '身份证号',
+          '性别',
+          '民族',
+          '籍贯',
+          '政治面貌',
+          '科室',
+          '办公电话',
+          '手机号码',
+          '学历',
+          '学位',
+          '毕业学校',
+          '所学专业',
+          '职务',
+          '参加工作时间',
+          '职称',
+          '获得时间',
+          '研究方向',
+          '学习经历',
+          '工作经历',
+        ]
         : [];
 
     let projectTitle =
       exportList.indexOf(1) !== -1
         ? [
-            '项目类型',
-            '项目名称',
-            '项目开始时间',
-            '项目结束时间',
-            '项目编号',
-            '项目来源',
-            '项目经费(万元)',
-            '负责人',
-            '参与者名单',
-            '主要研究内容',
-          ]
+          '参与类型',
+          '项目名称',
+          '项目开始时间',
+          '项目结束时间',
+          '项目编号',
+          '项目来源',
+          '项目经费(万元)',
+          '负责人',
+          '参与者名单',
+          '主要研究内容',
+          '是否验收',
+          '验收结论'
+        ]
         : [];
 
     let patentTitle =
       exportList.indexOf(2) !== -1
-        ? ['专利类型', '专利名称', '授权号', '授权国家']
+        ? ['专利类型', '专利名称', '授权号', '专利排名', '专利权人', '专利公告日', '发明人（设计人）']
         : [];
 
     let copyrightTitle =
       exportList.indexOf(3) !== -1
-        ? ['权利取得方式', '软件著作权名称', '登记号', '授权范围']
+        ? ['权利取得方式', '软件著作权名称', '登记号', '授权范围', '开发完成时间', '发表时间', '软件著作权权人', '软著排位']
         : [];
 
     let awardTitle =
       exportList.indexOf(4) !== -1
         ? [
-            '奖项类型',
-            '奖项名称',
-            '获奖时间',
-            '奖项级别',
-            '颁奖部门',
-            '获奖名单',
-          ]
+          '奖项类型',
+          '奖项名称',
+          '获奖时间',
+          '奖项级别',
+          '颁奖部门',
+          '获奖名单',
+          '获奖排位',
+        ]
         : [];
 
     let thesisTitle =
       exportList.indexOf(5) !== -1
         ? [
-            '标题',
-            '类型',
-            '发表期刊名称',
-            '发表时间',
-            '期刊级别',
-            '论文索引号',
-            '第一作者',
-            '提交人作者次序',
-          ]
+          '标题',
+          '发表期刊名称',
+          '发表时间',
+          '期刊级别',
+          '论文索引号',
+          '第一作者',
+          '提交人作者次序',
+        ]
         : [];
 
     let firstBasicTitle =
       exportList.indexOf(0) !== -1
         ? [
-            '基本信息',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-          ]
+          '基本信息',
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
         : [];
 
     let firstProjectTitle =
       exportList.indexOf(1) !== -1
-        ? ['项目', null, null, null, null, null, null, null, null, null]
+        ? ['项目', null, null, null, null, null, null, null, null, null, null, null, null]
         : [];
 
     let firstPatentTitle =
-      exportList.indexOf(2) !== -1 ? ['专利', null, null, null] : [];
+      exportList.indexOf(2) !== -1 ? ['专利', null, null, null, null, null, null] : [];
 
     let firstCopyrightTitle =
-      exportList.indexOf(3) !== -1 ? ['软件著作权', null, null, null] : [];
+      exportList.indexOf(3) !== -1 ? ['软件著作权', null, null, null, null, null, null, null] : [];
 
     let firstAwardTitle =
       exportList.indexOf(4) !== -1
-        ? ['奖项', null, null, null, null, null]
+        ? ['奖项', null, null, null, null, null, null]
         : [];
 
     let firstThesisTitle =
       exportList.indexOf(5) !== -1
-        ? ['论文/专著', null, null, null, null, null, null, null]
+        ? ['论文/专著', null, null, null, null, null, null]
         : [];
 
     let firstTitle = [
@@ -1326,7 +1346,7 @@ export default {
       },
     ];
 
-    const columnNum = [19, 10, 4, 4, 6, 8];
+    const columnNum = [19, 13, 7, 8, 9, 9];
     for (let indexNum = 0, columnsum = 2; indexNum < 6; indexNum++) {
       if (exportList.indexOf(indexNum) !== -1) {
         titleRange.push({
@@ -1371,8 +1391,8 @@ export default {
           arrInner.push(
             _data[0].dataValues.staffBasic
               ? moment(
-                  _data[0].dataValues.staffBasic?.dataValues.workTime
-                ).format('YYYY-MM-DD')
+                _data[0].dataValues.staffBasic?.dataValues.workTime
+              ).format('YYYY-MM-DD')
               : null
           );
           arrInner.push(
@@ -1381,8 +1401,8 @@ export default {
           arrInner.push(
             _data[0].dataValues.staffBasic
               ? moment(
-                  _data[0].dataValues.staffBasic?.dataValues.getTime
-                ).format('YYYY-MM-DD')
+                _data[0].dataValues.staffBasic?.dataValues.getTime
+              ).format('YYYY-MM-DD')
               : null
           );
           arrInner.push(
@@ -1421,22 +1441,22 @@ export default {
           _data[0].dataValues.staffProject[item]?.type === 1
             ? '主持项目'
             : _data[0].dataValues.staffProject[item]?.type === 2
-            ? '参与项目'
-            : null
+              ? '参与项目'
+              : null
         );
         arrInner.push(_data[0].dataValues.staffProject[item]?.name);
         arrInner.push(
           _data[0].dataValues.staffProject[item]
             ? moment(_data[0].dataValues.staffProject[item]?.startTime).format(
-                'YYYY-MM-DD'
-              )
+              'YYYY-MM-DD'
+            )
             : null
         );
         arrInner.push(
           _data[0].dataValues.staffProject[item]
             ? moment(_data[0].dataValues.staffProject[item]?.endTime).format(
-                'YYYY-MM-DD'
-              )
+              'YYYY-MM-DD'
+            )
             : null
         );
         arrInner.push(_data[0].dataValues.staffProject[item]?.code);
@@ -1466,8 +1486,8 @@ export default {
         arrInner.push(
           _data[0].dataValues.staffAward[item]
             ? moment(_data[0].dataValues.staffAward[item]?.awardTime).format(
-                'YYYY-MM-DD'
-              )
+              'YYYY-MM-DD'
+            )
             : null
         );
         arrInner.push(_data[0].dataValues.staffAward[item]?.awardGrade);
@@ -1481,8 +1501,8 @@ export default {
         arrInner.push(
           _data[0].dataValues.staffThesis[item]
             ? moment(_data[0].dataValues.staffThesis[item]?.thesisTime).format(
-                'YYYY-MM-DD'
-              )
+              'YYYY-MM-DD'
+            )
             : null
         );
         arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisGrade);
@@ -1581,26 +1601,26 @@ export default {
     let firstBasicTitle =
       exportList.indexOf(0) !== -1
         ? [
-            '基本信息',
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-            null,
-          ]
+          '基本信息',
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+        ]
         : [];
 
     let firstProjectTitle =
@@ -1664,42 +1684,42 @@ export default {
     let basicTitle =
       exportList.indexOf(0) !== -1
         ? [
-            '身份证号',
-            '性别',
-            '民族',
-            '籍贯',
-            '政治面貌',
-            '科室',
-            '办公电话',
-            '手机号码',
-            '学历',
-            '学位',
-            '毕业学校',
-            '所学专业',
-            '职务',
-            '参加工作时间',
-            '职称',
-            '获得时间',
-            '研究方向',
-            '学习经历',
-            '工作经历',
-          ]
+          '身份证号',
+          '性别',
+          '民族',
+          '籍贯',
+          '政治面貌',
+          '科室',
+          '办公电话',
+          '手机号码',
+          '学历',
+          '学位',
+          '毕业学校',
+          '所学专业',
+          '职务',
+          '参加工作时间',
+          '职称',
+          '获得时间',
+          '研究方向',
+          '学习经历',
+          '工作经历',
+        ]
         : [];
 
     let projectTitle =
       exportList.indexOf(1) !== -1
         ? [
-            '项目类型',
-            '项目名称',
-            '项目开始时间',
-            '项目结束时间',
-            '项目编号',
-            '项目来源',
-            '项目经费(万元)',
-            '负责人',
-            '参与者名单',
-            '主要研究内容',
-          ]
+          '项目类型',
+          '项目名称',
+          '项目开始时间',
+          '项目结束时间',
+          '项目编号',
+          '项目来源',
+          '项目经费(万元)',
+          '负责人',
+          '参与者名单',
+          '主要研究内容',
+        ]
         : [];
 
     let patentTitle =
@@ -1715,27 +1735,27 @@ export default {
     let awardTitle =
       exportList.indexOf(4) !== -1
         ? [
-            '奖项类型',
-            '奖项名称',
-            '获奖时间',
-            '奖项级别',
-            '颁奖部门',
-            '获奖名单',
-          ]
+          '奖项类型',
+          '奖项名称',
+          '获奖时间',
+          '奖项级别',
+          '颁奖部门',
+          '获奖名单',
+        ]
         : [];
 
     let thesisTitle =
       exportList.indexOf(5) !== -1
         ? [
-            '标题',
-            '类型',
-            '发表期刊名称',
-            '发表时间',
-            '期刊级别',
-            '论文索引号',
-            '第一作者',
-            '提交人作者次序',
-          ]
+          '标题',
+          '类型',
+          '发表期刊名称',
+          '发表时间',
+          '期刊级别',
+          '论文索引号',
+          '第一作者',
+          '提交人作者次序',
+        ]
         : [];
 
     let secondTitle = [
@@ -1919,8 +1939,8 @@ export default {
             arrInner.push(
               _data[0].dataValues.staffBasic
                 ? moment(
-                    _data[0].dataValues.staffBasic?.dataValues.workTime
-                  ).format('YYYY-MM-DD')
+                  _data[0].dataValues.staffBasic?.dataValues.workTime
+                ).format('YYYY-MM-DD')
                 : null
             );
             arrInner.push(
@@ -1929,8 +1949,8 @@ export default {
             arrInner.push(
               _data[0].dataValues.staffBasic
                 ? moment(
-                    _data[0].dataValues.staffBasic?.dataValues.getTime
-                  ).format('YYYY-MM-DD')
+                  _data[0].dataValues.staffBasic?.dataValues.getTime
+                ).format('YYYY-MM-DD')
                 : null
             );
             arrInner.push(
@@ -1969,22 +1989,22 @@ export default {
             _data[0].dataValues.staffProject[item]?.type === 1
               ? '主持项目'
               : _data[0].dataValues.staffProject[item]?.type === 2
-              ? '参与项目'
-              : null
+                ? '参与项目'
+                : null
           );
           arrInner.push(_data[0].dataValues.staffProject[item]?.name);
           arrInner.push(
             _data[0].dataValues.staffProject[item]
               ? moment(
-                  _data[0].dataValues.staffProject[item]?.startTime
-                ).format('YYYY-MM-DD')
+                _data[0].dataValues.staffProject[item]?.startTime
+              ).format('YYYY-MM-DD')
               : null
           );
           arrInner.push(
             _data[0].dataValues.staffProject[item]
               ? moment(_data[0].dataValues.staffProject[item]?.endTime).format(
-                  'YYYY-MM-DD'
-                )
+                'YYYY-MM-DD'
+              )
               : null
           );
           arrInner.push(_data[0].dataValues.staffProject[item]?.code);
@@ -2020,8 +2040,8 @@ export default {
           arrInner.push(
             _data[0].dataValues.staffAward[item]
               ? moment(_data[0].dataValues.staffAward[item]?.awardTime).format(
-                  'YYYY-MM-DD'
-                )
+                'YYYY-MM-DD'
+              )
               : null
           );
           arrInner.push(_data[0].dataValues.staffAward[item]?.awardGrade);
@@ -2035,8 +2055,8 @@ export default {
           arrInner.push(
             _data[0].dataValues.staffThesis[item]
               ? moment(
-                  _data[0].dataValues.staffThesis[item]?.thesisTime
-                ).format('YYYY-MM-DD')
+                _data[0].dataValues.staffThesis[item]?.thesisTime
+              ).format('YYYY-MM-DD')
               : null
           );
           arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisGrade);

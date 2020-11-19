@@ -56,6 +56,9 @@ export default {
     researchDirection,
     studyExperience,
     workExperience,
+    skills,
+    professionalPromotion,
+    currentProfession
   }) => {
     // const clearExperience = (str) => {
     //   // 去除换行
@@ -100,6 +103,9 @@ export default {
         researchDirection,
         studyExperience,
         workExperience,
+        skills,
+        professionalPromotion,
+        currentProfession
       },
       { raw: true }
     );
@@ -132,6 +138,9 @@ export default {
         'researchDirection',
         'studyExperience',
         'workExperience',
+        'skills',
+        'professionalPromotion',
+        'currentProfession'
       ],
       where: { userUuid },
       raw: true,
@@ -163,23 +172,26 @@ export default {
     researchDirection,
     studyExperience,
     workExperience,
+    skills,
+    professionalPromotion,
+    currentProfession
   }) => {
-    const clearExperience = (str) => {
-      // 去除换行
-      str = str.replace(/<\/?.+?>/g, '');
-      str = str.replace(/[\r\n]/g, '');
-      // 去除空格
-      str = str.replace(/\s+/g, '');
-      return str;
-    };
+    // const clearExperience = (str) => {
+    //   // 去除换行
+    //   str = str.replace(/<\/?.+?>/g, '');
+    //   str = str.replace(/[\r\n]/g, '');
+    //   // 去除空格
+    //   str = str.replace(/\s+/g, '');
+    //   return str;
+    // };
 
-    if (clearExperience(workExperience).length > 500) {
-      throw new CustomError('工作经历字数超过500!');
-    }
+    // if (clearExperience(workExperience).length > 500) {
+    //   throw new CustomError('工作经历字数超过500!');
+    // }
 
-    if (clearExperience(studyExperience).length > 500) {
-      throw new CustomError('学习经历字数超过500!');
-    }
+    // if (clearExperience(studyExperience).length > 500) {
+    //   throw new CustomError('学习经历字数超过500!');
+    // }
 
     return await staffBasic.update(
       {
@@ -205,6 +217,9 @@ export default {
         researchDirection,
         studyExperience,
         workExperience,
+        skills,
+        professionalPromotion,
+        currentProfession,
         isVerify: '未核实',
         verifyRemarks: '',
       },
@@ -243,6 +258,7 @@ export default {
     currentWriteTime,
     isVerify,
     type,
+    grade,
     name,
     startTime,
     endTime,
@@ -252,6 +268,8 @@ export default {
     controller,
     participant,
     content,
+    isChecked,
+    checkConclusion
   }) =>
     staffProject.create(
       {
@@ -260,6 +278,7 @@ export default {
         currentWriteTime,
         isVerify,
         type,
+        grade,
         name,
         startTime,
         endTime,
@@ -269,6 +288,8 @@ export default {
         controller,
         participant,
         content,
+        isChecked,
+        checkConclusion
       },
       { raw: true }
     ),
@@ -281,6 +302,7 @@ export default {
       attributes: [
         'uuid',
         'name',
+        'grade',
         'type',
         'startTime',
         'endTime',
@@ -290,6 +312,8 @@ export default {
         'controller',
         'participant',
         'content',
+        'isChecked',
+        'checkConclusion',
         'isVerify',
         'reviewRemarks',
         'currentWriteTime',
@@ -307,6 +331,7 @@ export default {
     staffProject.findOne({
       attributes: [
         'name',
+        'grade',
         'type',
         'startTime',
         'endTime',
@@ -316,6 +341,8 @@ export default {
         'controller',
         'participant',
         'content',
+        'isChecked',
+        'checkConclusion',
       ],
       where: { uuid },
       raw: true,
@@ -339,6 +366,7 @@ export default {
     lastWriteTime,
     currentWriteTime,
     type,
+    grade,
     name,
     startTime,
     endTime,
@@ -354,6 +382,7 @@ export default {
         lastWriteTime,
         currentWriteTime,
         type,
+        grade,
         name,
         startTime,
         endTime,
@@ -500,7 +529,10 @@ export default {
     patentType,
     patentName,
     patentCode,
-    patentNation,
+    rank,
+    patentee,
+    patentTime,
+    inventor
   }) =>
     staffPatent.create(
       {
@@ -511,7 +543,10 @@ export default {
         patentType,
         patentName,
         patentCode,
-        patentNation,
+        rank,
+        patentee,
+        patentTime,
+        inventor
       },
       { raw: true }
     ),
@@ -527,7 +562,10 @@ export default {
         'patentType',
         'patentName',
         'patentCode',
-        'patentNation',
+        'rank',
+        'patentee',
+        'patentTime',
+        'inventor',
         'verifyRemarks',
         'reviewRemarks',
         'currentWriteTime',
@@ -542,7 +580,14 @@ export default {
    */
   selectStaffPatentByUuid: ({ uuid }) =>
     staffPatent.findOne({
-      attributes: ['patentType', 'patentName', 'patentCode', 'patentNation'],
+      attributes: [
+        'patentType',
+        'patentName',
+        'patentCode',
+        'rank',
+        'patentee',
+        'patentTime',
+        'inventor',],
       where: { uuid },
       raw: true,
     }),
@@ -567,7 +612,10 @@ export default {
     patentType,
     patentName,
     patentCode,
-    patentNation,
+    rank,
+    patentee,
+    patentTime,
+    inventor
   }) =>
     staffPatent.update(
       {
@@ -576,7 +624,10 @@ export default {
         patentType,
         patentName,
         patentCode,
-        patentNation,
+        rank,
+        patentee,
+        patentTime,
+        inventor,
         isVerify: '未核实',
         verifyRemarks: '',
       },
@@ -715,6 +766,10 @@ export default {
     copyrightName,
     copyrightCode,
     copyrightArrange,
+    completeTime,
+    publishTime,
+    copyrightOwner,
+    rank
   }) =>
     staffCopyright.create(
       {
@@ -726,6 +781,10 @@ export default {
         copyrightName,
         copyrightCode,
         copyrightArrange,
+        completeTime,
+        publishTime,
+        copyrightOwner,
+        rank
       },
       { raw: true }
     ),
@@ -742,6 +801,10 @@ export default {
         'copyrightName',
         'copyrightCode',
         'copyrightArrange',
+        'completeTime',
+        'publishTime',
+        'copyrightOwner',
+        'rank',
         'verifyRemarks',
         'reviewRemarks',
         'currentWriteTime',
@@ -761,6 +824,10 @@ export default {
         'copyrightName',
         'copyrightCode',
         'copyrightArrange',
+        'completeTime',
+        'publishTime',
+        'copyrightOwner',
+        'rank',
       ],
       where: { uuid },
       raw: true,
@@ -787,6 +854,10 @@ export default {
     copyrightName,
     copyrightCode,
     copyrightArrange,
+    completeTime,
+    publishTime,
+    copyrightOwner,
+    rank
   }) =>
     staffCopyright.update(
       {
@@ -796,6 +867,10 @@ export default {
         copyrightName,
         copyrightCode,
         copyrightArrange,
+        completeTime,
+        publishTime,
+        copyrightOwner,
+        rank,
         isVerify: '未核实',
         verifyRemarks: '',
       },
@@ -936,6 +1011,7 @@ export default {
     awardGrade,
     awardDepartment,
     awardNameList,
+    awardRank
   }) =>
     staffAward.create(
       {
@@ -949,6 +1025,7 @@ export default {
         awardGrade,
         awardDepartment,
         awardNameList,
+        awardRank
       },
       { raw: true }
     ),
@@ -970,6 +1047,7 @@ export default {
         'reviewRemarks',
         'currentWriteTime',
         'awardNameList',
+        'awardRank',
         'score',
       ],
       where: { userUuid },
@@ -988,6 +1066,7 @@ export default {
         'awardGrade',
         'awardDepartment',
         'awardNameList',
+        'awardRank'
       ],
       where: { uuid },
       raw: true,
@@ -1016,6 +1095,7 @@ export default {
     awardGrade,
     awardDepartment,
     awardNameList,
+    awardRank
   }) =>
     staffAward.update(
       {
@@ -1027,6 +1107,7 @@ export default {
         awardGrade,
         awardDepartment,
         awardNameList,
+        awardRank,
         isVerify: '未核实',
         verifyRemarks: '',
       },
@@ -1050,7 +1131,6 @@ export default {
     currentWriteTime,
     isVerify,
     thesisTitle,
-    thesisType,
     thesisJournal,
     thesisTime,
     thesisGrade,
@@ -1065,7 +1145,6 @@ export default {
         currentWriteTime,
         isVerify,
         thesisTitle,
-        thesisType,
         thesisJournal,
         thesisTime,
         thesisGrade,
@@ -1085,7 +1164,6 @@ export default {
         'uuid',
         'isVerify',
         'thesisTitle',
-        'thesisType',
         'thesisJournal',
         'thesisTime',
         'thesisGrade',
@@ -1108,7 +1186,6 @@ export default {
     staffThesis.findOne({
       attributes: [
         'thesisTitle',
-        'thesisType',
         'thesisJournal',
         'thesisTime',
         'thesisGrade',
@@ -1138,7 +1215,6 @@ export default {
     lastWriteTime,
     currentWriteTime,
     thesisTitle,
-    thesisType,
     thesisJournal,
     thesisTime,
     thesisGrade,
@@ -1151,7 +1227,6 @@ export default {
         lastWriteTime,
         currentWriteTime,
         thesisTitle,
-        thesisType,
         thesisJournal,
         thesisTime,
         thesisGrade,

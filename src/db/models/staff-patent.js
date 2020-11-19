@@ -22,7 +22,10 @@ export default db.define('staff_patent', {
   patentType: Sequelize.STRING(32), // 专利类型
   patentName: Sequelize.STRING(32), // 专利名称
   patentCode: Sequelize.STRING(32), // 授权号
-  patentNation: Sequelize.STRING(32), // 授权国家
+  rank: Sequelize.STRING(32), // 专利排位
+  patentee: Sequelize.STRING(32), // 专利权人
+  patentTime: Sequelize.DATE, // 专利公告日
+  inventor: Sequelize.STRING(32), // 发明人（设计人）
   firstUrl: Sequelize.TEXT, // 第一个url
   secondUrl: Sequelize.TEXT, // 第二个url
   thirdUrl: Sequelize.TEXT, // 第三个url

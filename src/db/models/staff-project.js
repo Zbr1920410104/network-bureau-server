@@ -23,7 +23,8 @@ export default db.define('staff_project', {
   lastWriteTime: Sequelize.DATE, // 上次填写时间
   currentWriteTime: Sequelize.DATE, // 最新填写时间
   // 填写内容
-  type: Sequelize.BIGINT(11), // 项目类型(1:主持,2:参与)
+  type: Sequelize.BIGINT(11), // 项目参与方式(1:主持,2:参与)
+  grade: Sequelize.STRING(32), // 项目级别
   name: Sequelize.STRING(64), // 项目名称
   startTime: Sequelize.DATE, // 项目开始时间
   endTime: Sequelize.DATE, // 项目结束时间
@@ -33,6 +34,8 @@ export default db.define('staff_project', {
   controller: Sequelize.STRING(32), // 负责人
   participant: Sequelize.TEXT, // 参与者名单
   content: Sequelize.TEXT, // 主要研究内容
+  isChecked: Sequelize.STRING(32), // 是否验收
+  checkConclusion: Sequelize.TEXT,  // 验收结论
   firstUrl: Sequelize.TEXT, // 第一个url
   secondUrl: Sequelize.TEXT, // 第二个url
   thirdUrl: Sequelize.TEXT, // 第三个url

@@ -34,5 +34,8 @@ export default db.define('staff_basic', {
   getTime: Sequelize.DATE, // 获得时间
   researchDirection: Sequelize.STRING(32), // 研究方向
   studyExperience: Sequelize.TEXT, // 学习经历
-  workExperience: Sequelize.TEXT // 工作经历
+  workExperience: Sequelize.TEXT, // 工作经历
+  skills: Sequelize.TEXT, // 技能
+  professionalPromotion: Sequelize.TEXT, // 职称晋升
+  currentProfession: Sequelize.TEXT, // 现聘职称
 });

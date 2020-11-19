@@ -21,6 +21,10 @@ export default db.define('staff_copyright', {
   currentWriteTime: Sequelize.DATE, // 最新填写时间
   copyrightType: Sequelize.STRING(32), // 权利取得方式
   copyrightName: Sequelize.STRING(32), // 软件著作权名称
+  completeTime: Sequelize.DATE, // 开发完成时间
+  publishTime: Sequelize.DATE, // 发表时间
+  copyrightOwner: Sequelize.STRING(32), // 软件著作权权人
+  rank: Sequelize.STRING(32), // 软著排位
   copyrightCode: Sequelize.STRING(32), // 登记号
   copyrightArrange: Sequelize.STRING(32), // 授权范围
   firstUrl: Sequelize.TEXT, // 第一个url
