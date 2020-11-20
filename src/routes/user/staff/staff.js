@@ -510,7 +510,10 @@ router.post('/createStaffCopyright', async (ctx, next) => {
       copyrightType,
       copyrightName,
       copyrightCode,
-      copyrightArrange,
+      completeTime,
+      publishTime,
+      copyrightOwner,
+      rank
     } = ctx.state.param;
 
     const userUuid = ctx.state.user.uuid;
@@ -523,6 +526,10 @@ router.post('/createStaffCopyright', async (ctx, next) => {
       copyrightName,
       copyrightCode,
       copyrightArrange,
+      completeTime,
+      publishTime,
+      copyrightOwner,
+      rank
     });
 
     ctx.body = new Res({
@@ -584,6 +591,10 @@ router.post('/modifyStaffCopyright', async (ctx, next) => {
       copyrightName,
       copyrightCode,
       copyrightArrange,
+      completeTime,
+      publishTime,
+      copyrightOwner,
+      rank
     } = ctx.state.param;
 
     const {
@@ -597,7 +608,11 @@ router.post('/modifyStaffCopyright', async (ctx, next) => {
       copyrightType,
       copyrightName,
       copyrightCode,
-      copyrightArrange,
+      completeTime,
+      publishTime,
+      copyrightOwner,
+      rank,
+      copyrightArrange
     });
 
     ctx.body = new Res({
