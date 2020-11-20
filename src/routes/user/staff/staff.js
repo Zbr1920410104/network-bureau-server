@@ -655,6 +655,7 @@ router.post('/createStaffAward', async (ctx, next) => {
       awardGrade,
       awardDepartment,
       awardNameList,
+      awardRank,
     } = ctx.state.param;
 
     const userUuid = ctx.state.user.uuid;
@@ -669,6 +670,7 @@ router.post('/createStaffAward', async (ctx, next) => {
       awardGrade,
       awardDepartment,
       awardNameList,
+      awardRank,
     });
 
     ctx.body = new Res({
