@@ -709,6 +709,9 @@ export default {
         "researchDirection",
         "studyExperience",
         "workExperience",
+        "skills",
+        "professionalPromotion",
+        "currentProfession"
       ],
       where: { userUuid },
       raw: true,

@@ -53,6 +53,9 @@ router.post("/saveStaffBasic", async (ctx, next) => {
       researchDirection,
       studyExperience,
       workExperience,
+      skills,
+      professionalPromotion,
+      currentProfession
     } = ctx.state.param;
 
     const userUuid = ctx.state.user.uuid;
@@ -81,6 +84,9 @@ router.post("/saveStaffBasic", async (ctx, next) => {
       researchDirection,
       studyExperience,
       workExperience,
+      skills,
+      professionalPromotion,
+      currentProfession
     });
 
     ctx.body = new Res({
@@ -137,6 +143,9 @@ router.post("/modifyStaffBasic", async (ctx, next) => {
       researchDirection,
       studyExperience,
       workExperience,
+      skills,
+      professionalPromotion,
+      currentProfession
     } = ctx.state.param;
 
     const userUuid = ctx.state.user.uuid;
@@ -169,6 +178,9 @@ router.post("/modifyStaffBasic", async (ctx, next) => {
       researchDirection,
       studyExperience,
       workExperience,
+      skills,
+      professionalPromotion,
+      currentProfession
     });
 
     ctx.body = new Res({
