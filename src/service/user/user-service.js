@@ -1,4 +1,5 @@
 import user from '../../db/models/t-user';
+import message from '../../db/models/t-message'
 
 import uuid from 'uuid';
 
@@ -130,11 +131,38 @@ export default {
   /**
    * 查找默认密码
    */
-  selectDefaultPassword: async() => {
+  selectDefaultPassword: async () => {
     return await user.findOne({
       where: { role: 1 },
       attributes: ['defaultPassword'],
       raw: true,
+    });
+  },
+  /**
+    * 查找消息
+    */
+  queryMessage: () => {
+    return message.findAll({
+      raw: true,
+    });
+  },
+  /**
+  * 查找消息
+  */
+  deleteMessage: ({ uuid }) => {
+    return message.destroy({
+      where: { uuid }
+    });
+  },
+  /**
+* 查找消息
+*/
+  createMessage: async ({ userUuid, userName, messageItem }) => {
+    return await message.create({
+      uuid: uuid.v1(),
+      userUuid,
+      userName,
+      message: messageItem
     });
   },
 };

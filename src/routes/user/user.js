@@ -116,4 +116,57 @@ router.get('/getDefaultPassword', async (ctx, next) => {
   }
 });
 
+/**
+ * 查询科室
+ */
+router.get('/getMessage', async (ctx, next) => {
+  try {
+    const data = await service.queryMessage();
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询科室
+ */
+router.post('/deleteMessage', async (ctx, next) => {
+  try {
+    const { uuid: messageUuid } = ctx.state.param;
+    const data = await service.deleteMessage({ uuid: messageUuid });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询科室
+ */
+router.post('/createMessage', async (ctx, next) => {
+  try {
+    const uuid = ctx.state.user.uuid;
+    const userName = ctx.state.user.name;
+    const { message } = ctx.state.param;
+
+    const data = await service.createMessage({ userUuid: uuid, userName, messageItem: message });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
 export default router;
