@@ -1,20 +1,20 @@
-import Router from 'koa-router';
+import Router from "koa-router";
 
 // response
-import Res from '../../../util/response';
-import { RESPONSE_CODE } from '../../../constants/domain-constants';
+import Res from "../../../util/response";
+import { RESPONSE_CODE } from "../../../constants/domain-constants";
 
 // service
-import service from '../../../service';
+import service from "../../../service";
 
 const router = new Router({
-  prefix: '/staff',
+  prefix: "/staff",
 });
 
 /**
  * 普通员工查询科室
  */
-router.get('/getStaffDepartment', async (ctx, next) => {
+router.get("/getStaffDepartment", async (ctx, next) => {
   try {
     const data = await service.quaryDepartment();
 
@@ -30,7 +30,7 @@ router.get('/getStaffDepartment', async (ctx, next) => {
 /**
  * 保存基本信息
  */
-router.post('/saveStaffBasic', async (ctx, next) => {
+router.post("/saveStaffBasic", async (ctx, next) => {
   try {
     const {
       name,
@@ -60,7 +60,7 @@ router.post('/saveStaffBasic', async (ctx, next) => {
     const data = await service.insertStaffBasic({
       userUuid,
       currentWriteTime: new Date(),
-      isVerify: '未核实',
+      isVerify: "未核实",
       name,
       idNumber,
       sex,
@@ -86,7 +86,7 @@ router.post('/saveStaffBasic', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '基本信息暂存成功',
+      msg: "基本信息暂存成功",
     });
   } catch (error) {
     throw error;
@@ -96,7 +96,7 @@ router.post('/saveStaffBasic', async (ctx, next) => {
 /**
  * 查询基本信息
  */
-router.get('/getStaffBasic', async (ctx, next) => {
+router.get("/getStaffBasic", async (ctx, next) => {
   try {
     const userUuid = ctx.state.user.uuid;
 
@@ -114,7 +114,7 @@ router.get('/getStaffBasic', async (ctx, next) => {
 /**
  * 修改基本信息
  */
-router.post('/modifyStaffBasic', async (ctx, next) => {
+router.post("/modifyStaffBasic", async (ctx, next) => {
   try {
     const {
       name,
@@ -174,7 +174,7 @@ router.post('/modifyStaffBasic', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '基本信息修改成功',
+      msg: "基本信息修改成功",
     });
   } catch (error) {
     throw error;
@@ -184,7 +184,7 @@ router.post('/modifyStaffBasic', async (ctx, next) => {
 /**
  * 查询员工填写信息
  */
-router.get('/getStaffWriteInfo', async (ctx, next) => {
+router.get("/getStaffWriteInfo", async (ctx, next) => {
   try {
     const userUuid = ctx.state.user.uuid;
 
@@ -202,7 +202,7 @@ router.get('/getStaffWriteInfo', async (ctx, next) => {
 /**
  * 新建一条项目信息
  */
-router.post('/createStaffProject', async (ctx, next) => {
+router.post("/createStaffProject", async (ctx, next) => {
   try {
     const {
       type,
@@ -217,7 +217,7 @@ router.post('/createStaffProject', async (ctx, next) => {
       participant,
       content,
       isChecked,
-      checkConclusion
+      checkConclusion,
     } = ctx.state.param;
 
     const userUuid = ctx.state.user.uuid;
@@ -225,7 +225,7 @@ router.post('/createStaffProject', async (ctx, next) => {
     const data = await service.insertStaffProject({
       userUuid,
       currentWriteTime: new Date(),
-      isVerify: '未核实',
+      isVerify: "未核实",
       type,
       grade,
       name,
@@ -238,13 +238,13 @@ router.post('/createStaffProject', async (ctx, next) => {
       participant,
       content,
       isChecked,
-      checkConclusion
+      checkConclusion,
     });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '项目信息新增成功',
+      msg: "项目信息新增成功",
     });
   } catch (error) {
     throw error;
@@ -254,7 +254,7 @@ router.post('/createStaffProject', async (ctx, next) => {
 /**
  * 查询员工填写项目
  */
-router.get('/getWriteProjectList', async (ctx, next) => {
+router.get("/getWriteProjectList", async (ctx, next) => {
   try {
     const userUuid = ctx.state.user.uuid;
 
@@ -272,7 +272,7 @@ router.get('/getWriteProjectList', async (ctx, next) => {
 /**
  * 查询员工填写项目通过uuid
  */
-router.get('/getStaffProjectByUuid', async (ctx, next) => {
+router.get("/getStaffProjectByUuid", async (ctx, next) => {
   try {
     const { staffProjectUuid } = ctx.state.param;
 
@@ -292,7 +292,7 @@ router.get('/getStaffProjectByUuid', async (ctx, next) => {
 /**
  * 修改一条项目信息
  */
-router.post('/modifyStaffProject', async (ctx, next) => {
+router.post("/modifyStaffProject", async (ctx, next) => {
   try {
     const {
       uuid,
@@ -308,7 +308,7 @@ router.post('/modifyStaffProject', async (ctx, next) => {
       participant,
       content,
       isChecked,
-      checkConclusion
+      checkConclusion,
     } = ctx.state.param;
 
     const { currentWriteTime } = await service.selectProjectLastWriteTimeByUuid(
@@ -331,13 +331,13 @@ router.post('/modifyStaffProject', async (ctx, next) => {
       participant,
       content,
       isChecked,
-      checkConclusion
+      checkConclusion,
     });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '项目信息修改成功',
+      msg: "项目信息修改成功",
     });
   } catch (error) {
     throw error;
@@ -347,7 +347,7 @@ router.post('/modifyStaffProject', async (ctx, next) => {
 /**
  * 删除项目
  */
-router.del('/deleteProject', async (ctx, next) => {
+router.del("/deleteProject", async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
@@ -355,7 +355,7 @@ router.del('/deleteProject', async (ctx, next) => {
 
     ctx.body = new Res({
       status: RESPONSE_CODE.noContent,
-      msg: '删除项目成功',
+      msg: "删除项目成功",
     });
   } catch (error) {
     throw error;
@@ -365,7 +365,7 @@ router.del('/deleteProject', async (ctx, next) => {
 /**
  * 新建一条专利信息
  */
-router.post('/createStaffPatent', async (ctx, next) => {
+router.post("/createStaffPatent", async (ctx, next) => {
   try {
     const {
       patentType,
@@ -374,7 +374,7 @@ router.post('/createStaffPatent', async (ctx, next) => {
       rank,
       patentee,
       patentTime,
-      inventor
+      inventor,
     } = ctx.state.param;
 
     const userUuid = ctx.state.user.uuid;
@@ -382,20 +382,20 @@ router.post('/createStaffPatent', async (ctx, next) => {
     const data = await service.insertStaffPatent({
       userUuid,
       currentWriteTime: new Date(),
-      isVerify: '未核实',
+      isVerify: "未核实",
       patentType,
       patentName,
       patentCode,
       rank,
       patentee,
       patentTime,
-      inventor
+      inventor,
     });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '专利信息新增成功',
+      msg: "专利信息新增成功",
     });
   } catch (error) {
     throw error;
@@ -405,7 +405,7 @@ router.post('/createStaffPatent', async (ctx, next) => {
 /**
  * 查询员工填写专利信息
  */
-router.get('/getWritePatentList', async (ctx, next) => {
+router.get("/getWritePatentList", async (ctx, next) => {
   try {
     const userUuid = ctx.state.user.uuid;
 
@@ -423,7 +423,7 @@ router.get('/getWritePatentList', async (ctx, next) => {
 /**
  * 查询员工填写专利信息通过uuid
  */
-router.get('/getStaffPatentByUuid', async (ctx, next) => {
+router.get("/getStaffPatentByUuid", async (ctx, next) => {
   try {
     const { staffPatentUuid } = ctx.state.param;
 
@@ -443,7 +443,7 @@ router.get('/getStaffPatentByUuid', async (ctx, next) => {
 /**
  * 修改一条专利信息
  */
-router.post('/modifyStaffPatent', async (ctx, next) => {
+router.post("/modifyStaffPatent", async (ctx, next) => {
   try {
     const {
       uuid,
@@ -453,7 +453,7 @@ router.post('/modifyStaffPatent', async (ctx, next) => {
       rank,
       patentee,
       patentTime,
-      inventor
+      inventor,
     } = ctx.state.param;
 
     const { currentWriteTime } = await service.selectPatentLastWriteTimeByUuid(
@@ -470,13 +470,13 @@ router.post('/modifyStaffPatent', async (ctx, next) => {
       rank,
       patentee,
       patentTime,
-      inventor
+      inventor,
     });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '专利信息修改成功',
+      msg: "专利信息修改成功",
     });
   } catch (error) {
     throw error;
@@ -486,7 +486,7 @@ router.post('/modifyStaffPatent', async (ctx, next) => {
 /**
  * 删除专利
  */
-router.del('/deletePatent', async (ctx, next) => {
+router.del("/deletePatent", async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
@@ -494,7 +494,7 @@ router.del('/deletePatent', async (ctx, next) => {
 
     ctx.body = new Res({
       status: RESPONSE_CODE.noContent,
-      msg: '删除专利成功',
+      msg: "删除专利成功",
     });
   } catch (error) {
     throw error;
@@ -504,24 +504,9 @@ router.del('/deletePatent', async (ctx, next) => {
 /**
  * 新建一条软件著作权信息
  */
-router.post('/createStaffCopyright', async (ctx, next) => {
+router.post("/createStaffCopyright", async (ctx, next) => {
   try {
     const {
-      copyrightType,
-      copyrightName,
-      copyrightCode,
-      completeTime,
-      publishTime,
-      copyrightOwner,
-      rank
-    } = ctx.state.param;
-
-    const userUuid = ctx.state.user.uuid;
-
-    const data = await service.insertStaffCopyright({
-      userUuid,
-      currentWriteTime: new Date(),
-      isVerify: '未核实',
       copyrightType,
       copyrightName,
       copyrightCode,
@@ -529,13 +514,29 @@ router.post('/createStaffCopyright', async (ctx, next) => {
       completeTime,
       publishTime,
       copyrightOwner,
-      rank
+      rank,
+    } = ctx.state.param;
+
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.insertStaffCopyright({
+      userUuid,
+      currentWriteTime: new Date(),
+      isVerify: "未核实",
+      copyrightType,
+      copyrightName,
+      copyrightCode,
+      copyrightArrange,
+      completeTime,
+      publishTime,
+      copyrightOwner,
+      rank,
     });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '软件著作权信息新增成功',
+      msg: "软件著作权信息新增成功",
     });
   } catch (error) {
     throw error;
@@ -545,7 +546,7 @@ router.post('/createStaffCopyright', async (ctx, next) => {
 /**
  * 查询员工填写软件著作权信息
  */
-router.get('/getWriteCopyrightList', async (ctx, next) => {
+router.get("/getWriteCopyrightList", async (ctx, next) => {
   try {
     const userUuid = ctx.state.user.uuid;
 
@@ -563,7 +564,7 @@ router.get('/getWriteCopyrightList', async (ctx, next) => {
 /**
  * 查询员工填写软件著作权信息通过uuid
  */
-router.get('/getStaffCopyrightByUuid', async (ctx, next) => {
+router.get("/getStaffCopyrightByUuid", async (ctx, next) => {
   try {
     const { staffCopyrightUuid } = ctx.state.param;
 
@@ -583,7 +584,7 @@ router.get('/getStaffCopyrightByUuid', async (ctx, next) => {
 /**
  * 修改一条软件著作权信息
  */
-router.post('/modifyStaffCopyright', async (ctx, next) => {
+router.post("/modifyStaffCopyright", async (ctx, next) => {
   try {
     const {
       uuid,
@@ -594,7 +595,7 @@ router.post('/modifyStaffCopyright', async (ctx, next) => {
       completeTime,
       publishTime,
       copyrightOwner,
-      rank
+      rank,
     } = ctx.state.param;
 
     const {
@@ -612,13 +613,13 @@ router.post('/modifyStaffCopyright', async (ctx, next) => {
       publishTime,
       copyrightOwner,
       rank,
-      copyrightArrange
+      copyrightArrange,
     });
 
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '软件著作权信息修改成功',
+      msg: "软件著作权信息修改成功",
     });
   } catch (error) {
     throw error;
@@ -628,7 +629,7 @@ router.post('/modifyStaffCopyright', async (ctx, next) => {
 /**
  * 删除软件著作权
  */
-router.del('/deleteCopyright', async (ctx, next) => {
+router.del("/deleteCopyright", async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
@@ -636,7 +637,7 @@ router.del('/deleteCopyright', async (ctx, next) => {
 
     ctx.body = new Res({
       status: RESPONSE_CODE.noContent,
-      msg: '删除软件著作权成功',
+      msg: "删除软件著作权成功",
     });
   } catch (error) {
     throw error;
@@ -646,7 +647,7 @@ router.del('/deleteCopyright', async (ctx, next) => {
 /**
  * 新建一条奖项信息
  */
-router.post('/createStaffAward', async (ctx, next) => {
+router.post("/createStaffAward", async (ctx, next) => {
   try {
     const {
       awardType,
@@ -663,7 +664,7 @@ router.post('/createStaffAward', async (ctx, next) => {
     const data = await service.insertStaffAward({
       userUuid,
       currentWriteTime: new Date(),
-      isVerify: '未核实',
+      isVerify: "未核实",
       awardType,
       awardName,
       awardTime,
@@ -676,7 +677,7 @@ router.post('/createStaffAward', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '奖项信息新增成功',
+      msg: "奖项信息新增成功",
     });
   } catch (error) {
     throw error;
@@ -686,7 +687,7 @@ router.post('/createStaffAward', async (ctx, next) => {
 /**
  * 查询员工填写奖项信息
  */
-router.get('/getWriteAwardList', async (ctx, next) => {
+router.get("/getWriteAwardList", async (ctx, next) => {
   try {
     const userUuid = ctx.state.user.uuid;
 
@@ -704,7 +705,7 @@ router.get('/getWriteAwardList', async (ctx, next) => {
 /**
  * 查询员工填写奖项信息通过uuid
  */
-router.get('/getStaffAwardByUuid', async (ctx, next) => {
+router.get("/getStaffAwardByUuid", async (ctx, next) => {
   try {
     const { staffAwardUuid } = ctx.state.param;
 
@@ -724,7 +725,7 @@ router.get('/getStaffAwardByUuid', async (ctx, next) => {
 /**
  * 修改一条奖项信息
  */
-router.post('/modifyStaffAward', async (ctx, next) => {
+router.post("/modifyStaffAward", async (ctx, next) => {
   try {
     const {
       uuid,
@@ -755,7 +756,7 @@ router.post('/modifyStaffAward', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '奖项信息修改成功',
+      msg: "奖项信息修改成功",
     });
   } catch (error) {
     throw error;
@@ -765,7 +766,7 @@ router.post('/modifyStaffAward', async (ctx, next) => {
 /**
  * 删除奖项
  */
-router.del('/deleteAward', async (ctx, next) => {
+router.del("/deleteAward", async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
@@ -773,7 +774,7 @@ router.del('/deleteAward', async (ctx, next) => {
 
     ctx.body = new Res({
       status: RESPONSE_CODE.noContent,
-      msg: '删除奖项成功',
+      msg: "删除奖项成功",
     });
   } catch (error) {
     throw error;
@@ -783,7 +784,7 @@ router.del('/deleteAward', async (ctx, next) => {
 /**
  * 新建一条论文/专著信息
  */
-router.post('/createStaffThesis', async (ctx, next) => {
+router.post("/createStaffThesis", async (ctx, next) => {
   try {
     const {
       thesisTitle,
@@ -801,7 +802,7 @@ router.post('/createStaffThesis', async (ctx, next) => {
     const data = await service.insertStaffThesis({
       userUuid,
       currentWriteTime: new Date(),
-      isVerify: '未核实',
+      isVerify: "未核实",
       thesisTitle,
       thesisType,
       thesisJournal,
@@ -815,7 +816,7 @@ router.post('/createStaffThesis', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '论文/专著信息新增成功',
+      msg: "论文信息新增成功",
     });
   } catch (error) {
     throw error;
@@ -825,7 +826,7 @@ router.post('/createStaffThesis', async (ctx, next) => {
 /**
  * 查询员工填写论文/专著信息
  */
-router.get('/getWriteThesisList', async (ctx, next) => {
+router.get("/getWriteThesisList", async (ctx, next) => {
   try {
     const userUuid = ctx.state.user.uuid;
 
@@ -843,7 +844,7 @@ router.get('/getWriteThesisList', async (ctx, next) => {
 /**
  * 查询员工填写论文/专著信息通过uuid
  */
-router.get('/getStaffThesisByUuid', async (ctx, next) => {
+router.get("/getStaffThesisByUuid", async (ctx, next) => {
   try {
     const { staffThesisUuid } = ctx.state.param;
 
@@ -861,9 +862,9 @@ router.get('/getStaffThesisByUuid', async (ctx, next) => {
 });
 
 /**
- * 修改一条论文/专著信息
+ * 修改一条论文信息
  */
-router.post('/modifyStaffThesis', async (ctx, next) => {
+router.post("/modifyStaffThesis", async (ctx, next) => {
   try {
     const {
       uuid,
@@ -898,7 +899,142 @@ router.post('/modifyStaffThesis', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '论文/专著信息修改成功',
+      msg: "论文信息修改成功",
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 删除论文
+ */
+router.del("/deleteThesis", async (ctx, next) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    await service.deleteThesis(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.noContent,
+      msg: "删除论文成功",
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 新建一条专著信息
+ */
+router.post("/createStaffBook", async (ctx, next) => {
+  try {
+    const {
+      name,
+      copyrightOwner,
+      time,
+      publisher,
+      rank,
+      chiefEditor,
+    } = ctx.state.param;
+
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.insertStaffBook({
+      userUuid,
+      currentWriteTime: new Date(),
+      isVerify: "未核实",
+      name,
+      copyrightOwner,
+      time,
+      publisher,
+      rank,
+      chiefEditor,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: "专著信息新增成功",
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写论文/专著信息
+ */
+router.get("/getWriteBookList", async (ctx, next) => {
+  try {
+    const userUuid = ctx.state.user.uuid;
+
+    const data = await service.queryWriteBookList(userUuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 查询员工填写专著信息通过uuid
+ */
+router.get("/getStaffBookByUuid", async (ctx, next) => {
+  try {
+    const { staffBookUuid } = ctx.state.param;
+
+    const data = await service.selectStaffBookByUuid({
+      uuid: staffBookUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 修改一条专著信息
+ */
+router.post("/modifyStaffBook", async (ctx, next) => {
+  try {
+    const {
+      uuid,
+      name,
+      copyrightOwner,
+      time,
+      publisher,
+      rank,
+      chiefEditor,
+    } = ctx.state.param;
+
+    const { currentWriteTime } = await service.selectBookLastWriteTimeByUuid(
+      uuid
+    );
+
+    const data = await service.updateStaffBook({
+      uuid,
+      lastWriteTime: currentWriteTime,
+      currentWriteTime: new Date(),
+      name,
+      copyrightOwner,
+      time,
+      publisher,
+      rank,
+      chiefEditor,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: "专著信息修改成功",
     });
   } catch (error) {
     throw error;
@@ -908,15 +1044,15 @@ router.post('/modifyStaffThesis', async (ctx, next) => {
 /**
  * 删除论文/专著
  */
-router.del('/deleteThesis', async (ctx, next) => {
+router.del("/deleteBook", async (ctx, next) => {
   try {
     const { uuid } = ctx.state.param;
 
-    await service.deleteThesis(uuid);
+    await service.deleteBook(uuid);
 
     ctx.body = new Res({
       status: RESPONSE_CODE.noContent,
-      msg: '删除论文/专著成功',
+      msg: "删除专著成功",
     });
   } catch (error) {
     throw error;
@@ -926,7 +1062,7 @@ router.del('/deleteThesis', async (ctx, next) => {
 /**
  * 获取项目的附件信息
  */
-router.get('/selectUploadProject', async (ctx) => {
+router.get("/selectUploadProject", async (ctx) => {
   try {
     const { uuid } = ctx.state.param;
 
@@ -944,7 +1080,7 @@ router.get('/selectUploadProject', async (ctx) => {
 /**
  * 保存项目的附件信息
  */
-router.post('/saveUploadProject', async (ctx) => {
+router.post("/saveUploadProject", async (ctx) => {
   try {
     const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
 
@@ -958,7 +1094,7 @@ router.post('/saveUploadProject', async (ctx) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '保存项目附件成功',
+      msg: "保存项目附件成功",
     });
   } catch (error) {
     throw error;
@@ -968,7 +1104,7 @@ router.post('/saveUploadProject', async (ctx) => {
 /**
  * 获取专利的附件信息
  */
-router.get('/selectUploadPatent', async (ctx) => {
+router.get("/selectUploadPatent", async (ctx) => {
   try {
     const { uuid } = ctx.state.param;
 
@@ -986,7 +1122,7 @@ router.get('/selectUploadPatent', async (ctx) => {
 /**
  * 保存专利的附件信息
  */
-router.post('/saveUploadPatent', async (ctx) => {
+router.post("/saveUploadPatent", async (ctx) => {
   try {
     const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
 
@@ -1000,7 +1136,7 @@ router.post('/saveUploadPatent', async (ctx) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '保存专利附件成功',
+      msg: "保存专利附件成功",
     });
   } catch (error) {
     throw error;
@@ -1010,7 +1146,7 @@ router.post('/saveUploadPatent', async (ctx) => {
 /**
  * 获取软件著作权的附件信息
  */
-router.get('/selectUploadCopyright', async (ctx) => {
+router.get("/selectUploadCopyright", async (ctx) => {
   try {
     const { uuid } = ctx.state.param;
 
@@ -1028,7 +1164,7 @@ router.get('/selectUploadCopyright', async (ctx) => {
 /**
  * 保存软件著作权的附件信息
  */
-router.post('/saveUploadCopyright', async (ctx) => {
+router.post("/saveUploadCopyright", async (ctx) => {
   try {
     const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
 
@@ -1042,7 +1178,7 @@ router.post('/saveUploadCopyright', async (ctx) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '保存软件著作权附件成功',
+      msg: "保存软件著作权附件成功",
     });
   } catch (error) {
     throw error;
@@ -1052,7 +1188,7 @@ router.post('/saveUploadCopyright', async (ctx) => {
 /**
  * 获取奖项的附件信息
  */
-router.get('/selectUploadAward', async (ctx) => {
+router.get("/selectUploadAward", async (ctx) => {
   try {
     const { uuid } = ctx.state.param;
 
@@ -1070,7 +1206,7 @@ router.get('/selectUploadAward', async (ctx) => {
 /**
  * 保存奖项的附件信息
  */
-router.post('/saveUploadAward', async (ctx) => {
+router.post("/saveUploadAward", async (ctx) => {
   try {
     const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
 
@@ -1084,7 +1220,7 @@ router.post('/saveUploadAward', async (ctx) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '保存奖项附件成功',
+      msg: "保存奖项附件成功",
     });
   } catch (error) {
     throw error;
@@ -1092,9 +1228,9 @@ router.post('/saveUploadAward', async (ctx) => {
 });
 
 /**
- * 获取论文/专著的附件信息
+ * 获取论文的附件信息
  */
-router.get('/selectUploadThesis', async (ctx) => {
+router.get("/selectUploadThesis", async (ctx) => {
   try {
     const { uuid } = ctx.state.param;
 
@@ -1110,9 +1246,9 @@ router.get('/selectUploadThesis', async (ctx) => {
 });
 
 /**
- * 保存论文/专著的附件信息
+ * 保存论文的附件信息
  */
-router.post('/saveUploadThesis', async (ctx) => {
+router.post("/saveUploadThesis", async (ctx) => {
   try {
     const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
 
@@ -1126,7 +1262,49 @@ router.post('/saveUploadThesis', async (ctx) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '保存论文/专著附件成功',
+      msg: "保存论文附件成功",
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 获取专著的附件信息
+ */
+router.get("/selectUploadBook", async (ctx) => {
+  try {
+    const { uuid } = ctx.state.param;
+
+    const data = await service.selectUploadBook(uuid);
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 保存专著的附件信息
+ */
+router.post("/saveUploadBook", async (ctx) => {
+  try {
+    const { uuid, firstUrl, secondUrl, thirdUrl } = ctx.state.param;
+
+    const data = await service.updateUploadBook({
+      uuid,
+      firstUrl,
+      secondUrl,
+      thirdUrl,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: "保存专著附件成功",
     });
   } catch (error) {
     throw error;
@@ -1136,7 +1314,7 @@ router.post('/saveUploadThesis', async (ctx) => {
 /**
  * 普通员工完成填写
  */
-router.post('/finishStaffWrite', async (ctx) => {
+router.post("/finishStaffWrite", async (ctx) => {
   try {
     const uuid = ctx.state.user.uuid;
 
@@ -1146,7 +1324,7 @@ router.post('/finishStaffWrite', async (ctx) => {
 
     const data = await service.updateStaffWriteStatus({
       uuid,
-      verifyStatus: '待核实',
+      verifyStatus: "待核实",
       lastWriteTime: currentWriteTime,
       currentWriteTime: new Date(),
     });
@@ -1154,7 +1332,7 @@ router.post('/finishStaffWrite', async (ctx) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '修改填写状态成功',
+      msg: "修改填写状态成功",
     });
   } catch (error) {
     throw error;
@@ -1164,7 +1342,7 @@ router.post('/finishStaffWrite', async (ctx) => {
 /**
  * 导出个人信息表
  */
-router.post('/getPersonalExportInfoUrl', async (ctx) => {
+router.post("/getPersonalExportInfoUrl", async (ctx) => {
   try {
     const { exportList } = ctx.state.param;
     const uuid = ctx.state.user.uuid;

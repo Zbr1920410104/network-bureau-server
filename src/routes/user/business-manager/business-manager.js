@@ -162,6 +162,26 @@ router.get('/getVerifyThesisList', async (ctx, next) => {
 });
 
 /**
+ * 统计员查询员工填写论文/专著信息
+ */
+router.get('/getVerifyBookList', async (ctx, next) => {
+  try {
+    const { staffUuid } = ctx.state.param;
+
+    const data = await service.queryVerifyBookList({
+      userUuid: staffUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
  * 统计员设置员工基本信息通过状态
  */
 router.post('/setVerifyBasicSuccessStatus', async (ctx, next) => {
@@ -466,6 +486,60 @@ router.post('/setVerifyThesisFailStatus', async (ctx, next) => {
     const verifyUserUuid = ctx.state.user.uuid;
 
     const data = await service.updateVerifyThesisStatus({
+      uuid,
+      staffUuid,
+      verifyRemarks,
+      isVerify: '核实不通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工论文/专著信息通过状态
+ */
+router.post('/setVerifyBookSuccessStatus', async (ctx, next) => {
+  try {
+    const { uuid, staffUuid } = ctx.state.param;
+
+    const verifyUserUuid = ctx.state.user.uuid;
+
+    const data = await service.updateVerifyBookStatus({
+      uuid,
+      staffUuid,
+      verifyRemarks: '',
+      isVerify: '核实通过',
+      verifyUserUuid,
+      verifyTime: new Date(),
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员设置员工论文/专著信息不通过状态
+ */
+router.post('/setVerifyBookFailStatus', async (ctx, next) => {
+  try {
+    const { uuid, verifyRemarks, staffUuid } = ctx.state.param;
+
+    const verifyUserUuid = ctx.state.user.uuid;
+
+    const data = await service.updateVerifyBookStatus({
       uuid,
       staffUuid,
       verifyRemarks,

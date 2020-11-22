@@ -178,6 +178,26 @@ router.get('/getReviewThesisList', async (ctx, next) => {
 });
 
 /**
+ * 评审员查询员工填写论文/专著信息
+ */
+router.get('/getReviewBookList', async (ctx, next) => {
+  try {
+    const { staffUuid } = ctx.state.param;
+
+    const data = await service.queryReviewBookList({
+      userUuid: staffUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
  * 统计员查询员工填写项目信息
  */
 router.get('/getProjectScore', async (ctx, next) => {
@@ -266,6 +286,26 @@ router.get('/getThesisScore', async (ctx, next) => {
 
     const data = await service.selectThesisScoreByUuid({
       uuid: staffThesisUuid,
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+    });
+  } catch (error) {
+    throw error;
+  }
+});
+
+/**
+ * 统计员查询员工填写论文/专著信息
+ */
+router.get('/getBookScore', async (ctx, next) => {
+  try {
+    const { staffBookUuid } = ctx.state.param;
+
+    const data = await service.selectBookScoreByUuid({
+      uuid: staffBookUuid,
     });
 
     ctx.body = new Res({
@@ -405,10 +445,37 @@ router.post('/setThesisScore', async (ctx, next) => {
     ctx.body = new Res({
       status: RESPONSE_CODE.success,
       data,
-      msg: '论文/专著信息评分成功',
+      msg: '论文信息评分成功',
     });
   } catch (error) {
-    throw new CustomError('论文/专著信息评分失败');
+    throw new CustomError('论文信息评分失败');
+  }
+});
+
+/**
+ * 统计员论文/专著信息评分
+ */
+router.post('/setBookScore', async (ctx, next) => {
+  try {
+    const { uuid, score, reviewRemarks } = ctx.state.param;
+
+    const reviewUserUuid = ctx.state.user.uuid;
+
+    const data = await service.updateBookScore({
+      uuid,
+      score,
+      reviewUserUuid,
+      reviewRemarks,
+      reviewTime: new Date(),
+    });
+
+    ctx.body = new Res({
+      status: RESPONSE_CODE.success,
+      data,
+      msg: '专著信息评分成功',
+    });
+  } catch (error) {
+    throw new CustomError('专著信息评分失败');
   }
 });
 

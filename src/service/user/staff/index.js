@@ -1,22 +1,23 @@
-import user from '../../../db/models/t-user';
-import staffBasic from '../../../db/models/staff-basic';
-import staffProject from '../../../db/models/staff-project';
-import staffPatent from '../../../db/models/staff-patent';
-import staffCopyright from '../../../db/models/staff-copyright';
-import staffAward from '../../../db/models/staff-award';
-import staffThesis from '../../../db/models/staff-thesis';
-import staffStatus from '../../../db/models/staff-status';
+import user from "../../../db/models/t-user";
+import staffBasic from "../../../db/models/staff-basic";
+import staffProject from "../../../db/models/staff-project";
+import staffPatent from "../../../db/models/staff-patent";
+import staffCopyright from "../../../db/models/staff-copyright";
+import staffAward from "../../../db/models/staff-award";
+import staffThesis from "../../../db/models/staff-thesis";
+import staffStatus from "../../../db/models/staff-status";
+import staffBook from "../../../db/models/staff-book";
 
-import uuid from 'uuid';
+import uuid from "uuid";
 
 // oss
-import client from '../../../util/oss';
-import { db } from '../../../db/db-connect';
+import client from "../../../util/oss";
+import { db } from "../../../db/db-connect";
 
 // 工具类
-import CustomError from '../../../util/custom-error';
-import webToken from '../../../util/token';
-import Sequelize from 'sequelize';
+import CustomError from "../../../util/custom-error";
+import webToken from "../../../util/token";
+import Sequelize from "sequelize";
 const Op = Sequelize.Op;
 
 export default {
@@ -25,7 +26,7 @@ export default {
    */
   selectLastWriteTimeByUuid: (userUuid) =>
     staffBasic.findOne({
-      attributes: ['currentWriteTime'],
+      attributes: ["currentWriteTime"],
       where: { userUuid },
       raw: true,
     }),
@@ -58,7 +59,7 @@ export default {
     workExperience,
     skills,
     professionalPromotion,
-    currentProfession
+    currentProfession,
   }) => {
     // const clearExperience = (str) => {
     //   // 去除换行
@@ -105,7 +106,7 @@ export default {
         workExperience,
         skills,
         professionalPromotion,
-        currentProfession
+        currentProfession,
       },
       { raw: true }
     );
@@ -116,31 +117,31 @@ export default {
   selectStaffBasic: ({ userUuid }) =>
     staffBasic.findOne({
       attributes: [
-        'isVerify',
-        'verifyRemarks',
-        'name',
-        'idNumber',
-        'sex',
-        'nation',
-        'nativePlace',
-        'politicalAffiliation',
-        'department',
-        'officePhone',
-        'phone',
-        'education',
-        'degree',
-        'graduateSchool',
-        'major',
-        'duty',
-        'workTime',
-        'professionTitle',
-        'getTime',
-        'researchDirection',
-        'studyExperience',
-        'workExperience',
-        'skills',
-        'professionalPromotion',
-        'currentProfession'
+        "isVerify",
+        "verifyRemarks",
+        "name",
+        "idNumber",
+        "sex",
+        "nation",
+        "nativePlace",
+        "politicalAffiliation",
+        "department",
+        "officePhone",
+        "phone",
+        "education",
+        "degree",
+        "graduateSchool",
+        "major",
+        "duty",
+        "workTime",
+        "professionTitle",
+        "getTime",
+        "researchDirection",
+        "studyExperience",
+        "workExperience",
+        "skills",
+        "professionalPromotion",
+        "currentProfession",
       ],
       where: { userUuid },
       raw: true,
@@ -174,7 +175,7 @@ export default {
     workExperience,
     skills,
     professionalPromotion,
-    currentProfession
+    currentProfession,
   }) => {
     // const clearExperience = (str) => {
     //   // 去除换行
@@ -220,8 +221,8 @@ export default {
         skills,
         professionalPromotion,
         currentProfession,
-        isVerify: '未核实',
-        verifyRemarks: '',
+        isVerify: "未核实",
+        verifyRemarks: "",
       },
       { where: { userUuid }, raw: true }
     );
@@ -232,18 +233,18 @@ export default {
   getStaffWriteInfo: async (userUuid) => {
     return await user.findAll({
       attributes: [
-        'name',
-        'department',
-        'lastWriteTime',
-        'currentWriteTime',
-        'verifyStatus',
-        'verifyTime',
-        'totalScore',
-        'projectScoreSum',
-        'patentScoreSum',
-        'copyrightScoreSum',
-        'awardScoreSum',
-        'thesisScoreSum',
+        "name",
+        "department",
+        "lastWriteTime",
+        "currentWriteTime",
+        "verifyStatus",
+        "verifyTime",
+        "totalScore",
+        "projectScoreSum",
+        "patentScoreSum",
+        "copyrightScoreSum",
+        "awardScoreSum",
+        "thesisScoreSum",
       ],
       where: { uuid: userUuid },
       raw: true,
@@ -269,7 +270,7 @@ export default {
     participant,
     content,
     isChecked,
-    checkConclusion
+    checkConclusion,
   }) =>
     staffProject.create(
       {
@@ -289,7 +290,7 @@ export default {
         participant,
         content,
         isChecked,
-        checkConclusion
+        checkConclusion,
       },
       { raw: true }
     ),
@@ -300,25 +301,25 @@ export default {
   queryWriteProjectList: (userUuid) =>
     staffProject.findAll({
       attributes: [
-        'uuid',
-        'name',
-        'grade',
-        'type',
-        'startTime',
-        'endTime',
-        'code',
-        'resource',
-        'funds',
-        'controller',
-        'participant',
-        'content',
-        'isChecked',
-        'checkConclusion',
-        'isVerify',
-        'reviewRemarks',
-        'currentWriteTime',
-        'verifyRemarks',
-        'score',
+        "uuid",
+        "name",
+        "grade",
+        "type",
+        "startTime",
+        "endTime",
+        "code",
+        "resource",
+        "funds",
+        "controller",
+        "participant",
+        "content",
+        "isChecked",
+        "checkConclusion",
+        "isVerify",
+        "reviewRemarks",
+        "currentWriteTime",
+        "verifyRemarks",
+        "score",
       ],
       where: { userUuid },
       raw: true,
@@ -330,19 +331,19 @@ export default {
   selectStaffProjectByUuid: ({ uuid }) =>
     staffProject.findOne({
       attributes: [
-        'name',
-        'grade',
-        'type',
-        'startTime',
-        'endTime',
-        'code',
-        'resource',
-        'funds',
-        'controller',
-        'participant',
-        'content',
-        'isChecked',
-        'checkConclusion',
+        "name",
+        "grade",
+        "type",
+        "startTime",
+        "endTime",
+        "code",
+        "resource",
+        "funds",
+        "controller",
+        "participant",
+        "content",
+        "isChecked",
+        "checkConclusion",
       ],
       where: { uuid },
       raw: true,
@@ -353,7 +354,7 @@ export default {
    */
   selectProjectLastWriteTimeByUuid: (uuid) =>
     staffProject.findOne({
-      attributes: ['currentWriteTime'],
+      attributes: ["currentWriteTime"],
       where: { uuid },
       raw: true,
     }),
@@ -392,10 +393,10 @@ export default {
         controller,
         participant,
         content,
-        isVerify: '未核实',
-        verifyRemarks: '',
+        isVerify: "未核实",
+        verifyRemarks: "",
       },
-      { where: { uuid, isVerify: { [Op.ne]: '核实通过' } }, raw: true }
+      { where: { uuid, isVerify: { [Op.ne]: "核实通过" } }, raw: true }
     ),
 
   /**
@@ -412,7 +413,7 @@ export default {
    */
   selectUploadProject: (uuid) =>
     staffProject.findOne({
-      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
+      attributes: ["firstUrl", "secondUrl", "thirdUrl"],
       where: { uuid },
       raw: true,
     }),
@@ -422,19 +423,19 @@ export default {
    */
   updateUploadProject: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
     try {
-      let firstProductionUrl = '',
-        secondProductionUrl = '',
-        thirdProductionUrl = '';
+      let firstProductionUrl = "",
+        secondProductionUrl = "",
+        thirdProductionUrl = "";
 
       // 将temp的文件copy到production中
-      const [firstFilePosition] = firstUrl.split('/');
+      const [firstFilePosition] = firstUrl.split("/");
 
-      if (firstFilePosition === 'temp') {
+      if (firstFilePosition === "temp") {
         const firstTempUrl = firstUrl;
-        firstProductionUrl = firstUrl.replace('temp', 'production');
+        firstProductionUrl = firstUrl.replace("temp", "production");
 
         const project = await staffProject.findOne({
-          attributes: ['firstUrl'],
+          attributes: ["firstUrl"],
           where: { uuid },
           raw: true,
         });
@@ -444,20 +445,20 @@ export default {
         }
 
         await client.copy(firstProductionUrl, firstTempUrl);
-      } else if (firstFilePosition === 'production') {
+      } else if (firstFilePosition === "production") {
         firstProductionUrl = firstUrl;
       } else {
-        throw new CustomError('oss文件路径错误');
+        throw new CustomError("oss文件路径错误");
       }
 
       if (secondUrl) {
-        const [secondFilePosition] = secondUrl.split('/');
-        if (secondFilePosition === 'temp') {
+        const [secondFilePosition] = secondUrl.split("/");
+        if (secondFilePosition === "temp") {
           const secondTempUrl = secondUrl;
-          secondProductionUrl = secondUrl.replace('temp', 'production');
+          secondProductionUrl = secondUrl.replace("temp", "production");
 
           const project = await staffProject.findOne({
-            attributes: ['secondUrl'],
+            attributes: ["secondUrl"],
             where: { uuid },
             raw: true,
           });
@@ -467,21 +468,21 @@ export default {
           }
 
           await client.copy(secondProductionUrl, secondTempUrl);
-        } else if (secondFilePosition === 'production') {
+        } else if (secondFilePosition === "production") {
           secondProductionUrl = secondUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       if (thirdUrl) {
-        const [thirdFilePosition] = thirdUrl.split('/');
-        if (thirdFilePosition === 'temp') {
+        const [thirdFilePosition] = thirdUrl.split("/");
+        if (thirdFilePosition === "temp") {
           const thirdTempUrl = thirdUrl;
-          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+          thirdProductionUrl = thirdUrl.replace("temp", "production");
 
           const project = await staffProject.findOne({
-            attributes: ['thirdUrl'],
+            attributes: ["thirdUrl"],
             where: { uuid },
             raw: true,
           });
@@ -491,15 +492,15 @@ export default {
           }
 
           await client.copy(thirdProductionUrl, thirdTempUrl);
-        } else if (thirdFilePosition === 'production') {
+        } else if (thirdFilePosition === "production") {
           thirdProductionUrl = thirdUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       const { currentWriteTime } = await staffProject.findOne({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { uuid },
         raw: true,
       });
@@ -532,7 +533,7 @@ export default {
     rank,
     patentee,
     patentTime,
-    inventor
+    inventor,
   }) =>
     staffPatent.create(
       {
@@ -546,7 +547,7 @@ export default {
         rank,
         patentee,
         patentTime,
-        inventor
+        inventor,
       },
       { raw: true }
     ),
@@ -557,19 +558,19 @@ export default {
   queryWritePatentList: (userUuid) =>
     staffPatent.findAll({
       attributes: [
-        'uuid',
-        'isVerify',
-        'patentType',
-        'patentName',
-        'patentCode',
-        'rank',
-        'patentee',
-        'patentTime',
-        'inventor',
-        'verifyRemarks',
-        'reviewRemarks',
-        'currentWriteTime',
-        'score',
+        "uuid",
+        "isVerify",
+        "patentType",
+        "patentName",
+        "patentCode",
+        "rank",
+        "patentee",
+        "patentTime",
+        "inventor",
+        "verifyRemarks",
+        "reviewRemarks",
+        "currentWriteTime",
+        "score",
       ],
       where: { userUuid },
       raw: true,
@@ -581,13 +582,14 @@ export default {
   selectStaffPatentByUuid: ({ uuid }) =>
     staffPatent.findOne({
       attributes: [
-        'patentType',
-        'patentName',
-        'patentCode',
-        'rank',
-        'patentee',
-        'patentTime',
-        'inventor',],
+        "patentType",
+        "patentName",
+        "patentCode",
+        "rank",
+        "patentee",
+        "patentTime",
+        "inventor",
+      ],
       where: { uuid },
       raw: true,
     }),
@@ -597,7 +599,7 @@ export default {
    */
   selectPatentLastWriteTimeByUuid: (uuid) =>
     staffPatent.findOne({
-      attributes: ['currentWriteTime'],
+      attributes: ["currentWriteTime"],
       where: { uuid },
       raw: true,
     }),
@@ -615,7 +617,7 @@ export default {
     rank,
     patentee,
     patentTime,
-    inventor
+    inventor,
   }) =>
     staffPatent.update(
       {
@@ -628,8 +630,8 @@ export default {
         patentee,
         patentTime,
         inventor,
-        isVerify: '未核实',
-        verifyRemarks: '',
+        isVerify: "未核实",
+        verifyRemarks: "",
       },
       { where: { uuid }, raw: true }
     ),
@@ -648,7 +650,7 @@ export default {
    */
   selectUploadPatent: (uuid) =>
     staffPatent.findOne({
-      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
+      attributes: ["firstUrl", "secondUrl", "thirdUrl"],
       where: { uuid },
       raw: true,
     }),
@@ -658,19 +660,19 @@ export default {
    */
   updateUploadPatent: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
     try {
-      let firstProductionUrl = '',
-        secondProductionUrl = '',
-        thirdProductionUrl = '';
+      let firstProductionUrl = "",
+        secondProductionUrl = "",
+        thirdProductionUrl = "";
 
       // 将temp的文件copy到production中
-      const [firstFilePosition] = firstUrl.split('/');
+      const [firstFilePosition] = firstUrl.split("/");
 
-      if (firstFilePosition === 'temp') {
+      if (firstFilePosition === "temp") {
         const firstTempUrl = firstUrl;
-        firstProductionUrl = firstUrl.replace('temp', 'production');
+        firstProductionUrl = firstUrl.replace("temp", "production");
 
         const patent = await staffPatent.findOne({
-          attributes: ['firstUrl'],
+          attributes: ["firstUrl"],
           where: { uuid },
           raw: true,
         });
@@ -680,20 +682,20 @@ export default {
         }
 
         await client.copy(firstProductionUrl, firstTempUrl);
-      } else if (firstFilePosition === 'production') {
+      } else if (firstFilePosition === "production") {
         firstProductionUrl = firstUrl;
       } else {
-        throw new CustomError('oss文件路径错误');
+        throw new CustomError("oss文件路径错误");
       }
 
       if (secondUrl) {
-        const [secondFilePosition] = secondUrl.split('/');
-        if (secondFilePosition === 'temp') {
+        const [secondFilePosition] = secondUrl.split("/");
+        if (secondFilePosition === "temp") {
           const secondTempUrl = secondUrl;
-          secondProductionUrl = secondUrl.replace('temp', 'production');
+          secondProductionUrl = secondUrl.replace("temp", "production");
 
           const patent = await staffPatent.findOne({
-            attributes: ['secondUrl'],
+            attributes: ["secondUrl"],
             where: { uuid },
             raw: true,
           });
@@ -703,21 +705,21 @@ export default {
           }
 
           await client.copy(secondProductionUrl, secondTempUrl);
-        } else if (secondFilePosition === 'production') {
+        } else if (secondFilePosition === "production") {
           secondProductionUrl = secondUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       if (thirdUrl) {
-        const [thirdFilePosition] = thirdUrl.split('/');
-        if (thirdFilePosition === 'temp') {
+        const [thirdFilePosition] = thirdUrl.split("/");
+        if (thirdFilePosition === "temp") {
           const thirdTempUrl = thirdUrl;
-          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+          thirdProductionUrl = thirdUrl.replace("temp", "production");
 
           const patent = await staffPatent.findOne({
-            attributes: ['thirdUrl'],
+            attributes: ["thirdUrl"],
             where: { uuid },
             raw: true,
           });
@@ -727,15 +729,15 @@ export default {
           }
 
           await client.copy(thirdProductionUrl, thirdTempUrl);
-        } else if (thirdFilePosition === 'production') {
+        } else if (thirdFilePosition === "production") {
           thirdProductionUrl = thirdUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       const { currentWriteTime } = await staffPatent.findOne({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { uuid },
         raw: true,
       });
@@ -769,7 +771,7 @@ export default {
     completeTime,
     publishTime,
     copyrightOwner,
-    rank
+    rank,
   }) =>
     staffCopyright.create(
       {
@@ -784,7 +786,7 @@ export default {
         completeTime,
         publishTime,
         copyrightOwner,
-        rank
+        rank,
       },
       { raw: true }
     ),
@@ -795,20 +797,20 @@ export default {
   queryWriteCopyrightList: (userUuid) =>
     staffCopyright.findAll({
       attributes: [
-        'uuid',
-        'isVerify',
-        'copyrightType',
-        'copyrightName',
-        'copyrightCode',
-        'copyrightArrange',
-        'completeTime',
-        'publishTime',
-        'copyrightOwner',
-        'rank',
-        'verifyRemarks',
-        'reviewRemarks',
-        'currentWriteTime',
-        'score',
+        "uuid",
+        "isVerify",
+        "copyrightType",
+        "copyrightName",
+        "copyrightCode",
+        "copyrightArrange",
+        "completeTime",
+        "publishTime",
+        "copyrightOwner",
+        "rank",
+        "verifyRemarks",
+        "reviewRemarks",
+        "currentWriteTime",
+        "score",
       ],
       where: { userUuid },
       raw: true,
@@ -820,14 +822,14 @@ export default {
   selectStaffCopyrightByUuid: ({ uuid }) =>
     staffCopyright.findOne({
       attributes: [
-        'copyrightType',
-        'copyrightName',
-        'copyrightCode',
-        'copyrightArrange',
-        'completeTime',
-        'publishTime',
-        'copyrightOwner',
-        'rank',
+        "copyrightType",
+        "copyrightName",
+        "copyrightCode",
+        "copyrightArrange",
+        "completeTime",
+        "publishTime",
+        "copyrightOwner",
+        "rank",
       ],
       where: { uuid },
       raw: true,
@@ -838,7 +840,7 @@ export default {
    */
   selectCopyrightLastWriteTimeByUuid: (uuid) =>
     staffCopyright.findOne({
-      attributes: ['currentWriteTime'],
+      attributes: ["currentWriteTime"],
       where: { uuid },
       raw: true,
     }),
@@ -857,7 +859,7 @@ export default {
     completeTime,
     publishTime,
     copyrightOwner,
-    rank
+    rank,
   }) =>
     staffCopyright.update(
       {
@@ -871,8 +873,8 @@ export default {
         publishTime,
         copyrightOwner,
         rank,
-        isVerify: '未核实',
-        verifyRemarks: '',
+        isVerify: "未核实",
+        verifyRemarks: "",
       },
       { where: { uuid }, raw: true }
     ),
@@ -891,7 +893,7 @@ export default {
    */
   selectUploadCopyright: (uuid) =>
     staffCopyright.findOne({
-      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
+      attributes: ["firstUrl", "secondUrl", "thirdUrl"],
       where: { uuid },
       raw: true,
     }),
@@ -901,19 +903,19 @@ export default {
    */
   updateUploadCopyright: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
     try {
-      let firstProductionUrl = '',
-        secondProductionUrl = '',
-        thirdProductionUrl = '';
+      let firstProductionUrl = "",
+        secondProductionUrl = "",
+        thirdProductionUrl = "";
 
       // 将temp的文件copy到production中
-      const [firstFilePosition] = firstUrl.split('/');
+      const [firstFilePosition] = firstUrl.split("/");
 
-      if (firstFilePosition === 'temp') {
+      if (firstFilePosition === "temp") {
         const firstTempUrl = firstUrl;
-        firstProductionUrl = firstUrl.replace('temp', 'production');
+        firstProductionUrl = firstUrl.replace("temp", "production");
 
         const copyright = await staffCopyright.findOne({
-          attributes: ['firstUrl'],
+          attributes: ["firstUrl"],
           where: { uuid },
           raw: true,
         });
@@ -923,20 +925,20 @@ export default {
         }
 
         await client.copy(firstProductionUrl, firstTempUrl);
-      } else if (firstFilePosition === 'production') {
+      } else if (firstFilePosition === "production") {
         firstProductionUrl = firstUrl;
       } else {
-        throw new CustomError('oss文件路径错误');
+        throw new CustomError("oss文件路径错误");
       }
 
       if (secondUrl) {
-        const [secondFilePosition] = secondUrl.split('/');
-        if (secondFilePosition === 'temp') {
+        const [secondFilePosition] = secondUrl.split("/");
+        if (secondFilePosition === "temp") {
           const secondTempUrl = secondUrl;
-          secondProductionUrl = secondUrl.replace('temp', 'production');
+          secondProductionUrl = secondUrl.replace("temp", "production");
 
           const copyright = await staffCopyright.findOne({
-            attributes: ['secondUrl'],
+            attributes: ["secondUrl"],
             where: { uuid },
             raw: true,
           });
@@ -946,21 +948,21 @@ export default {
           }
 
           await client.copy(secondProductionUrl, secondTempUrl);
-        } else if (secondFilePosition === 'production') {
+        } else if (secondFilePosition === "production") {
           secondProductionUrl = secondUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       if (thirdUrl) {
-        const [thirdFilePosition] = thirdUrl.split('/');
-        if (thirdFilePosition === 'temp') {
+        const [thirdFilePosition] = thirdUrl.split("/");
+        if (thirdFilePosition === "temp") {
           const thirdTempUrl = thirdUrl;
-          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+          thirdProductionUrl = thirdUrl.replace("temp", "production");
 
           const copyright = await staffCopyright.findOne({
-            attributes: ['thirdUrl'],
+            attributes: ["thirdUrl"],
             where: { uuid },
             raw: true,
           });
@@ -970,15 +972,15 @@ export default {
           }
 
           await client.copy(thirdProductionUrl, thirdTempUrl);
-        } else if (thirdFilePosition === 'production') {
+        } else if (thirdFilePosition === "production") {
           thirdProductionUrl = thirdUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       const { currentWriteTime } = await staffCopyright.findOne({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { uuid },
         raw: true,
       });
@@ -1011,7 +1013,7 @@ export default {
     awardGrade,
     awardDepartment,
     awardNameList,
-    awardRank
+    awardRank,
   }) =>
     staffAward.create(
       {
@@ -1025,7 +1027,7 @@ export default {
         awardGrade,
         awardDepartment,
         awardNameList,
-        awardRank
+        awardRank,
       },
       { raw: true }
     ),
@@ -1036,19 +1038,19 @@ export default {
   queryWriteAwardList: (userUuid) =>
     staffAward.findAll({
       attributes: [
-        'uuid',
-        'isVerify',
-        'awardType',
-        'awardName',
-        'awardTime',
-        'awardGrade',
-        'awardDepartment',
-        'verifyRemarks',
-        'reviewRemarks',
-        'currentWriteTime',
-        'awardNameList',
-        'awardRank',
-        'score',
+        "uuid",
+        "isVerify",
+        "awardType",
+        "awardName",
+        "awardTime",
+        "awardGrade",
+        "awardDepartment",
+        "verifyRemarks",
+        "reviewRemarks",
+        "currentWriteTime",
+        "awardNameList",
+        "awardRank",
+        "score",
       ],
       where: { userUuid },
       raw: true,
@@ -1060,13 +1062,13 @@ export default {
   selectStaffAwardByUuid: ({ uuid }) =>
     staffAward.findOne({
       attributes: [
-        'awardType',
-        'awardName',
-        'awardTime',
-        'awardGrade',
-        'awardDepartment',
-        'awardNameList',
-        'awardRank'
+        "awardType",
+        "awardName",
+        "awardTime",
+        "awardGrade",
+        "awardDepartment",
+        "awardNameList",
+        "awardRank",
       ],
       where: { uuid },
       raw: true,
@@ -1077,7 +1079,7 @@ export default {
    */
   selectAwardLastWriteTimeByUuid: (uuid) =>
     staffAward.findOne({
-      attributes: ['currentWriteTime'],
+      attributes: ["currentWriteTime"],
       where: { uuid },
       raw: true,
     }),
@@ -1095,7 +1097,7 @@ export default {
     awardGrade,
     awardDepartment,
     awardNameList,
-    awardRank
+    awardRank,
   }) =>
     staffAward.update(
       {
@@ -1108,8 +1110,8 @@ export default {
         awardDepartment,
         awardNameList,
         awardRank,
-        isVerify: '未核实',
-        verifyRemarks: '',
+        isVerify: "未核实",
+        verifyRemarks: "",
       },
       { where: { uuid }, raw: true }
     ),
@@ -1161,19 +1163,19 @@ export default {
   queryWriteThesisList: (userUuid) =>
     staffThesis.findAll({
       attributes: [
-        'uuid',
-        'isVerify',
-        'thesisTitle',
-        'thesisJournal',
-        'thesisTime',
-        'thesisGrade',
-        'thesisCode',
-        'thesisFirstAuthor',
-        'thesisAuthorSequence',
-        'verifyRemarks',
-        'reviewRemarks',
-        'currentWriteTime',
-        'score',
+        "uuid",
+        "isVerify",
+        "thesisTitle",
+        "thesisJournal",
+        "thesisTime",
+        "thesisGrade",
+        "thesisCode",
+        "thesisFirstAuthor",
+        "thesisAuthorSequence",
+        "verifyRemarks",
+        "reviewRemarks",
+        "currentWriteTime",
+        "score",
       ],
       where: { userUuid },
       raw: true,
@@ -1185,13 +1187,13 @@ export default {
   selectStaffThesisByUuid: ({ uuid }) =>
     staffThesis.findOne({
       attributes: [
-        'thesisTitle',
-        'thesisJournal',
-        'thesisTime',
-        'thesisGrade',
-        'thesisCode',
-        'thesisFirstAuthor',
-        'thesisAuthorSequence',
+        "thesisTitle",
+        "thesisJournal",
+        "thesisTime",
+        "thesisGrade",
+        "thesisCode",
+        "thesisFirstAuthor",
+        "thesisAuthorSequence",
       ],
       where: { uuid },
       raw: true,
@@ -1202,7 +1204,7 @@ export default {
    */
   selectThesisLastWriteTimeByUuid: (uuid) =>
     staffThesis.findOne({
-      attributes: ['currentWriteTime'],
+      attributes: ["currentWriteTime"],
       where: { uuid },
       raw: true,
     }),
@@ -1233,8 +1235,8 @@ export default {
         thesisCode,
         thesisFirstAuthor,
         thesisAuthorSequence,
-        isVerify: '未核实',
-        verifyRemarks: '',
+        isVerify: "未核实",
+        verifyRemarks: "",
       },
       { where: { uuid }, raw: true }
     ),
@@ -1249,11 +1251,130 @@ export default {
     }),
 
   /**
+   * 新建一条专著信息
+   */
+  insertStaffBook: ({
+    userUuid,
+    currentWriteTime,
+    isVerify,
+    name,
+    copyrightOwner,
+    time,
+    publisher,
+    rank,
+    chiefEditor,
+  }) =>
+    staffBook.create(
+      {
+        uuid: uuid.v1(),
+        userUuid,
+        currentWriteTime,
+        isVerify,
+        name,
+        copyrightOwner,
+        time,
+        publisher,
+        rank,
+        chiefEditor,
+      },
+      { raw: true }
+    ),
+
+  /**
+   * 查询员工填写论文/专著信息
+   */
+  queryWriteBookList: (userUuid) =>
+    staffBook.findAll({
+      attributes: [
+        "uuid",
+        "isVerify",
+        "name",
+        "copyrightOwner",
+        "time",
+        "publisher",
+        "rank",
+        "chiefEditor",
+        "verifyRemarks",
+        "reviewRemarks",
+        "currentWriteTime",
+        "score",
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写论文/专著通过uuid
+   */
+  selectStaffBookByUuid: ({ uuid }) =>
+    staffBook.findOne({
+      attributes: [
+        "name",
+        "copyrightOwner",
+        "time",
+        "publisher",
+        "rank",
+        "chiefEditor",
+      ],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询论文/专著上次修改时间
+   */
+  selectBookLastWriteTimeByUuid: (uuid) =>
+    staffBook.findOne({
+      attributes: ["currentWriteTime"],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 修改论文/专著信息
+   */
+  updateStaffBook: ({
+    uuid,
+    lastWriteTime,
+    currentWriteTime,
+    name,
+    copyrightOwner,
+    time,
+    publisher,
+    rank,
+    chiefEditor,
+  }) =>
+    staffBook.update(
+      {
+        lastWriteTime,
+        currentWriteTime,
+        name,
+        copyrightOwner,
+        time,
+        publisher,
+        rank,
+        chiefEditor,
+        isVerify: "未核实",
+        verifyRemarks: "",
+      },
+      { where: { uuid }, raw: true }
+    ),
+
+  /**
+   * 删除论文/专著
+   */
+  deleteBook: (uuid) =>
+    staffBook.destroy({
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
    * 获取奖项的信息
    */
   selectUploadAward: (uuid) =>
     staffAward.findOne({
-      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
+      attributes: ["firstUrl", "secondUrl", "thirdUrl"],
       where: { uuid },
       raw: true,
     }),
@@ -1263,20 +1384,20 @@ export default {
    */
   updateUploadAward: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
     try {
-      let firstProductionUrl = '',
-        secondProductionUrl = '',
-        thirdProductionUrl = '';
+      let firstProductionUrl = "",
+        secondProductionUrl = "",
+        thirdProductionUrl = "";
 
       // 将temp的文件copy到production中
-      const [firstFilePosition] = firstUrl.split('/');
-      console.log('firstFilePosition=', firstFilePosition);
+      const [firstFilePosition] = firstUrl.split("/");
+      console.log("firstFilePosition=", firstFilePosition);
 
-      if (firstFilePosition === 'temp') {
+      if (firstFilePosition === "temp") {
         const firstTempUrl = firstUrl;
-        firstProductionUrl = firstUrl.replace('temp', 'production');
+        firstProductionUrl = firstUrl.replace("temp", "production");
 
         const award = await staffAward.findOne({
-          attributes: ['firstUrl'],
+          attributes: ["firstUrl"],
           where: { uuid },
           raw: true,
         });
@@ -1286,21 +1407,21 @@ export default {
         }
 
         await client.copy(firstProductionUrl, firstTempUrl);
-      } else if (firstFilePosition === 'production') {
+      } else if (firstFilePosition === "production") {
         firstProductionUrl = firstUrl;
       } else {
-        throw new CustomError('oss文件路径错误');
+        throw new CustomError("oss文件路径错误");
       }
 
       if (secondUrl) {
-        const [secondFilePosition] = secondUrl.split('/');
-        console.log('secondFilePosition=', secondFilePosition);
-        if (secondFilePosition === 'temp') {
+        const [secondFilePosition] = secondUrl.split("/");
+        console.log("secondFilePosition=", secondFilePosition);
+        if (secondFilePosition === "temp") {
           const secondTempUrl = secondUrl;
-          secondProductionUrl = secondUrl.replace('temp', 'production');
+          secondProductionUrl = secondUrl.replace("temp", "production");
 
           const award = await staffAward.findOne({
-            attributes: ['secondUrl'],
+            attributes: ["secondUrl"],
             where: { uuid },
             raw: true,
           });
@@ -1310,22 +1431,22 @@ export default {
           }
 
           await client.copy(secondProductionUrl, secondTempUrl);
-        } else if (secondFilePosition === 'production') {
+        } else if (secondFilePosition === "production") {
           secondProductionUrl = secondUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       if (thirdUrl) {
-        const [thirdFilePosition] = thirdUrl.split('/');
-        console.log('thirdFilePosition=', thirdFilePosition);
-        if (thirdFilePosition === 'temp') {
+        const [thirdFilePosition] = thirdUrl.split("/");
+        console.log("thirdFilePosition=", thirdFilePosition);
+        if (thirdFilePosition === "temp") {
           const thirdTempUrl = thirdUrl;
-          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+          thirdProductionUrl = thirdUrl.replace("temp", "production");
 
           const award = await staffAward.findOne({
-            attributes: ['thirdUrl'],
+            attributes: ["thirdUrl"],
             where: { uuid },
             raw: true,
           });
@@ -1335,15 +1456,15 @@ export default {
           }
 
           await client.copy(thirdProductionUrl, thirdTempUrl);
-        } else if (thirdFilePosition === 'production') {
+        } else if (thirdFilePosition === "production") {
           thirdProductionUrl = thirdUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       const { currentWriteTime } = await staffAward.findOne({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { uuid },
         raw: true,
       });
@@ -1368,7 +1489,7 @@ export default {
    */
   selectUploadThesis: (uuid) =>
     staffThesis.findOne({
-      attributes: ['firstUrl', 'secondUrl', 'thirdUrl'],
+      attributes: ["firstUrl", "secondUrl", "thirdUrl"],
       where: { uuid },
       raw: true,
     }),
@@ -1378,19 +1499,19 @@ export default {
    */
   updateUploadThesis: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
     try {
-      let firstProductionUrl = '',
-        secondProductionUrl = '',
-        thirdProductionUrl = '';
+      let firstProductionUrl = "",
+        secondProductionUrl = "",
+        thirdProductionUrl = "";
 
       // 将temp的文件copy到production中
-      const [firstFilePosition] = firstUrl.split('/');
+      const [firstFilePosition] = firstUrl.split("/");
 
-      if (firstFilePosition === 'temp') {
+      if (firstFilePosition === "temp") {
         const firstTempUrl = firstUrl;
-        firstProductionUrl = firstUrl.replace('temp', 'production');
+        firstProductionUrl = firstUrl.replace("temp", "production");
 
         const thesis = await staffThesis.findOne({
-          attributes: ['firstUrl'],
+          attributes: ["firstUrl"],
           where: { uuid },
           raw: true,
         });
@@ -1400,20 +1521,20 @@ export default {
         }
 
         await client.copy(firstProductionUrl, firstTempUrl);
-      } else if (firstFilePosition === 'production') {
+      } else if (firstFilePosition === "production") {
         firstProductionUrl = firstUrl;
       } else {
-        throw new CustomError('oss文件路径错误');
+        throw new CustomError("oss文件路径错误");
       }
 
       if (secondUrl) {
-        const [secondFilePosition] = secondUrl.split('/');
-        if (secondFilePosition === 'temp') {
+        const [secondFilePosition] = secondUrl.split("/");
+        if (secondFilePosition === "temp") {
           const secondTempUrl = secondUrl;
-          secondProductionUrl = secondUrl.replace('temp', 'production');
+          secondProductionUrl = secondUrl.replace("temp", "production");
 
           const thesis = await staffThesis.findOne({
-            attributes: ['secondUrl'],
+            attributes: ["secondUrl"],
             where: { uuid },
             raw: true,
           });
@@ -1423,21 +1544,21 @@ export default {
           }
 
           await client.copy(secondProductionUrl, secondTempUrl);
-        } else if (secondFilePosition === 'production') {
+        } else if (secondFilePosition === "production") {
           secondProductionUrl = secondUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       if (thirdUrl) {
-        const [thirdFilePosition] = thirdUrl.split('/');
-        if (thirdFilePosition === 'temp') {
+        const [thirdFilePosition] = thirdUrl.split("/");
+        if (thirdFilePosition === "temp") {
           const thirdTempUrl = thirdUrl;
-          thirdProductionUrl = thirdUrl.replace('temp', 'production');
+          thirdProductionUrl = thirdUrl.replace("temp", "production");
 
           const thesis = await staffThesis.findOne({
-            attributes: ['thirdUrl'],
+            attributes: ["thirdUrl"],
             where: { uuid },
             raw: true,
           });
@@ -1447,15 +1568,15 @@ export default {
           }
 
           await client.copy(thirdProductionUrl, thirdTempUrl);
-        } else if (thirdFilePosition === 'production') {
+        } else if (thirdFilePosition === "production") {
           thirdProductionUrl = thirdUrl;
         } else {
-          throw new CustomError('oss文件路径错误');
+          throw new CustomError("oss文件路径错误");
         }
       }
 
       const { currentWriteTime } = await staffThesis.findOne({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { uuid },
         raw: true,
       });
@@ -1476,11 +1597,123 @@ export default {
   },
 
   /**
+   * 获取专著的信息
+   */
+  selectUploadBook: (uuid) =>
+    staffBook.findOne({
+      attributes: ["firstUrl", "secondUrl", "thirdUrl"],
+      where: { uuid },
+      raw: true,
+    }),
+
+  /**
+   * 保存论文/专著的信息
+   */
+  updateUploadBook: async ({ uuid, firstUrl, secondUrl, thirdUrl }) => {
+    try {
+      let firstProductionUrl = "",
+        secondProductionUrl = "",
+        thirdProductionUrl = "";
+
+      // 将temp的文件copy到production中
+      const [firstFilePosition] = firstUrl.split("/");
+
+      if (firstFilePosition === "temp") {
+        const firstTempUrl = firstUrl;
+        firstProductionUrl = firstUrl.replace("temp", "production");
+
+        const book = await staffBook.findOne({
+          attributes: ["firstUrl"],
+          where: { uuid },
+          raw: true,
+        });
+
+        if (book?.firstUrl) {
+          await client.delete(book.firstUrl);
+        }
+
+        await client.copy(firstProductionUrl, firstTempUrl);
+      } else if (firstFilePosition === "production") {
+        firstProductionUrl = firstUrl;
+      } else {
+        throw new CustomError("oss文件路径错误");
+      }
+
+      if (secondUrl) {
+        const [secondFilePosition] = secondUrl.split("/");
+        if (secondFilePosition === "temp") {
+          const secondTempUrl = secondUrl;
+          secondProductionUrl = secondUrl.replace("temp", "production");
+
+          const book = await staffBook.findOne({
+            attributes: ["secondUrl"],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (book?.secondUrl) {
+            await client.delete(book.secondUrl);
+          }
+
+          await client.copy(secondProductionUrl, secondTempUrl);
+        } else if (secondFilePosition === "production") {
+          secondProductionUrl = secondUrl;
+        } else {
+          throw new CustomError("oss文件路径错误");
+        }
+      }
+
+      if (thirdUrl) {
+        const [thirdFilePosition] = thirdUrl.split("/");
+        if (thirdFilePosition === "temp") {
+          const thirdTempUrl = thirdUrl;
+          thirdProductionUrl = thirdUrl.replace("temp", "production");
+
+          const book = await staffBook.findOne({
+            attributes: ["thirdUrl"],
+            where: { uuid },
+            raw: true,
+          });
+
+          if (book?.thirdUrl) {
+            await client.delete(book.thirdUrl);
+          }
+
+          await client.copy(thirdProductionUrl, thirdTempUrl);
+        } else if (thirdFilePosition === "production") {
+          thirdProductionUrl = thirdUrl;
+        } else {
+          throw new CustomError("oss文件路径错误");
+        }
+      }
+
+      const { currentWriteTime } = await staffBook.findOne({
+        attributes: ["currentWriteTime"],
+        where: { uuid },
+        raw: true,
+      });
+
+      return await staffBook.update(
+        {
+          lastWriteTime: currentWriteTime,
+          currentWriteTime: new Date(),
+          firstUrl: firstProductionUrl,
+          secondUrl: secondProductionUrl,
+          thirdUrl: thirdProductionUrl,
+        },
+        { where: { uuid }, raw: true }
+      );
+    } catch (error) {
+      throw error;
+    }
+  },
+
+  /**
    * 查询普通员工完成填写上次修改时间
    */
   selectStaffLastWriteTimeByUuid: (uuid) =>
     user.findOne({
-      attributes: ['currentWriteTime'],
+      attributes: ["currentWriteTime"],
       where: { uuid },
       raw: true,
     }),
@@ -1502,41 +1735,47 @@ export default {
       copyrightWriteStatus,
       awardWriteStatus,
       thesisWriteStatus,
+      bookWriteStatus,
     ] = await Promise.all([
       staffBasic.findOne({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffProject.findAll({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffPatent.findAll({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffCopyright.findAll({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffAward.findAll({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffThesis.findAll({
-        attributes: ['currentWriteTime'],
+        attributes: ["currentWriteTime"],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffBook.findAll({
+        attributes: ["currentWriteTime"],
         where: { userUuid: uuid },
         raw: true,
       }),
     ]);
 
     if (!basicWriteStatus?.currentWriteTime) {
-      throw new CustomError('请填写基本信息!');
+      throw new CustomError("请填写基本信息!");
     }
 
     await Promise.all([
@@ -1552,15 +1791,16 @@ export default {
       staffStatus.update(
         {
           basicWriteStatus: basicWriteStatus.currentWriteTime
-            ? '已填写'
-            : '未填写',
-          projectWriteStatus: projectWriteStatus.length ? '已填写' : '未填写',
-          patentWriteStatus: patentWriteStatus.length ? '已填写' : '未填写',
+            ? "已填写"
+            : "未填写",
+          projectWriteStatus: projectWriteStatus.length ? "已填写" : "未填写",
+          patentWriteStatus: patentWriteStatus.length ? "已填写" : "未填写",
           copyrightWriteStatus: copyrightWriteStatus.length
-            ? '已填写'
-            : '未填写',
-          awardWriteStatus: awardWriteStatus.length ? '已填写' : '未填写',
-          thesisWriteStatus: thesisWriteStatus.length ? '已填写' : '未填写',
+            ? "已填写"
+            : "未填写",
+          awardWriteStatus: awardWriteStatus.length ? "已填写" : "未填写",
+          thesisWriteStatus: thesisWriteStatus.length ? "已填写" : "未填写",
+          bookWriteStatus: bookWriteStatus.length ? "已填写" : "未填写",
           verifyStatus,
         },
         { where: { uuid }, raw: true }
@@ -1574,114 +1814,134 @@ export default {
       copyrightVerify,
       awardVerify,
       thesisVerify,
+      bookVerify,
     ] = await Promise.all([
       staffBasic.findOne({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffProject.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffPatent.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffCopyright.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffAward.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: uuid },
         raw: true,
       }),
       staffThesis.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
+        where: { userUuid: uuid },
+        raw: true,
+      }),
+      staffBook.findAll({
+        attributes: ["isVerify"],
         where: { userUuid: uuid },
         raw: true,
       }),
     ]);
 
-    let basicVerifyStatus = '',
-      projectVerifyStatus = '',
-      patentVerifyStatus = '',
-      copyrightVerifyStatus = '',
-      awardVerifyStatus = '',
-      thesisVerifyStatus = '';
+    let basicVerifyStatus = "",
+      projectVerifyStatus = "",
+      patentVerifyStatus = "",
+      copyrightVerifyStatus = "",
+      awardVerifyStatus = "",
+      thesisVerifyStatus = "",
+      bookVerifyStatus = "";
 
-    if (basicVerify.isVerify === '核实不通过') {
-      throw new CustomError('请按统计员修改意见完成修改后完成提交!');
+    if (basicVerify.isVerify === "核实不通过") {
+      throw new CustomError("请按统计员修改意见完成修改后完成提交!");
     } else {
       basicVerifyStatus = basicVerify.isVerify;
     }
 
     if (!projectVerify.length) {
-      projectVerifyStatus = '未填写';
+      projectVerifyStatus = "未填写";
     } else {
       let projectVerifyList = projectVerify.map((value) => value.isVerify);
-      if (projectVerifyList.indexOf('核实不通过') !== -1) {
-        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
-      } else if (projectVerifyList.indexOf('未核实') !== -1) {
-        projectVerifyStatus = '未核实';
+      if (projectVerifyList.indexOf("核实不通过") !== -1) {
+        throw new CustomError("请按统计员修改意见完成修改后完成提交!");
+      } else if (projectVerifyList.indexOf("未核实") !== -1) {
+        projectVerifyStatus = "未核实";
       } else {
-        projectVerifyStatus = '核实通过';
+        projectVerifyStatus = "核实通过";
       }
     }
 
     if (!patentVerify.length) {
-      patentVerifyStatus = '未填写';
+      patentVerifyStatus = "未填写";
     } else {
       let patentVerifyList = patentVerify.map((value) => value.isVerify);
-      if (patentVerifyList.indexOf('核实不通过') !== -1) {
-        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
-      } else if (patentVerifyList.indexOf('未核实') !== -1) {
-        patentVerifyStatus = '未核实';
+      if (patentVerifyList.indexOf("核实不通过") !== -1) {
+        throw new CustomError("请按统计员修改意见完成修改后完成提交!");
+      } else if (patentVerifyList.indexOf("未核实") !== -1) {
+        patentVerifyStatus = "未核实";
       } else {
-        patentVerifyStatus = '核实通过';
+        patentVerifyStatus = "核实通过";
       }
     }
 
     if (!copyrightVerify.length) {
-      copyrightVerifyStatus = '未填写';
+      copyrightVerifyStatus = "未填写";
     } else {
       let copyrightVerifyList = copyrightVerify.map((value) => value.isVerify);
-      if (copyrightVerifyList.indexOf('核实不通过') !== -1) {
-        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
-      } else if (copyrightVerifyList.indexOf('未核实') !== -1) {
-        copyrightVerifyStatus = '未核实';
+      if (copyrightVerifyList.indexOf("核实不通过") !== -1) {
+        throw new CustomError("请按统计员修改意见完成修改后完成提交!");
+      } else if (copyrightVerifyList.indexOf("未核实") !== -1) {
+        copyrightVerifyStatus = "未核实";
       } else {
-        copyrightVerifyStatus = '核实通过';
+        copyrightVerifyStatus = "核实通过";
       }
     }
 
     if (!awardVerify.length) {
-      awardVerifyStatus = '未填写';
+      awardVerifyStatus = "未填写";
     } else {
       let awardVerifyList = awardVerify.map((value) => value.isVerify);
-      if (awardVerifyList.indexOf('核实不通过') !== -1) {
-        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
-      } else if (awardVerifyList.indexOf('未核实') !== -1) {
-        awardVerifyStatus = '未核实';
+      if (awardVerifyList.indexOf("核实不通过") !== -1) {
+        throw new CustomError("请按统计员修改意见完成修改后完成提交!");
+      } else if (awardVerifyList.indexOf("未核实") !== -1) {
+        awardVerifyStatus = "未核实";
       } else {
-        awardVerifyStatus = '核实通过';
+        awardVerifyStatus = "核实通过";
       }
     }
 
     if (!thesisVerify.length) {
-      thesisVerifyStatus = '未填写';
+      thesisVerifyStatus = "未填写";
     } else {
       let thesisVerifyList = thesisVerify.map((value) => value.isVerify);
-      if (thesisVerifyList.indexOf('核实不通过') !== -1) {
-        throw new CustomError('请按统计员修改意见完成修改后完成提交!');
-      } else if (thesisVerifyList.indexOf('未核实') !== -1) {
-        thesisVerifyStatus = '未核实';
+      if (thesisVerifyList.indexOf("核实不通过") !== -1) {
+        throw new CustomError("请按统计员修改意见完成修改后完成提交!");
+      } else if (thesisVerifyList.indexOf("未核实") !== -1) {
+        thesisVerifyStatus = "未核实";
       } else {
-        thesisVerifyStatus = '核实通过';
+        thesisVerifyStatus = "核实通过";
+      }
+    }
+
+    if (!bookVerify.length) {
+      bookVerifyStatus = "未填写";
+    } else {
+      let bookVerifyList = bookVerify.map((value) => value.isVerify);
+      if (bookVerifyList.indexOf("核实不通过") !== -1) {
+        throw new CustomError("请按统计员修改意见完成修改后完成提交!");
+      } else if (bookVerifyList.indexOf("未核实") !== -1) {
+        bookVerifyStatus = "未核实";
+      } else {
+        bookVerifyStatus = "核实通过";
       }
     }
 
@@ -1693,6 +1953,7 @@ export default {
         copyrightVerifyStatus,
         awardVerifyStatus,
         thesisVerifyStatus,
+        bookVerifyStatus,
       },
       { where: { uuid }, raw: true }
     );

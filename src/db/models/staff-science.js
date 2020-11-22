@@ -1,7 +1,7 @@
 const Sequelize = require("sequelize");
 const { db } = require("../db-connect");
 
-export default db.define("staff_book", {
+export default db.define("staff_science", {
   uuid: {
     type: Sequelize.STRING(36),
     primaryKey: true,
@@ -19,12 +19,7 @@ export default db.define("staff_book", {
   reviewTime: Sequelize.DATE, // 评审时间
   lastWriteTime: Sequelize.DATE, // 上次填写时间
   currentWriteTime: Sequelize.DATE, // 最新填写时间
-  name: Sequelize.STRING(32), // 著作名称
-  copyrightOwner: Sequelize.STRING(32), // 著作ISBN号
-  time: Sequelize.DATE, // 著作发表时间
-  publisher: Sequelize.STRING(32), // 著作出版社
-  rank: Sequelize.STRING(32), // 编辑排名
-  chiefEditor: Sequelize.STRING(32), // 著作主编
+  name: Sequelize.STRING(32), // 科技成果名称
   firstUrl: Sequelize.TEXT, // 第一个url
   secondUrl: Sequelize.TEXT, // 第二个url
   thirdUrl: Sequelize.TEXT, // 第三个url

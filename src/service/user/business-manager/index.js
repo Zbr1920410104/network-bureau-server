@@ -1,34 +1,35 @@
-import staffBasic from '../../../db/models/staff-basic';
-import staffProject from '../../../db/models/staff-project';
-import staffPatent from '../../../db/models/staff-patent';
-import staffCopyright from '../../../db/models/staff-copyright';
-import staffAward from '../../../db/models/staff-award';
-import staffThesis from '../../../db/models/staff-thesis';
-import user from '../../../db/models/t-user';
-import staffStatus from '../../../db/models/staff-status';
+import staffBasic from "../../../db/models/staff-basic";
+import staffProject from "../../../db/models/staff-project";
+import staffPatent from "../../../db/models/staff-patent";
+import staffCopyright from "../../../db/models/staff-copyright";
+import staffAward from "../../../db/models/staff-award";
+import staffThesis from "../../../db/models/staff-thesis";
+import staffBook from "../../../db/models/staff-book";
+import user from "../../../db/models/t-user";
+import staffStatus from "../../../db/models/staff-status";
 
-import { db } from '../../../db/db-connect';
+import { db } from "../../../db/db-connect";
 
 // uuid
-import uuid from 'uuid';
+import uuid from "uuid";
 
 // 工具
-import xlsx from 'node-xlsx';
-import moment from 'moment';
+import xlsx from "node-xlsx";
+import moment from "moment";
 
 // oss
-import client from '../../../util/oss';
+import client from "../../../util/oss";
 
 // 加密
-import md5 from 'md5';
+import md5 from "md5";
 
-import { MANAGER_PAGE_SIZE } from '../../../config/system-config';
+import { MANAGER_PAGE_SIZE } from "../../../config/system-config";
 
 // 工具类
-import CustomError from '../../../util/custom-error';
-import webToken from '../../../util/token';
+import CustomError from "../../../util/custom-error";
+import webToken from "../../../util/token";
 
-import Sequelize from 'sequelize';
+import Sequelize from "sequelize";
 const Op = Sequelize.Op;
 
 export default {
@@ -38,28 +39,28 @@ export default {
   selectBusinessManagerBasic: ({ userUuid }) =>
     staffBasic.findOne({
       attributes: [
-        'name',
-        'idNumber',
-        'sex',
-        'nation',
-        'nativePlace',
-        'politicalAffiliation',
-        'department',
-        'officePhone',
-        'phone',
-        'education',
-        'degree',
-        'graduateSchool',
-        'major',
-        'duty',
-        'workTime',
-        'professionTitle',
-        'getTime',
-        'researchDirection',
-        'studyExperience',
-        'workExperience',
-        'isVerify',
-        'verifyRemarks',
+        "name",
+        "idNumber",
+        "sex",
+        "nation",
+        "nativePlace",
+        "politicalAffiliation",
+        "department",
+        "officePhone",
+        "phone",
+        "education",
+        "degree",
+        "graduateSchool",
+        "major",
+        "duty",
+        "workTime",
+        "professionTitle",
+        "getTime",
+        "researchDirection",
+        "studyExperience",
+        "workExperience",
+        "isVerify",
+        "verifyRemarks",
       ],
       where: { userUuid },
       raw: true,
@@ -71,14 +72,14 @@ export default {
   queryStaffVerifyInfo: () =>
     user.findAll({
       attributes: [
-        'uuid',
-        'name',
-        'userName',
-        'verifyStatus',
-        'currentWriteTime',
-        'department',
+        "uuid",
+        "name",
+        "userName",
+        "verifyStatus",
+        "currentWriteTime",
+        "department",
       ],
-      where: { role: 15, isCancel: '未注销' },
+      where: { role: 15, isCancel: "未注销" },
       raw: true,
     }),
 
@@ -88,12 +89,12 @@ export default {
   queryStaffVerifyInfoByName: (name) =>
     user.findAll({
       attributes: [
-        'uuid',
-        'name',
-        'userName',
-        'verifyStatus',
-        'currentWriteTime',
-        'department',
+        "uuid",
+        "name",
+        "userName",
+        "verifyStatus",
+        "currentWriteTime",
+        "department",
       ],
       where: {
         [Op.or]: [
@@ -109,7 +110,7 @@ export default {
           },
         ],
         role: 15,
-        isCancel: '未注销',
+        isCancel: "未注销",
       },
       raw: true,
     }),
@@ -120,14 +121,14 @@ export default {
   queryStaffVerifyInfoByVerifyStatus: (verifyStatus) =>
     user.findAll({
       attributes: [
-        'uuid',
-        'name',
-        'userName',
-        'verifyStatus',
-        'currentWriteTime',
-        'department',
+        "uuid",
+        "name",
+        "userName",
+        "verifyStatus",
+        "currentWriteTime",
+        "department",
       ],
-      where: { verifyStatus, role: 15, isCancel: '未注销' },
+      where: { verifyStatus, role: 15, isCancel: "未注销" },
       raw: true,
     }),
 
@@ -137,28 +138,28 @@ export default {
   queryVerifyProjectList: ({ userUuid }) =>
     staffProject.findAll({
       attributes: [
-        'uuid',
-        'name',
-        'grade',
-        'type',
-        'startTime',
-        'endTime',
-        'code',
-        'resource',
-        'funds',
-        'controller',
-        'participant',
-        'content',
-        'isChecked',
-        'checkConclusion',
-        'isVerify',
-        'currentWriteTime',
-        'verifyRemarks',
-        'verifyTime',
-        'reviewRemarks',
-        'firstUrl',
-        'secondUrl',
-        'thirdUrl',
+        "uuid",
+        "name",
+        "grade",
+        "type",
+        "startTime",
+        "endTime",
+        "code",
+        "resource",
+        "funds",
+        "controller",
+        "participant",
+        "content",
+        "isChecked",
+        "checkConclusion",
+        "isVerify",
+        "currentWriteTime",
+        "verifyRemarks",
+        "verifyTime",
+        "reviewRemarks",
+        "firstUrl",
+        "secondUrl",
+        "thirdUrl",
       ],
       where: { userUuid },
       raw: true,
@@ -170,22 +171,22 @@ export default {
   queryVerifyPatentList: ({ userUuid }) =>
     staffPatent.findAll({
       attributes: [
-        'uuid',
-        'patentType',
-        'patentName',
-        'patentCode',
-        'rank',
-        'patentee',
-        'patentTime',
-        'inventor',
-        'isVerify',
-        'currentWriteTime',
-        'verifyRemarks',
-        'verifyTime',
-        'reviewRemarks',
-        'firstUrl',
-        'secondUrl',
-        'thirdUrl',
+        "uuid",
+        "patentType",
+        "patentName",
+        "patentCode",
+        "rank",
+        "patentee",
+        "patentTime",
+        "inventor",
+        "isVerify",
+        "currentWriteTime",
+        "verifyRemarks",
+        "verifyTime",
+        "reviewRemarks",
+        "firstUrl",
+        "secondUrl",
+        "thirdUrl",
       ],
       where: { userUuid },
       raw: true,
@@ -197,23 +198,23 @@ export default {
   queryVerifyCopyrightList: ({ userUuid }) =>
     staffCopyright.findAll({
       attributes: [
-        'uuid',
-        'copyrightType',
-        'copyrightName',
-        'copyrightCode',
-        'copyrightArrange',
-        'completeTime',
-        'publishTime',
-        'copyrightOwner',
-        'rank',
-        'isVerify',
-        'currentWriteTime',
-        'verifyRemarks',
-        'verifyTime',
-        'reviewRemarks',
-        'firstUrl',
-        'secondUrl',
-        'thirdUrl',
+        "uuid",
+        "copyrightType",
+        "copyrightName",
+        "copyrightCode",
+        "copyrightArrange",
+        "completeTime",
+        "publishTime",
+        "copyrightOwner",
+        "rank",
+        "isVerify",
+        "currentWriteTime",
+        "verifyRemarks",
+        "verifyTime",
+        "reviewRemarks",
+        "firstUrl",
+        "secondUrl",
+        "thirdUrl",
       ],
       where: { userUuid },
       raw: true,
@@ -225,22 +226,22 @@ export default {
   queryVerifyAwardList: ({ userUuid }) =>
     staffAward.findAll({
       attributes: [
-        'uuid',
-        'awardType',
-        'awardName',
-        'awardTime',
-        'awardGrade',
-        'awardDepartment',
-        'awardRank',
-        'isVerify',
-        'currentWriteTime',
-        'awardNameList',
-        'verifyRemarks',
-        'verifyTime',
-        'reviewRemarks',
-        'firstUrl',
-        'secondUrl',
-        'thirdUrl',
+        "uuid",
+        "awardType",
+        "awardName",
+        "awardTime",
+        "awardGrade",
+        "awardDepartment",
+        "awardRank",
+        "isVerify",
+        "currentWriteTime",
+        "awardNameList",
+        "verifyRemarks",
+        "verifyTime",
+        "reviewRemarks",
+        "firstUrl",
+        "secondUrl",
+        "thirdUrl",
       ],
       where: { userUuid },
       raw: true,
@@ -252,22 +253,48 @@ export default {
   queryVerifyThesisList: ({ userUuid }) =>
     staffThesis.findAll({
       attributes: [
-        'uuid',
-        'thesisTitle',
-        'thesisJournal',
-        'thesisTime',
-        'thesisGrade',
-        'thesisCode',
-        'thesisFirstAuthor',
-        'thesisAuthorSequence',
-        'isVerify',
-        'currentWriteTime',
-        'verifyRemarks',
-        'verifyTime',
-        'reviewRemarks',
-        'firstUrl',
-        'secondUrl',
-        'thirdUrl',
+        "uuid",
+        "thesisTitle",
+        "thesisJournal",
+        "thesisTime",
+        "thesisGrade",
+        "thesisCode",
+        "thesisFirstAuthor",
+        "thesisAuthorSequence",
+        "isVerify",
+        "currentWriteTime",
+        "verifyRemarks",
+        "verifyTime",
+        "reviewRemarks",
+        "firstUrl",
+        "secondUrl",
+        "thirdUrl",
+      ],
+      where: { userUuid },
+      raw: true,
+    }),
+
+  /**
+   * 查询员工填写论文/专著信息
+   */
+  queryVerifyBookList: ({ userUuid }) =>
+    staffBook.findAll({
+      attributes: [
+        "uuid",
+        "name",
+        "copyrightOwner",
+        "time",
+        "publisher",
+        "rank",
+        "chiefEditor",
+        "isVerify",
+        "currentWriteTime",
+        "verifyRemarks",
+        "verifyTime",
+        "reviewRemarks",
+        "firstUrl",
+        "secondUrl",
+        "thirdUrl",
       ],
       where: { userUuid },
       raw: true,
@@ -283,7 +310,7 @@ export default {
     verifyUserUuid,
     verifyTime,
   }) => {
-    if (isVerify === '核实不通过') {
+    if (isVerify === "核实不通过") {
       await Promise.all([
         staffStatus.update(
           { verifyStatus: isVerify },
@@ -324,7 +351,7 @@ export default {
     verifyTime,
     staffUuid,
   }) => {
-    if (isVerify === '核实不通过') {
+    if (isVerify === "核实不通过") {
       return await Promise.all([
         staffProject.update(
           {
@@ -355,25 +382,25 @@ export default {
         { where: { uuid }, raw: true }
       );
       const staffProjectVerify = await staffProject.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: staffUuid },
         raw: true,
       });
 
       let projectVerifyList = staffProjectVerify.map((value) => value.isVerify);
-      if (projectVerifyList.indexOf('核实不通过') !== -1) {
+      if (projectVerifyList.indexOf("核实不通过") !== -1) {
         return await staffStatus.update(
-          { projectVerifyStatus: '核实不通过' },
+          { projectVerifyStatus: "核实不通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
-      } else if (projectVerifyList.indexOf('未核实') !== -1) {
+      } else if (projectVerifyList.indexOf("未核实") !== -1) {
         return await staffStatus.update(
-          { projectVerifyStatus: '未核实' },
+          { projectVerifyStatus: "未核实" },
           { where: { uuid: staffUuid }, raw: true }
         );
       } else {
         return await staffStatus.update(
-          { projectVerifyStatus: '核实通过' },
+          { projectVerifyStatus: "核实通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
       }
@@ -391,7 +418,7 @@ export default {
     verifyTime,
     staffUuid,
   }) => {
-    if (isVerify === '核实不通过') {
+    if (isVerify === "核实不通过") {
       return await Promise.all([
         staffPatent.update(
           {
@@ -422,25 +449,25 @@ export default {
         { where: { uuid }, raw: true }
       );
       const staffPatentVerify = await staffPatent.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: staffUuid },
         raw: true,
       });
 
       let patentVerifyList = staffPatentVerify.map((value) => value.isVerify);
-      if (patentVerifyList.indexOf('核实不通过') !== -1) {
+      if (patentVerifyList.indexOf("核实不通过") !== -1) {
         return await staffStatus.update(
-          { patentVerifyStatus: '核实不通过' },
+          { patentVerifyStatus: "核实不通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
-      } else if (patentVerifyList.indexOf('未核实') !== -1) {
+      } else if (patentVerifyList.indexOf("未核实") !== -1) {
         return await staffStatus.update(
-          { patentVerifyStatus: '未核实' },
+          { patentVerifyStatus: "未核实" },
           { where: { uuid: staffUuid }, raw: true }
         );
       } else {
         return await staffStatus.update(
-          { patentVerifyStatus: '核实通过' },
+          { patentVerifyStatus: "核实通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
       }
@@ -457,7 +484,7 @@ export default {
     verifyTime,
     staffUuid,
   }) => {
-    if (isVerify === '核实不通过') {
+    if (isVerify === "核实不通过") {
       return await Promise.all([
         staffCopyright.update(
           {
@@ -488,7 +515,7 @@ export default {
         { where: { uuid }, raw: true }
       );
       const staffCopyrightVerify = await staffCopyright.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: staffUuid },
         raw: true,
       });
@@ -496,19 +523,19 @@ export default {
       let copyrightVerifyList = staffCopyrightVerify.map(
         (value) => value.isVerify
       );
-      if (copyrightVerifyList.indexOf('核实不通过') !== -1) {
+      if (copyrightVerifyList.indexOf("核实不通过") !== -1) {
         return await staffStatus.update(
-          { copyrightVerifyStatus: '核实不通过' },
+          { copyrightVerifyStatus: "核实不通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
-      } else if (copyrightVerifyList.indexOf('未核实') !== -1) {
+      } else if (copyrightVerifyList.indexOf("未核实") !== -1) {
         return await staffStatus.update(
-          { copyrightVerifyStatus: '未核实' },
+          { copyrightVerifyStatus: "未核实" },
           { where: { uuid: staffUuid }, raw: true }
         );
       } else {
         return await staffStatus.update(
-          { copyrightVerifyStatus: '核实通过' },
+          { copyrightVerifyStatus: "核实通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
       }
@@ -525,7 +552,7 @@ export default {
     verifyTime,
     staffUuid,
   }) => {
-    if (isVerify === '核实不通过') {
+    if (isVerify === "核实不通过") {
       return await Promise.all([
         staffAward.update(
           {
@@ -556,25 +583,25 @@ export default {
         { where: { uuid }, raw: true }
       );
       const staffAwardVerify = await staffAward.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: staffUuid },
         raw: true,
       });
 
       let awardVerifyList = staffAwardVerify.map((value) => value.isVerify);
-      if (awardVerifyList.indexOf('核实不通过') !== -1) {
+      if (awardVerifyList.indexOf("核实不通过") !== -1) {
         return await staffStatus.update(
-          { awardVerifyStatus: '核实不通过' },
+          { awardVerifyStatus: "核实不通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
-      } else if (awardVerifyList.indexOf('未核实') !== -1) {
+      } else if (awardVerifyList.indexOf("未核实") !== -1) {
         return await staffStatus.update(
-          { awardVerifyStatus: '未核实' },
+          { awardVerifyStatus: "未核实" },
           { where: { uuid: staffUuid }, raw: true }
         );
       } else {
         return await staffStatus.update(
-          { awardVerifyStatus: '核实通过' },
+          { awardVerifyStatus: "核实通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
       }
@@ -592,7 +619,7 @@ export default {
     verifyTime,
     staffUuid,
   }) => {
-    if (isVerify === '核实不通过') {
+    if (isVerify === "核实不通过") {
       return await Promise.all([
         staffThesis.update(
           {
@@ -623,30 +650,98 @@ export default {
         { where: { uuid }, raw: true }
       );
       const staffThesisVerify = await staffThesis.findAll({
-        attributes: ['isVerify'],
+        attributes: ["isVerify"],
         where: { userUuid: staffUuid },
         raw: true,
       });
 
       let thesisVerifyList = staffThesisVerify.map((value) => value.isVerify);
-      if (thesisVerifyList.indexOf('核实不通过') !== -1) {
+      if (thesisVerifyList.indexOf("核实不通过") !== -1) {
         return await staffStatus.update(
-          { thesisVerifyStatus: '核实不通过' },
+          { thesisVerifyStatus: "核实不通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
-      } else if (thesisVerifyList.indexOf('未核实') !== -1) {
+      } else if (thesisVerifyList.indexOf("未核实") !== -1) {
         return await staffStatus.update(
-          { thesisVerifyStatus: '未核实' },
+          { thesisVerifyStatus: "未核实" },
           { where: { uuid: staffUuid }, raw: true }
         );
       } else {
         return await staffStatus.update(
-          { thesisVerifyStatus: '核实通过' },
+          { thesisVerifyStatus: "核实通过" },
           { where: { uuid: staffUuid }, raw: true }
         );
       }
     }
   },
+
+  /**
+   * 统计员设置员工论专著信息通过状态
+   */
+  updateVerifyBookStatus: async ({
+    uuid,
+    verifyRemarks,
+    isVerify,
+    verifyUserUuid,
+    verifyTime,
+    staffUuid,
+  }) => {
+    if (isVerify === "核实不通过") {
+      return await Promise.all([
+        staffBook.update(
+          {
+            verifyRemarks,
+            isVerify,
+            verifyUserUuid,
+            verifyTime,
+          },
+          { where: { uuid }, raw: true }
+        ),
+        staffStatus.update(
+          { bookVerifyStatus: isVerify, verifyStatus: isVerify },
+          { where: { uuid: staffUuid }, raw: true }
+        ),
+        user.update(
+          { verifyStatus: isVerify },
+          { where: { uuid: staffUuid }, raw: true }
+        ),
+      ]);
+    } else {
+      await staffBook.update(
+        {
+          verifyRemarks,
+          isVerify,
+          verifyUserUuid,
+          verifyTime,
+        },
+        { where: { uuid }, raw: true }
+      );
+      const staffBookVerify = await staffBook.findAll({
+        attributes: ["isVerify"],
+        where: { userUuid: staffUuid },
+        raw: true,
+      });
+
+      let bookVerifyList = staffBookVerify.map((value) => value.isVerify);
+      if (bookVerifyList.indexOf("核实不通过") !== -1) {
+        return await staffStatus.update(
+          { bookVerifyStatus: "核实不通过" },
+          { where: { uuid: staffUuid }, raw: true }
+        );
+      } else if (bookVerifyList.indexOf("未核实") !== -1) {
+        return await staffStatus.update(
+          { bookVerifyStatus: "未核实" },
+          { where: { uuid: staffUuid }, raw: true }
+        );
+      } else {
+        return await staffStatus.update(
+          { bookVerifyStatus: "核实通过" },
+          { where: { uuid: staffUuid }, raw: true }
+        );
+      }
+    }
+  },
+
   /**
    * 完成审核
    */
@@ -769,44 +864,47 @@ export default {
       // }
       const staffVerifyStatus = await staffStatus.findOne({
         attributes: [
-          'basicVerifyStatus',
-          'projectVerifyStatus',
-          'patentVerifyStatus',
-          'copyrightVerifyStatus',
-          'awardVerifyStatus',
-          'thesisVerifyStatus',
+          "basicVerifyStatus",
+          "projectVerifyStatus",
+          "patentVerifyStatus",
+          "copyrightVerifyStatus",
+          "awardVerifyStatus",
+          "thesisVerifyStatus",
+          "bookVerifyStatus",
         ],
         where: { uuid: userUuid },
         raw: true,
       });
 
       if (
-        staffVerifyStatus.basicVerifyStatus === '未核实' ||
-        staffVerifyStatus.basicVerifyStatus === '核实不通过' ||
-        staffVerifyStatus.projectVerifyStatus === '未核实' ||
-        staffVerifyStatus.projectVerifyStatus === '核实不通过' ||
-        staffVerifyStatus.patentVerifyStatus === '未核实' ||
-        staffVerifyStatus.patentVerifyStatus === '核实不通过' ||
-        staffVerifyStatus.copyrightVerifyStatus === '未核实' ||
-        staffVerifyStatus.copyrightVerifyStatus === '核实不通过' ||
-        staffVerifyStatus.awardVerifyStatus === '未核实' ||
-        staffVerifyStatus.awardVerifyStatus === '核实不通过' ||
-        staffVerifyStatus.thesisVerifyStatus === '未核实' ||
-        staffVerifyStatus.thesisVerifyStatus === '核实不通过'
+        staffVerifyStatus.basicVerifyStatus === "未核实" ||
+        staffVerifyStatus.basicVerifyStatus === "核实不通过" ||
+        staffVerifyStatus.projectVerifyStatus === "未核实" ||
+        staffVerifyStatus.projectVerifyStatus === "核实不通过" ||
+        staffVerifyStatus.patentVerifyStatus === "未核实" ||
+        staffVerifyStatus.patentVerifyStatus === "核实不通过" ||
+        staffVerifyStatus.copyrightVerifyStatus === "未核实" ||
+        staffVerifyStatus.copyrightVerifyStatus === "核实不通过" ||
+        staffVerifyStatus.awardVerifyStatus === "未核实" ||
+        staffVerifyStatus.awardVerifyStatus === "核实不通过" ||
+        staffVerifyStatus.thesisVerifyStatus === "未核实" ||
+        staffVerifyStatus.thesisVerifyStatus === "核实不通过" ||
+        staffVerifyStatus.bookVerifyStatus === "未核实" ||
+        staffVerifyStatus.bookVerifyStatus === "核实不通过"
       ) {
         throw error;
       }
       return await Promise.all([
         user.update(
           {
-            verifyStatus: '核实通过',
+            verifyStatus: "核实通过",
             verifyTime: new Date(),
           },
           { where: { uuid: userUuid }, raw: true }
         ),
         staffStatus.update(
           {
-            verifyStatus: '核实通过',
+            verifyStatus: "核实通过",
           },
           { where: { uuid: userUuid }, raw: true }
         ),
@@ -824,15 +922,15 @@ export default {
     if (name) {
       _data = await staffStatus.findAll({
         attributes: [
-          'userName',
-          'name',
-          'basicWriteStatus',
-          'projectWriteStatus',
-          'patentWriteStatus',
-          'copyrightWriteStatus',
-          'awardWriteStatus',
-          'thesisWriteStatus',
-          'verifyStatus',
+          "userName",
+          "name",
+          "basicWriteStatus",
+          "projectWriteStatus",
+          "patentWriteStatus",
+          "copyrightWriteStatus",
+          "awardWriteStatus",
+          "thesisWriteStatus",
+          "verifyStatus",
         ],
         where: {
           [Op.or]: [
@@ -847,41 +945,41 @@ export default {
               },
             },
           ],
-          isCancel: '未注销',
+          isCancel: "未注销",
         },
         raw: true,
       });
     } else if (verifyStatus) {
       _data = await staffStatus.findAll({
         attributes: [
-          'userName',
-          'name',
-          'basicWriteStatus',
-          'projectWriteStatus',
-          'patentWriteStatus',
-          'copyrightWriteStatus',
-          'awardWriteStatus',
-          'thesisWriteStatus',
-          'verifyStatus',
+          "userName",
+          "name",
+          "basicWriteStatus",
+          "projectWriteStatus",
+          "patentWriteStatus",
+          "copyrightWriteStatus",
+          "awardWriteStatus",
+          "thesisWriteStatus",
+          "verifyStatus",
         ],
-        where: { verifyStatus, isCancel: '未注销' },
+        where: { verifyStatus, isCancel: "未注销" },
         raw: true,
       });
     } else {
       _data = await staffStatus.findAll({
         attributes: [
-          'userName',
-          'name',
-          'basicWriteStatus',
-          'projectWriteStatus',
-          'patentWriteStatus',
-          'copyrightWriteStatus',
-          'awardWriteStatus',
-          'thesisWriteStatus',
-          'verifyStatus',
+          "userName",
+          "name",
+          "basicWriteStatus",
+          "projectWriteStatus",
+          "patentWriteStatus",
+          "copyrightWriteStatus",
+          "awardWriteStatus",
+          "thesisWriteStatus",
+          "verifyStatus",
         ],
         where: {
-          isCancel: '未注销',
+          isCancel: "未注销",
         },
         raw: true,
       });
@@ -889,15 +987,15 @@ export default {
 
     let data = []; // 其实最后就是把这个数组写入excel
     let title = [
-      '账号',
-      '姓名',
-      '基本信息',
-      '项目',
-      '专利',
-      '软件著作权',
-      '奖项',
-      '论文/专著',
-      '是否提交',
+      "账号",
+      "姓名",
+      "基本信息",
+      "项目",
+      "专利",
+      "软件著作权",
+      "奖项",
+      "论文/专著",
+      "是否提交",
     ]; // 这是第一行 俗称列名
     data.push(title); // 添加完列名 下面就是添加真正的内容了
     _data.forEach((element) => {
@@ -910,13 +1008,13 @@ export default {
       arrInner.push(element.copyrightWriteStatus);
       arrInner.push(element.awardWriteStatus);
       arrInner.push(element.thesisWriteStatus);
-      arrInner.push(element.verifyStatus !== '未提交' ? '已提交' : '未提交');
+      arrInner.push(element.verifyStatus !== "未提交" ? "已提交" : "未提交");
       data.push(arrInner); // data中添加的要是数组，可以将对象的值分解添加进数组
     });
 
     let buffer = xlsx.build([
       {
-        name: 'sheet1',
+        name: "sheet1",
         data: data,
       },
     ]);
@@ -939,15 +1037,15 @@ export default {
     if (name) {
       _data = await staffStatus.findAll({
         attributes: [
-          'userName',
-          'name',
-          'basicVerifyStatus',
-          'projectVerifyStatus',
-          'patentVerifyStatus',
-          'copyrightVerifyStatus',
-          'awardVerifyStatus',
-          'thesisVerifyStatus',
-          'verifyStatus',
+          "userName",
+          "name",
+          "basicVerifyStatus",
+          "projectVerifyStatus",
+          "patentVerifyStatus",
+          "copyrightVerifyStatus",
+          "awardVerifyStatus",
+          "thesisVerifyStatus",
+          "verifyStatus",
         ],
         where: {
           [Op.or]: [
@@ -962,41 +1060,41 @@ export default {
               },
             },
           ],
-          isCancel: '未注销',
+          isCancel: "未注销",
         },
         raw: true,
       });
     } else if (verifyStatus) {
       _data = await staffStatus.findAll({
         attributes: [
-          'userName',
-          'name',
-          'basicVerifyStatus',
-          'projectVerifyStatus',
-          'patentVerifyStatus',
-          'copyrightVerifyStatus',
-          'awardVerifyStatus',
-          'thesisVerifyStatus',
-          'verifyStatus',
+          "userName",
+          "name",
+          "basicVerifyStatus",
+          "projectVerifyStatus",
+          "patentVerifyStatus",
+          "copyrightVerifyStatus",
+          "awardVerifyStatus",
+          "thesisVerifyStatus",
+          "verifyStatus",
         ],
-        where: { verifyStatus, isCancel: '未注销' },
+        where: { verifyStatus, isCancel: "未注销" },
         raw: true,
       });
     } else {
       _data = await staffStatus.findAll({
         attributes: [
-          'userName',
-          'name',
-          'basicVerifyStatus',
-          'projectVerifyStatus',
-          'patentVerifyStatus',
-          'copyrightVerifyStatus',
-          'awardVerifyStatus',
-          'thesisVerifyStatus',
-          'verifyStatus',
+          "userName",
+          "name",
+          "basicVerifyStatus",
+          "projectVerifyStatus",
+          "patentVerifyStatus",
+          "copyrightVerifyStatus",
+          "awardVerifyStatus",
+          "thesisVerifyStatus",
+          "verifyStatus",
         ],
         where: {
-          isCancel: '未注销',
+          isCancel: "未注销",
         },
         raw: true,
       });
@@ -1004,15 +1102,15 @@ export default {
 
     let data = []; // 其实最后就是把这个数组写入excel
     let title = [
-      '账号',
-      '姓名',
-      '基本信息',
-      '项目',
-      '专利',
-      '软件著作权',
-      '奖项',
-      '论文/专著',
-      '核实状态',
+      "账号",
+      "姓名",
+      "基本信息",
+      "项目",
+      "专利",
+      "软件著作权",
+      "奖项",
+      "论文/专著",
+      "核实状态",
     ]; // 这是第一行 俗称列名
     data.push(title); // 添加完列名 下面就是添加真正的内容了
     _data.forEach((element) => {
@@ -1031,7 +1129,7 @@ export default {
 
     let buffer = xlsx.build([
       {
-        name: 'sheet1',
+        name: "sheet1",
         data: data,
       },
     ]);
@@ -1086,7 +1184,7 @@ export default {
     let maxNum = Math.max(...numList);
 
     const _data = await user.findAll({
-      attributes: ['userName', 'name'],
+      attributes: ["userName", "name"],
       where: {
         uuid: userUuid,
       },
@@ -1094,99 +1192,99 @@ export default {
         {
           model: staffBasic,
           attributes: [
-            'idNumber',
-            'sex',
-            'nation',
-            'nativePlace',
-            'politicalAffiliation',
-            'department',
-            'officePhone',
-            'phone',
-            'education',
-            'degree',
-            'graduateSchool',
-            'major',
-            'duty',
-            'workTime',
-            'professionTitle',
-            'getTime',
-            'researchDirection',
-            'studyExperience',
-            'workExperience',
+            "idNumber",
+            "sex",
+            "nation",
+            "nativePlace",
+            "politicalAffiliation",
+            "department",
+            "officePhone",
+            "phone",
+            "education",
+            "degree",
+            "graduateSchool",
+            "major",
+            "duty",
+            "workTime",
+            "professionTitle",
+            "getTime",
+            "researchDirection",
+            "studyExperience",
+            "workExperience",
           ],
-          as: 'staffBasic',
+          as: "staffBasic",
         },
         {
           model: staffProject,
           attributes: [
-            'name',
-            'type',
-            'grade',
-            'startTime',
-            'endTime',
-            'code',
-            'resource',
-            'funds',
-            'controller',
-            'participant',
-            'content',
-            'isChecked',
-            'checkConclusion'
+            "name",
+            "type",
+            "grade",
+            "startTime",
+            "endTime",
+            "code",
+            "resource",
+            "funds",
+            "controller",
+            "participant",
+            "content",
+            "isChecked",
+            "checkConclusion",
           ],
-          as: 'staffProject',
+          as: "staffProject",
         },
         {
           model: staffPatent,
           attributes: [
-            'patentType',
-            'patentName',
-            'patentCode',
-            'rank',
-            'patentee',
-            'patentTime',
-            'inventor'
+            "patentType",
+            "patentName",
+            "patentCode",
+            "rank",
+            "patentee",
+            "patentTime",
+            "inventor",
           ],
-          as: 'staffPatent',
+          as: "staffPatent",
         },
         {
           model: staffCopyright,
           attributes: [
-            'copyrightType',
-            'copyrightName',
-            'copyrightCode',
-            'copyrightArrange',
-            'completeTime',
-            'publishTime',
-            'copyrightOwner',
-            'rank'
+            "copyrightType",
+            "copyrightName",
+            "copyrightCode",
+            "copyrightArrange",
+            "completeTime",
+            "publishTime",
+            "copyrightOwner",
+            "rank",
           ],
-          as: 'staffCopyright',
+          as: "staffCopyright",
         },
         {
           model: staffAward,
           attributes: [
-            'awardType',
-            'awardName',
-            'awardTime',
-            'awardGrade',
-            'awardDepartment',
-            'awardNameList',
-            'awardRank',
+            "awardType",
+            "awardName",
+            "awardTime",
+            "awardGrade",
+            "awardDepartment",
+            "awardNameList",
+            "awardRank",
           ],
-          as: 'staffAward',
+          as: "staffAward",
         },
         {
           model: staffThesis,
           attributes: [
-            'thesisTitle',
-            'thesisJournal',
-            'thesisTime',
-            'thesisGrade',
-            'thesisCode',
-            'thesisFirstAuthor',
-            'thesisAuthorSequence',
+            "thesisTitle",
+            "thesisJournal",
+            "thesisTime",
+            "thesisGrade",
+            "thesisCode",
+            "thesisFirstAuthor",
+            "thesisAuthorSequence",
           ],
-          as: 'staffThesis',
+          as: "staffThesis",
         },
       ],
     });
@@ -1195,130 +1293,165 @@ export default {
     let basicTitle =
       exportList.indexOf(0) !== -1
         ? [
-          '身份证号',
-          '性别',
-          '民族',
-          '籍贯',
-          '政治面貌',
-          '科室',
-          '办公电话',
-          '手机号码',
-          '学历',
-          '学位',
-          '毕业学校',
-          '所学专业',
-          '职务',
-          '参加工作时间',
-          '职称',
-          '获得时间',
-          '研究方向',
-          '学习经历',
-          '工作经历',
-        ]
+            "身份证号",
+            "性别",
+            "民族",
+            "籍贯",
+            "政治面貌",
+            "科室",
+            "办公电话",
+            "手机号码",
+            "学历",
+            "学位",
+            "毕业学校",
+            "所学专业",
+            "职务",
+            "参加工作时间",
+            "职称",
+            "获得时间",
+            "研究方向",
+            "学习经历",
+            "工作经历",
+          ]
         : [];
 
     let projectTitle =
       exportList.indexOf(1) !== -1
         ? [
-          '参与类型',
-          '项目名称',
-          '项目开始时间',
-          '项目结束时间',
-          '项目编号',
-          '项目来源',
-          '项目经费(万元)',
-          '负责人',
-          '参与者名单',
-          '主要研究内容',
-          '是否验收',
-          '验收结论'
-        ]
+            "参与类型",
+            "项目名称",
+            "项目开始时间",
+            "项目结束时间",
+            "项目编号",
+            "项目来源",
+            "项目经费(万元)",
+            "负责人",
+            "参与者名单",
+            "主要研究内容",
+            "是否验收",
+            "验收结论",
+          ]
         : [];
 
     let patentTitle =
       exportList.indexOf(2) !== -1
-        ? ['专利类型', '专利名称', '授权号', '专利排名', '专利权人', '专利公告日', '发明人（设计人）']
+        ? [
+            "专利类型",
+            "专利名称",
+            "授权号",
+            "专利排名",
+            "专利权人",
+            "专利公告日",
+            "发明人（设计人）",
+          ]
         : [];
 
     let copyrightTitle =
       exportList.indexOf(3) !== -1
-        ? ['权利取得方式', '软件著作权名称', '登记号', '授权范围', '开发完成时间', '发表时间', '软件著作权权人', '软著排位']
+        ? [
+            "权利取得方式",
+            "软件著作权名称",
+            "登记号",
+            "授权范围",
+            "开发完成时间",
+            "发表时间",
+            "软件著作权权人",
+            "软著排位",
+          ]
         : [];
 
     let awardTitle =
       exportList.indexOf(4) !== -1
         ? [
-          '奖项类型',
-          '奖项名称',
-          '获奖时间',
-          '奖项级别',
-          '颁奖部门',
-          '获奖名单',
-          '获奖排位',
-        ]
+            "奖项类型",
+            "奖项名称",
+            "获奖时间",
+            "奖项级别",
+            "颁奖部门",
+            "获奖名单",
+            "获奖排位",
+          ]
         : [];
 
     let thesisTitle =
       exportList.indexOf(5) !== -1
         ? [
-          '标题',
-          '发表期刊名称',
-          '发表时间',
-          '期刊级别',
-          '论文索引号',
-          '第一作者',
-          '提交人作者次序',
-        ]
+            "标题",
+            "发表期刊名称",
+            "发表时间",
+            "期刊级别",
+            "论文索引号",
+            "第一作者",
+            "提交人作者次序",
+          ]
         : [];
 
     let firstBasicTitle =
       exportList.indexOf(0) !== -1
         ? [
-          '基本信息',
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-        ]
+            "基本信息",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
         : [];
 
     let firstProjectTitle =
       exportList.indexOf(1) !== -1
-        ? ['项目', null, null, null, null, null, null, null, null, null, null, null, null]
+        ? [
+            "项目",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
         : [];
 
     let firstPatentTitle =
-      exportList.indexOf(2) !== -1 ? ['专利', null, null, null, null, null, null] : [];
+      exportList.indexOf(2) !== -1
+        ? ["专利", null, null, null, null, null, null]
+        : [];
 
     let firstCopyrightTitle =
-      exportList.indexOf(3) !== -1 ? ['软件著作权', null, null, null, null, null, null, null] : [];
+      exportList.indexOf(3) !== -1
+        ? ["软件著作权", null, null, null, null, null, null, null]
+        : [];
 
     let firstAwardTitle =
       exportList.indexOf(4) !== -1
-        ? ['奖项', null, null, null, null, null, null]
+        ? ["奖项", null, null, null, null, null, null]
         : [];
 
     let firstThesisTitle =
       exportList.indexOf(5) !== -1
-        ? ['论文/专著', null, null, null, null, null, null]
+        ? ["论文/专著", null, null, null, null, null, null]
         : [];
 
     let firstTitle = [
-      '用户信息',
+      "用户信息",
       null,
       ...firstBasicTitle,
       ...firstProjectTitle,
@@ -1330,8 +1463,8 @@ export default {
     data.push(firstTitle);
 
     let secondTitle = [
-      '用户名',
-      '姓名',
+      "用户名",
+      "姓名",
       ...basicTitle,
       ...projectTitle,
       ...patentTitle,
@@ -1393,8 +1526,8 @@ export default {
           arrInner.push(
             _data[0].dataValues.staffBasic
               ? moment(
-                _data[0].dataValues.staffBasic?.dataValues.workTime
-              ).format('YYYY-MM-DD')
+                  _data[0].dataValues.staffBasic?.dataValues.workTime
+                ).format("YYYY-MM-DD")
               : null
           );
           arrInner.push(
@@ -1403,8 +1536,8 @@ export default {
           arrInner.push(
             _data[0].dataValues.staffBasic
               ? moment(
-                _data[0].dataValues.staffBasic?.dataValues.getTime
-              ).format('YYYY-MM-DD')
+                  _data[0].dataValues.staffBasic?.dataValues.getTime
+                ).format("YYYY-MM-DD")
               : null
           );
           arrInner.push(
@@ -1441,24 +1574,24 @@ export default {
       if (exportList.indexOf(1) !== -1) {
         arrInner.push(
           _data[0].dataValues.staffProject[item]?.type === 1
-            ? '主持项目'
+            ? "主持项目"
             : _data[0].dataValues.staffProject[item]?.type === 2
-              ? '参与项目'
-              : null
+            ? "参与项目"
+            : null
         );
         arrInner.push(_data[0].dataValues.staffProject[item]?.name);
         arrInner.push(
           _data[0].dataValues.staffProject[item]
             ? moment(_data[0].dataValues.staffProject[item]?.startTime).format(
-              'YYYY-MM-DD'
-            )
+                "YYYY-MM-DD"
+              )
             : null
         );
         arrInner.push(
           _data[0].dataValues.staffProject[item]
             ? moment(_data[0].dataValues.staffProject[item]?.endTime).format(
-              'YYYY-MM-DD'
-            )
+                "YYYY-MM-DD"
+              )
             : null
         );
         arrInner.push(_data[0].dataValues.staffProject[item]?.code);
@@ -1488,8 +1621,8 @@ export default {
         arrInner.push(
           _data[0].dataValues.staffAward[item]
             ? moment(_data[0].dataValues.staffAward[item]?.awardTime).format(
-              'YYYY-MM-DD'
-            )
+                "YYYY-MM-DD"
+              )
             : null
         );
         arrInner.push(_data[0].dataValues.staffAward[item]?.awardGrade);
@@ -1503,8 +1636,8 @@ export default {
         arrInner.push(
           _data[0].dataValues.staffThesis[item]
             ? moment(_data[0].dataValues.staffThesis[item]?.thesisTime).format(
-              'YYYY-MM-DD'
-            )
+                "YYYY-MM-DD"
+              )
             : null
         );
         arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisGrade);
@@ -1534,12 +1667,12 @@ export default {
       }
     }
 
-    const options = { '!merges': [...range, ...titleRange] };
+    const options = { "!merges": [...range, ...titleRange] };
 
     let buffer = xlsx.build(
       [
         {
-          name: 'sheet1',
+          name: "sheet1",
           data: data,
         },
       ],
@@ -1559,7 +1692,7 @@ export default {
   getStaffUuidByNameAndVerifyStatus: async ({ verifyStatus, name }) => {
     if (name) {
       return await staffStatus.findAll({
-        attributes: ['uuid'],
+        attributes: ["uuid"],
         where: {
           [Op.or]: [
             {
@@ -1573,21 +1706,21 @@ export default {
               },
             },
           ],
-          isCancel: '未注销',
+          isCancel: "未注销",
         },
         raw: true,
       });
     } else if (verifyStatus) {
       return await staffStatus.findAll({
-        attributes: ['uuid'],
-        where: { verifyStatus, isCancel: '未注销' },
+        attributes: ["uuid"],
+        where: { verifyStatus, isCancel: "未注销" },
         raw: true,
       });
     } else {
       return await staffStatus.findAll({
-        attributes: ['uuid'],
+        attributes: ["uuid"],
         where: {
-          isCancel: '未注销',
+          isCancel: "未注销",
         },
         raw: true,
       });
@@ -1603,51 +1736,51 @@ export default {
     let firstBasicTitle =
       exportList.indexOf(0) !== -1
         ? [
-          '基本信息',
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-          null,
-        ]
+            "基本信息",
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null,
+          ]
         : [];
 
     let firstProjectTitle =
       exportList.indexOf(1) !== -1
-        ? ['项目', null, null, null, null, null, null, null, null, null]
+        ? ["项目", null, null, null, null, null, null, null, null, null]
         : [];
 
     let firstPatentTitle =
-      exportList.indexOf(2) !== -1 ? ['专利', null, null, null] : [];
+      exportList.indexOf(2) !== -1 ? ["专利", null, null, null] : [];
 
     let firstCopyrightTitle =
-      exportList.indexOf(3) !== -1 ? ['软件著作权', null, null, null] : [];
+      exportList.indexOf(3) !== -1 ? ["软件著作权", null, null, null] : [];
 
     let firstAwardTitle =
       exportList.indexOf(4) !== -1
-        ? ['奖项', null, null, null, null, null]
+        ? ["奖项", null, null, null, null, null]
         : [];
 
     let firstThesisTitle =
       exportList.indexOf(5) !== -1
-        ? ['论文/专著', null, null, null, null, null, null, null]
+        ? ["论文/专著", null, null, null, null, null, null, null]
         : [];
 
     let firstTitle = [
-      '用户信息',
+      "用户信息",
       null,
       ...firstBasicTitle,
       ...firstProjectTitle,
@@ -1686,83 +1819,83 @@ export default {
     let basicTitle =
       exportList.indexOf(0) !== -1
         ? [
-          '身份证号',
-          '性别',
-          '民族',
-          '籍贯',
-          '政治面貌',
-          '科室',
-          '办公电话',
-          '手机号码',
-          '学历',
-          '学位',
-          '毕业学校',
-          '所学专业',
-          '职务',
-          '参加工作时间',
-          '职称',
-          '获得时间',
-          '研究方向',
-          '学习经历',
-          '工作经历',
-        ]
+            "身份证号",
+            "性别",
+            "民族",
+            "籍贯",
+            "政治面貌",
+            "科室",
+            "办公电话",
+            "手机号码",
+            "学历",
+            "学位",
+            "毕业学校",
+            "所学专业",
+            "职务",
+            "参加工作时间",
+            "职称",
+            "获得时间",
+            "研究方向",
+            "学习经历",
+            "工作经历",
+          ]
         : [];
 
     let projectTitle =
       exportList.indexOf(1) !== -1
         ? [
-          '项目类型',
-          '项目名称',
-          '项目开始时间',
-          '项目结束时间',
-          '项目编号',
-          '项目来源',
-          '项目经费(万元)',
-          '负责人',
-          '参与者名单',
-          '主要研究内容',
-        ]
+            "项目类型",
+            "项目名称",
+            "项目开始时间",
+            "项目结束时间",
+            "项目编号",
+            "项目来源",
+            "项目经费(万元)",
+            "负责人",
+            "参与者名单",
+            "主要研究内容",
+          ]
         : [];
 
     let patentTitle =
       exportList.indexOf(2) !== -1
-        ? ['专利类型', '专利名称', '授权号', '授权国家']
+        ? ["专利类型", "专利名称", "授权号", "授权国家"]
         : [];
 
     let copyrightTitle =
       exportList.indexOf(3) !== -1
-        ? ['权利取得方式', '软件著作权名称', '登记号', '授权范围']
+        ? ["权利取得方式", "软件著作权名称", "登记号", "授权范围"]
         : [];
 
     let awardTitle =
       exportList.indexOf(4) !== -1
         ? [
-          '奖项类型',
-          '奖项名称',
-          '获奖时间',
-          '奖项级别',
-          '颁奖部门',
-          '获奖名单',
-        ]
+            "奖项类型",
+            "奖项名称",
+            "获奖时间",
+            "奖项级别",
+            "颁奖部门",
+            "获奖名单",
+          ]
         : [];
 
     let thesisTitle =
       exportList.indexOf(5) !== -1
         ? [
-          '标题',
-          '类型',
-          '发表期刊名称',
-          '发表时间',
-          '期刊级别',
-          '论文索引号',
-          '第一作者',
-          '提交人作者次序',
-        ]
+            "标题",
+            "类型",
+            "发表期刊名称",
+            "发表时间",
+            "期刊级别",
+            "论文索引号",
+            "第一作者",
+            "提交人作者次序",
+          ]
         : [];
 
     let secondTitle = [
-      '用户名',
-      '姓名',
+      "用户名",
+      "姓名",
       ...basicTitle,
       ...projectTitle,
       ...patentTitle,
@@ -1813,7 +1946,7 @@ export default {
       let maxNum = Math.max(...numList);
 
       const _data = await user.findAll({
-        attributes: ['userName', 'name'],
+        attributes: ["userName", "name"],
         where: {
           uuid: staffList[num],
         },
@@ -1821,90 +1954,90 @@ export default {
           {
             model: staffBasic,
             attributes: [
-              'name',
-              'idNumber',
-              'sex',
-              'nation',
-              'nativePlace',
-              'politicalAffiliation',
-              'department',
-              'officePhone',
-              'phone',
-              'education',
-              'degree',
-              'graduateSchool',
-              'major',
-              'duty',
-              'workTime',
-              'professionTitle',
-              'getTime',
-              'researchDirection',
-              'studyExperience',
-              'workExperience',
+              "name",
+              "idNumber",
+              "sex",
+              "nation",
+              "nativePlace",
+              "politicalAffiliation",
+              "department",
+              "officePhone",
+              "phone",
+              "education",
+              "degree",
+              "graduateSchool",
+              "major",
+              "duty",
+              "workTime",
+              "professionTitle",
+              "getTime",
+              "researchDirection",
+              "studyExperience",
+              "workExperience",
             ],
-            as: 'staffBasic',
+            as: "staffBasic",
           },
           {
             model: staffProject,
             attributes: [
-              'name',
-              'type',
-              'startTime',
-              'endTime',
-              'code',
-              'resource',
-              'funds',
-              'controller',
-              'participant',
-              'content',
+              "name",
+              "type",
+              "startTime",
+              "endTime",
+              "code",
+              "resource",
+              "funds",
+              "controller",
+              "participant",
+              "content",
             ],
-            as: 'staffProject',
+            as: "staffProject",
           },
           {
             model: staffPatent,
             attributes: [
-              'patentType',
-              'patentName',
-              'patentCode',
-              'patentNation',
+              "patentType",
+              "patentName",
+              "patentCode",
+              "patentNation",
             ],
-            as: 'staffPatent',
+            as: "staffPatent",
           },
           {
             model: staffCopyright,
             attributes: [
-              'copyrightType',
-              'copyrightName',
-              'copyrightCode',
-              'copyrightArrange',
+              "copyrightType",
+              "copyrightName",
+              "copyrightCode",
+              "copyrightArrange",
             ],
-            as: 'staffCopyright',
+            as: "staffCopyright",
           },
           {
             model: staffAward,
             attributes: [
-              'awardType',
-              'awardName',
-              'awardTime',
-              'awardGrade',
-              'awardDepartment',
-              'awardNameList',
+              "awardType",
+              "awardName",
+              "awardTime",
+              "awardGrade",
+              "awardDepartment",
+              "awardNameList",
             ],
-            as: 'staffAward',
+            as: "staffAward",
           },
           {
             model: staffThesis,
             attributes: [
-              'thesisTitle',
-              'thesisType',
-              'thesisJournal',
-              'thesisTime',
-              'thesisGrade',
-              'thesisCode',
-              'thesisFirstAuthor',
-              'thesisAuthorSequence',
+              "thesisTitle",
+              "thesisType",
+              "thesisJournal",
+              "thesisTime",
+              "thesisGrade",
+              "thesisCode",
+              "thesisFirstAuthor",
+              "thesisAuthorSequence",
             ],
-            as: 'staffThesis',
+            as: "staffThesis",
           },
         ],
       });
@@ -1941,8 +2074,8 @@ export default {
             arrInner.push(
               _data[0].dataValues.staffBasic
                 ? moment(
-                  _data[0].dataValues.staffBasic?.dataValues.workTime
-                ).format('YYYY-MM-DD')
+                    _data[0].dataValues.staffBasic?.dataValues.workTime
+                  ).format("YYYY-MM-DD")
                 : null
             );
             arrInner.push(
@@ -1951,8 +2084,8 @@ export default {
             arrInner.push(
               _data[0].dataValues.staffBasic
                 ? moment(
-                  _data[0].dataValues.staffBasic?.dataValues.getTime
-                ).format('YYYY-MM-DD')
+                    _data[0].dataValues.staffBasic?.dataValues.getTime
+                  ).format("YYYY-MM-DD")
                 : null
             );
             arrInner.push(
@@ -1989,24 +2122,24 @@ export default {
         if (exportList.indexOf(1) !== -1) {
           arrInner.push(
             _data[0].dataValues.staffProject[item]?.type === 1
-              ? '主持项目'
+              ? "主持项目"
               : _data[0].dataValues.staffProject[item]?.type === 2
-                ? '参与项目'
-                : null
+              ? "参与项目"
+              : null
           );
           arrInner.push(_data[0].dataValues.staffProject[item]?.name);
           arrInner.push(
             _data[0].dataValues.staffProject[item]
               ? moment(
-                _data[0].dataValues.staffProject[item]?.startTime
-              ).format('YYYY-MM-DD')
+                  _data[0].dataValues.staffProject[item]?.startTime
+                ).format("YYYY-MM-DD")
               : null
           );
           arrInner.push(
             _data[0].dataValues.staffProject[item]
               ? moment(_data[0].dataValues.staffProject[item]?.endTime).format(
-                'YYYY-MM-DD'
-              )
+                  "YYYY-MM-DD"
+                )
               : null
           );
           arrInner.push(_data[0].dataValues.staffProject[item]?.code);
@@ -2042,8 +2175,8 @@ export default {
           arrInner.push(
             _data[0].dataValues.staffAward[item]
               ? moment(_data[0].dataValues.staffAward[item]?.awardTime).format(
-                'YYYY-MM-DD'
-              )
+                  "YYYY-MM-DD"
+                )
               : null
           );
           arrInner.push(_data[0].dataValues.staffAward[item]?.awardGrade);
@@ -2057,8 +2190,8 @@ export default {
           arrInner.push(
             _data[0].dataValues.staffThesis[item]
               ? moment(
-                _data[0].dataValues.staffThesis[item]?.thesisTime
-              ).format('YYYY-MM-DD')
+                  _data[0].dataValues.staffThesis[item]?.thesisTime
+                ).format("YYYY-MM-DD")
               : null
           );
           arrInner.push(_data[0].dataValues.staffThesis[item]?.thesisGrade);
@@ -2092,12 +2225,12 @@ export default {
       rowNum += maxNum;
     }
 
-    const options = { '!merges': [...range, ...titleRange] };
+    const options = { "!merges": [...range, ...titleRange] };
 
     let buffer = xlsx.build(
       [
         {
-          name: 'sheet1',
+          name: "sheet1",
           data: data,
         },
       ],

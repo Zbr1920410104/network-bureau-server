@@ -21,6 +21,7 @@ require('./models/staff-copyright').default;
 require('./models/staff-patent').default;
 require('./models/staff-project').default;
 require('./models/staff-thesis').default;
+require('./models/staff-book').default;
 const sysTimeSet = require('./models/sys-time-set').default;
 const sequelize = require('./db-connect');
 
