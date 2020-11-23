@@ -1,3 +1,5 @@
+require('babel-register');
+
 import Koa from 'koa';
 import json from 'koa-json';
 import onerror from 'koa-onerror';
