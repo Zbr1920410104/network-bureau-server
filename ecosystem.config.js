@@ -1,7 +1,7 @@
 module.exports = {
   apps: [
     {
-      name: 'API',
+      name: 'reviewAPI',
       script: './bin/www',
 
       // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
@@ -26,9 +26,9 @@ module.exports = {
     production: {
       user: 'root',
       host: '39.97.175.30',
-      ref: 'origin/master',
+      ref: 'origin/modify',
       repo: 'git@github.com:Zbr1920410104/network-bureau-server.git',
-      path: '/network-bureau/network-bureau-server',
+      path: '/network-bureau-new/network-bureau-server',
       'post-deploy':
         'npm install && pm2 reload ecosystem.config.js --env production',
       'post-setup': 'npm install'
