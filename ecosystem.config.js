@@ -2,7 +2,7 @@ module.exports = {
   apps: [
     {
       name: 'reviewAPI',
-      script: './bin/www',
+      script: 'app',
 
       // Options reference: https://pm2.keymetrics.io/docs/usage/application-declaration/
       args: 'one two',
