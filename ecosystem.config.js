@@ -28,9 +28,9 @@ module.exports = {
       host: '39.97.175.30',
       ref: 'origin/modify',
       repo: 'git@github.com:Zbr1920410104/network-bureau-server.git',
-      path: '/network-bureau-new/network-bureau-server',
+      path: '/network-bureau-new/network-bureau-server-test1',
       'post-deploy':
-        'npm install && pm2 reload ecosystem.config.js --env production',
+        'npm install && cross-env NODE_ENV=production && pm2 reload ecosystem.config.js --env production',
       'post-setup': 'npm install'
     }
   }
